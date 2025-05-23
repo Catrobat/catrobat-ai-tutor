@@ -8,4 +8,9 @@ class CommonGreetingTest {
     fun testExample() {
         assertTrue(Greeting().greet().contains("Hello"), "Check 'Hello' is mentioned")
     }
+
+    @Test
+    fun testFailingForCI() {
+        assertTrue { false }
+    }
 }
