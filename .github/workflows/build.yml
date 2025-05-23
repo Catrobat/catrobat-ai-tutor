@@ -18,6 +18,7 @@ jobs:
       - name: Run Ktlint
         run: ./gradlew ktlintCheck
       - name: Upload Ktlint Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ktlint-report
@@ -38,6 +39,7 @@ jobs:
       - name: Run Tests
         run: ./gradlew shared:testDebugUnitTest
       - name: Upload Test Summary
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-summary
