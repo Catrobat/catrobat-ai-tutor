@@ -1,10 +1,6 @@
 name: Build Android CI
 
-on:
-  push:
-    branches: [ "*" ]
-  pull_request:
-    branches: [ "*" ]
+on: [push]
 
 jobs:
   ktlint:
@@ -22,7 +18,7 @@ jobs:
       - name: Run Ktlint
         run: ./gradlew ktlintCheck
         with:
-          name: Ktlint Report
+          name: ktlint-report
           path: shared/build/reports/
 
   test:
@@ -40,6 +36,6 @@ jobs:
       - name: Run Common Tests
         run: ./gradlew shared:testDebugUnitTest
         with:
-          name: Test Summary
+          name: test-summary
           path: shared/build/reports/
 
