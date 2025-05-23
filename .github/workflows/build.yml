@@ -21,6 +21,9 @@ jobs:
         run: chmod +x gradlew
       - name: Run Ktlint
         run: ./gradlew ktlintCheck
+        with:
+          name: Ktlint Report
+          path: shared/build/reports/
 
   test:
     runs-on: ubuntu-latest
@@ -36,3 +39,7 @@ jobs:
         run: chmod +x gradlew
       - name: Run Common Tests
         run: ./gradlew shared:testDebugUnitTest
+        with:
+          name: Test Summary
+          path: shared/build/reports/
+
