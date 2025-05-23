@@ -17,6 +17,8 @@ jobs:
         run: chmod +x gradlew
       - name: Run Ktlint
         run: ./gradlew ktlintCheck
+      - name: Upload Ktlint Report
+        uses: actions/upload-artifact@v4
         with:
           name: ktlint-report
           path: shared/build/reports/
@@ -33,9 +35,10 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Run Common Tests
+      - name: Run Tests
         run: ./gradlew shared:testDebugUnitTest
+      - name: Upload Test Summary
+        uses: actions/upload-artifact@v4
         with:
           name: test-summary
           path: shared/build/reports/
-
