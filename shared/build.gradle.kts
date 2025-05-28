@@ -4,10 +4,15 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.mavenPublish)
 }
+
+group = "org.catrobat"
+version = "0.0.1"
 
 kotlin {
     androidTarget {
+        publishLibraryVariants("release")
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
@@ -49,6 +54,18 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+publishing {
+    publications {
+        val kotlinMultiplatformPublication =
+            publications.getByName("kotlinMultiplatform") as MavenPublication
+        kotlinMultiplatformPublication.apply {
+            groupId = "org.catrobat"
+            artifactId = "aitutor"
+            version = "0.0.1"
+        }
     }
 }
 
