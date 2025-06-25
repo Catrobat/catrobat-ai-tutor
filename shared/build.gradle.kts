@@ -100,4 +100,9 @@ publishing {
 
 ktlint {
     outputToConsole.set(true)
+    filter {
+        exclude { element ->
+            element.file.path.contains("generated")
+        }
+    }
 }
