@@ -6,21 +6,26 @@ class CreateShareablePromptUseCase {
         isCodeContextIncluded: Boolean,
         codeContext: String?,
     ): String {
-        if (!isCodeContextIncluded || codeContext.isNullOrBlank()) {
-            return userQuestion
-        }
+        val contextSection =
+            if (isCodeContextIncluded && !codeContext.isNullOrBlank()) {
+                "**User Code:**\n```\n$codeContext\n```"
+            } else {
+                ""
+            }
 
-        // For now, we'll use a simple template, next week we will improve it
         return """
-            I have a question about my code.
+            **Analyze the following programming question. Provide a direct code solution first, then a brief explanation.**
+                        
+            **User Question:** $userQuestion
+            $contextSection
 
-            My Question:
-            $userQuestion
+            **Required Response Format:**
+            1. **Corrected Code:** Put the corrected code directly between the following markers inside a markdown block.
+            2. **Explanation:** After the code block, briefly explain the solution or the fix.
 
-            My Code:
-            ```
-            $codeContext
-            ```
+            ### START - COPY THIS CODE BACK TO THE APP ###
+            [Your corrected code here]
+            ### END - COPY THIS CODE BACK TO THE APP ###
             """.trimIndent()
     }
 }
