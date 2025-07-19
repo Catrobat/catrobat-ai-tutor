@@ -1,4 +1,4 @@
-package org.catrobat.aitutor.ui.components
+package org.catrobat.aitutor.ui.public
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
