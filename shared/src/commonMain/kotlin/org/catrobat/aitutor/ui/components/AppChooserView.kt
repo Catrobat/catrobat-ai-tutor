@@ -1,4 +1,4 @@
-package org.catrobat.aitutor.ui
+package org.catrobat.aitutor.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,8 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import org.catrobat.aitutor.ui.components.AiAppChip
-import org.catrobat.aitutor.ui.components.MoreChip
 import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.aitutor.ui.viewmodel.AiTutorUiState
 import org.catrobat.aitutor.util.platformImagePainter
@@ -29,6 +27,7 @@ import org.catrobat.aitutor.util.platformImagePainter
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun AppChooserView(
+    modifier: Modifier = Modifier,
     uiState: AiTutorUiState,
     onDismissRequest: () -> Unit,
     onAppSelected: (String?) -> Unit,
@@ -38,7 +37,7 @@ internal fun AppChooserView(
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize().then(modifier),
             contentAlignment = Alignment.BottomCenter,
         ) {
             Surface(

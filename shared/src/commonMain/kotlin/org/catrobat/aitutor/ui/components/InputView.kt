@@ -1,4 +1,4 @@
-package org.catrobat.aitutor.ui
+package org.catrobat.aitutor.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -68,9 +69,10 @@ internal fun InputView(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
-                            "Include code context",
+                            text = "Include code context",
                             color = AiTutorColors.onSurface,
                             modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.titleSmall,
                         )
                         Switch(
                             checked = isCodeContextIncluded,
