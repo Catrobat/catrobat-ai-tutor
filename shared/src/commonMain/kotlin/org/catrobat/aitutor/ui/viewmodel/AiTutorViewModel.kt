@@ -8,10 +8,13 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
 import org.catrobat.aitutor.domain.usecase.GetInstalledAiAppsUseCase
+import org.catrobat.aitutor.domain.usecase.GetTutorialSeenStateUseCase
+import org.catrobat.aitutor.domain.usecase.SetTutorialSeenUseCase
 import org.catrobat.aitutor.ui.AiAppLauncher
 import org.catrobat.aitutor.ui.TutorUiStep
 
@@ -19,6 +22,8 @@ class AiTutorViewModel(
     private val getInstalledAiAppsUseCase: GetInstalledAiAppsUseCase,
     private val createShareablePromptUseCase: CreateShareablePromptUseCase,
     private val aiAppLauncher: AiAppLauncher,
+    private val getTutorialSeenStateUseCase: GetTutorialSeenStateUseCase,
+    private val setTutorialSeenUseCase: SetTutorialSeenUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AiTutorUiState())
     val uiState: StateFlow<AiTutorUiState> = _uiState.asStateFlow()
@@ -28,6 +33,31 @@ class AiTutorViewModel(
 
     init {
         loadInstalledApps()
+    }
+
+    fun handleTutorVisibility(isShown: Boolean) {
+        if (isShown) {
+            viewModelScope.launch {
+                val hasSeenTutorial = getTutorialSeenStateUseCase().first()
+                val nextStep =
+                    if (hasSeenTutorial) TutorUiStep.AwaitingInput else TutorUiStep.ShowingTutorial
+                _uiState.update { it.copy(currentStep = nextStep) }
+            }
+        } else {
+            _uiState.update {
+                it.copy(
+                    currentStep = TutorUiStep.Hidden,
+                    userQuestion = "",
+                )
+            }
+        }
+    }
+
+    fun dismissTutorial() {
+        viewModelScope.launch {
+            setTutorialSeenUseCase(true)
+            _uiState.update { it.copy(currentStep = TutorUiStep.AwaitingInput) }
+        }
     }
 
     fun onUserQuestionChanged(newQuestion: String) {

@@ -1,5 +1,10 @@
 package org.catrobat.aitutor.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import org.catrobat.aitutor.data.AndroidAiAppRepository
 import org.catrobat.aitutor.data.InstalledAiAppDataSource
 import org.catrobat.aitutor.domain.repository.AiAppRepository
@@ -15,4 +20,11 @@ actual fun platformModule(): Module =
         single<AiAppRepository> { AndroidAiAppRepository(get(), androidContext().packageManager) }
 
         single { AiAppLauncher(androidContext()) }
+
+        single<DataStore<Preferences>> { createDataStore(androidContext()) }
+    }
+
+fun createDataStore(context: Context): DataStore<Preferences> =
+    PreferenceDataStoreFactory.create {
+        context.preferencesDataStoreFile(DATASTORE_FILE_NAME)
     }
