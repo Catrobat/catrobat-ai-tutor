@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
 import org.catrobat.aitutor.domain.usecase.GetInstalledAiAppsUseCase
 import org.catrobat.aitutor.domain.usecase.GetTutorialSeenStateUseCase
@@ -53,6 +54,10 @@ class AiTutorViewModel(
         }
     }
 
+    fun showTutorial() {
+        _uiState.update { it.copy(currentStep = TutorUiStep.ShowingTutorial) }
+    }
+
     fun dismissTutorial() {
         viewModelScope.launch {
             setTutorialSeenUseCase(true)
@@ -64,17 +69,45 @@ class AiTutorViewModel(
         _uiState.update { it.copy(userQuestion = newQuestion) }
     }
 
+    fun initializeContexts(initialIsOutputContextIncluded: Boolean?) {
+        _uiState.update {
+            it.copy(
+                isOutputContextIncluded = initialIsOutputContextIncluded,
+            )
+        }
+    }
+
     fun onToggleCodeContext(isIncluded: Boolean) {
         _uiState.update { it.copy(isCodeContextIncluded = isIncluded) }
+    }
+
+    fun onPromptVersionChanged(version: PromptVersion) {
+        _uiState.update { it.copy(selectedPromptVersion = version) }
     }
 
     fun onCurrentStepChanged(newStep: TutorUiStep) {
         _uiState.update { it.copy(currentStep = newStep) }
     }
 
+    // Handler for the optional output context switch
+    fun onToggleOutputContext(isIncluded: Boolean) {
+        if (_uiState.value.isOutputContextIncluded != null) {
+            _uiState.update { it.copy(isOutputContextIncluded = isIncluded) }
+        }
+    }
+
+    fun showAboutScreen() {
+        _uiState.update { it.copy(currentStep = TutorUiStep.ShowingAbout) }
+    }
+
+    fun dismissAboutScreen() {
+        _uiState.update { it.copy(currentStep = TutorUiStep.AwaitingInput) }
+    }
+
     fun launchAiApp(
         packageName: String? = null,
         codeContext: String?,
+        outputContext: String? = null,
     ) {
         val currentState = _uiState.value
         val finalPrompt =
@@ -82,6 +115,9 @@ class AiTutorViewModel(
                 userQuestion = currentState.userQuestion,
                 isCodeContextIncluded = currentState.isCodeContextIncluded,
                 codeContext = codeContext,
+                isOutputContextIncluded = currentState.isOutputContextIncluded,
+                outputContext = outputContext,
+                promptVersion = currentState.selectedPromptVersion,
             )
         aiAppLauncher.launchApp(finalPrompt, packageName)
     }
