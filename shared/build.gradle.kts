@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
@@ -8,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.aboutLibraries)
 }
 
 group = "org.catrobat"
@@ -15,7 +15,7 @@ version = "0.0.1"
 
 kotlin {
     androidTarget {
-        publishLibraryVariants("release")
+        publishLibraryVariants("release", "debug")
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
@@ -71,11 +71,26 @@ kotlin {
             // Datastore
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
+
+            // Coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil3.coil.network.okhttp)
+
+            // About Libraries
+            implementation(libs.aboutlibraries.core)
+            implementation(libs.aboutlibraries.compose.core)
+            implementation(libs.aboutlibraries.compose.m3)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "org.catrobat.shared.generated.resources"
+    generateResClass = always
 }
 
 android {
@@ -87,6 +102,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -108,5 +126,12 @@ ktlint {
         exclude { element ->
             element.file.path.contains("generated")
         }
+    }
+}
+
+aboutLibraries {
+    export {
+        outputFile = file("src/commonMain/composeResources/files/aboutlibraries.json")
+        prettyPrint = true
     }
 }

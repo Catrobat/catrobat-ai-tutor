@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform).apply(false)
     alias(libs.plugins.compose.compiler).apply(false)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.aboutLibraries).apply(false)
 }
 
 subprojects {
