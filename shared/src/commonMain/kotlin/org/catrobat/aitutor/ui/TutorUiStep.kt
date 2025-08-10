@@ -5,4 +5,5 @@ enum class TutorUiStep {
     ShowingTutorial,
     AwaitingInput,
     ChoosingApp,
+    ShowingAbout,
 }
