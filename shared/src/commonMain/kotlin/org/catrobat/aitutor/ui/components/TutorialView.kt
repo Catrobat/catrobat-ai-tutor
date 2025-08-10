@@ -1,30 +1,82 @@
 package org.catrobat.aitutor.ui.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import kotlinx.coroutines.launch
 import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.ask_your_question
+import org.catrobat.shared.generated.resources.choose_your_ai
+import org.catrobat.shared.generated.resources.copy_and_paste
+import org.catrobat.shared.generated.resources.launch_and_learn
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
+
+private data class TutorialPageData(
+    val imageResource: DrawableResource,
+    val title: String,
+    val description: String,
+)
+
+private val tutorialPages =
+    listOf(
+        TutorialPageData(
+            imageResource = Res.drawable.ask_your_question,
+            title = "1. Ask Your Question",
+            description = "Type your question. You can also include your current code for better context.",
+        ),
+        TutorialPageData(
+            imageResource = Res.drawable.choose_your_ai,
+            title = "2. Choose Your AI",
+            description = "Select your favorite AI app (like Gemini or ChatGPT) from the list of installed apps.",
+        ),
+        TutorialPageData(
+            imageResource = Res.drawable.launch_and_learn,
+            title = "3. Launch and Learn",
+            description = "We'll prepare a special prompt and launch the AI app for you to get the answer.",
+        ),
+        TutorialPageData(
+            imageResource = Res.drawable.copy_and_paste,
+            title = "4. Copy & Paste",
+            description = "Copy the code solution from the AI app, then return here to paste it into your project.",
+        ),
+    )
 
 @Composable
 internal fun TutorialView(onDismissRequest: () -> Unit) {
@@ -41,78 +93,152 @@ internal fun TutorialView(onDismissRequest: () -> Unit) {
             shape = RoundedCornerShape(24.dp),
             shadowElevation = 8.dp,
         ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = "Welcome to the AI Tutor!",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = AiTutorColors.onSurface,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(Modifier.height(16.dp))
-                Text(
-                    text = "Here's how it works:",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = AiTutorColors.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(Modifier.height(24.dp))
-                TutorialStep(
-                    step = "1. Ask",
-                    description = "Type your question. You can also include your current code for better context.",
-                )
-                Spacer(Modifier.height(16.dp))
-                TutorialStep(
-                    step = "2. Choose",
-                    description = "Select your favorite AI app (like Gemini or ChatGPT) from the list of installed apps.",
-                )
-                Spacer(Modifier.height(16.dp))
-                TutorialStep(
-                    step = "3. Launch",
-                    description = "We'll prepare a special prompt and launch the AI app for you to get the answer.",
-                )
-                Spacer(Modifier.height(16.dp))
-                TutorialStep(
-                    step = "4. Copy & Paste",
-                    description = "Copy the code solution from the AI app, then return here to paste it into your project.",
-                )
-                Spacer(Modifier.height(24.dp))
-                Button(
-                    onClick = onDismissRequest,
-                    colors = ButtonDefaults.buttonColors(containerColor = AiTutorColors.primary),
-                ) {
-                    Text("Got It!", color = AiTutorColors.onPrimary)
-                }
-            }
+            TutorialPagerContent(
+                pages = tutorialPages,
+                onDismissRequest = onDismissRequest,
+            )
         }
     }
 }
 
 @Composable
-private fun TutorialStep(
-    step: String,
-    description: String,
+private fun TutorialPagerContent(
+    pages: List<TutorialPageData>,
+    onDismissRequest: () -> Unit,
 ) {
-    Row(verticalAlignment = Alignment.Top) {
-        Icon(
-            imageVector = Icons.Default.CheckCircle,
-            contentDescription = null,
-            tint = AiTutorColors.primary,
-            modifier = Modifier.padding(end = 12.dp, top = 2.dp).size(20.dp),
+    val pagerState = rememberPagerState { pages.size }
+    val scope = rememberCoroutineScope()
+
+    Column(
+        modifier = Modifier.padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = "Welcome to the AI Tutor!",
+            style = MaterialTheme.typography.headlineSmall,
+            color = AiTutorColors.onSurface,
+            fontWeight = FontWeight.Bold,
         )
-        Column {
-            Text(
-                text = step,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = AiTutorColors.onSurface,
+        Spacer(Modifier.height(24.dp))
+
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.defaultMinSize(minHeight = 300.dp),
+        ) { pageIndex ->
+            TutorialPage(data = pages[pageIndex])
+        }
+
+        Spacer(Modifier.height(24.dp))
+
+        PagerIndicator(
+            pagerState = pagerState,
+        )
+
+        Spacer(Modifier.height(24.dp))
+
+        PagerButtons(
+            pagerState = pagerState,
+            onNext = {
+                scope.launch {
+                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                }
+            },
+            onDone = onDismissRequest,
+        )
+    }
+}
+
+@Composable
+private fun TutorialPage(data: TutorialPageData) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(
+            painter = painterResource(resource = data.imageResource),
+            contentDescription = null,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+            contentScale = ContentScale.Fit,
+        )
+        Text(
+            text = data.title,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = AiTutorColors.onSurface,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = data.description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = AiTutorColors.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+    }
+}
+
+@Composable
+private fun PagerIndicator(pagerState: PagerState) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        repeat(pagerState.pageCount) { iteration ->
+            val color by animateColorAsState(
+                targetValue =
+                    if (pagerState.currentPage == iteration) {
+                        AiTutorColors.primary
+                    } else {
+                        AiTutorColors.primary.copy(
+                            alpha = 0.3f,
+                        )
+                    },
+                label = "IndicatorColor",
             )
+            Box(
+                modifier =
+                    Modifier
+                        .padding(4.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(10.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PagerButtons(
+    pagerState: PagerState,
+    onNext: () -> Unit,
+    onDone: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        val isLastPage = pagerState.currentPage == pagerState.pageCount - 1
+
+        // "Skip" button appears on all but the last page
+        if (isLastPage) {
+            Spacer(modifier = Modifier.width(1.dp)) // To balance the Row
+        } else {
+            TextButton(onClick = onDone) {
+                Text("Skip", color = AiTutorColors.primary)
+            }
+        }
+
+        // "Next" or "Got It!" button
+        Button(
+            onClick = if (isLastPage) onDone else onNext,
+            colors = ButtonDefaults.buttonColors(containerColor = AiTutorColors.primary),
+        ) {
             Text(
-                text = description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = AiTutorColors.onSurfaceVariant,
+                text = if (isLastPage) "Got It!" else "Next",
+                color = AiTutorColors.onPrimary,
             )
         }
     }
