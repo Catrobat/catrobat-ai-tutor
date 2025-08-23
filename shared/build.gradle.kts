@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
@@ -6,8 +7,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.mavenPublish)
     alias(libs.plugins.aboutLibraries)
+    alias(libs.plugins.vanniktech.mavenPublish)
 }
 
 group = "org.catrobat"
@@ -108,14 +109,45 @@ android {
     }
 }
 
-publishing {
-    publications {
-        val kotlinMultiplatformPublication =
-            publications.getByName("kotlinMultiplatform") as MavenPublication
-        kotlinMultiplatformPublication.apply {
-            groupId = "org.catrobat"
-            artifactId = "aitutor"
-            version = "0.0.1"
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+//    signAllPublications()
+
+    coordinates(
+        groupId = group.toString(),
+        artifactId = "aitutor",
+        version = version.toString()
+    )
+
+    pom {
+        name = "Catrobat AI Tutor"
+        description = "A standalone AI Tutor library for Catrobat and other Android apps."
+        inceptionYear = "2025"
+        url = "https://github.com/Catrobat/catrobat-ai-tutor/"
+        licenses {
+            license {
+                name = "GNU Affero General Public License v3.0"
+                url = "https://www.gnu.org/licenses/agpl-3.0.en.html"
+                distribution = "https://www.gnu.org/licenses/agpl-3.0.en.html"
+            }
+        }
+        developers {
+            developer {
+                id = "harissabil"
+                name = "Muhammed Haris Sabil Al Karim"
+                url = "https://github.com/harissabil"
+            }
+            developer {
+                id = "spipau"
+                name = " Paul Spiesberger"
+                url = "https://github.com/spipau"
+            }
+        }
+        scm {
+            url = "https://github.com/Catrobat/catrobat-ai-tutor/"
+            connection = "scm:git:git://github.com/Catrobat/catrobat-ai-tutor.git"
+            developerConnection = "scm:git:ssh://github.com/Catrobat/catrobat-ai-tutor.git"
         }
     }
 }

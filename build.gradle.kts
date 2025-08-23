@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.compose.compiler).apply(false)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.aboutLibraries).apply(false)
+    alias(libs.plugins.vanniktech.mavenPublish) apply false
 }
 
 subprojects {
