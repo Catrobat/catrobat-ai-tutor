@@ -117,7 +117,7 @@ mavenPublishing {
     coordinates(
         groupId = group.toString(),
         artifactId = "aitutor",
-        version = version.toString()
+        version = version.toString(),
     )
 
     pom {
