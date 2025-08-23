@@ -1,10 +1,10 @@
 # Google Summer of Code 2025 – Final Report
 
 **Contributor**: Muhammad Haris Sabil Al Karim  
-**Mentor(s)**: Wolfgang Slany, Paul Spiesberger
+**Mentor(s)**: Wolfgang Slany, Paul Spiesberger  
 **Organization**: International Catrobat Association  
 **Project**: AI Tutor for Pocket Code Students  
-**GitHub Repository**: https://github.com/Catrobat/catrobat-ai-tutor  
+**GitHub Repository**: https://github.com/Catrobat/catrobat-ai-tutor
 
 ---
 
