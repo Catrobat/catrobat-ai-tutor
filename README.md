@@ -12,10 +12,12 @@ A standalone AI Tutor library for Catrobat and other Android apps.
 
 ## Getting Started
 
-The library will be published to **Maven Central**.  
-For now, include it via local publishing.
+Follow these steps to integrate the AI Tutor library into your Android project.
 
-### Gradle (Kotlin DSL)
+### 1. Add the Dependency
+
+The library will be published to Maven Central. For now, you can include it via local publishing.
+Add the dependency to your app's `build.gradle.kts` file:
 
 ```kotlin
 dependencies {
@@ -24,6 +26,40 @@ dependencies {
 ```
 
 Replace `<latest-version>` with the current release.
+
+### 2. Initialize the Library
+
+You must initialize the library once when your application starts. The best place to do this is in a custom `Application` class.
+
+#### a. Create a custom `Application` class:
+
+If you don't already have one, create a new Kotlin class that extends `Application` and call the `AiTutorInitializer.init()` method inside `onCreate()`.
+
+```kotlin
+// In your app's main source folder, e.g., BaseApplication.kt
+import android.app.Application
+import org.catrobat.aitutor.AiTutorInitializer
+
+class BaseApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        // Initialize the AI Tutor library
+        AiTutorInitializer.init(this)
+    }
+}
+```
+
+#### b. Register the custom `Application` class:
+
+Declare your new class in the `AndroidManifest.xml` file using the `android:name` attribute in the `<application>` tag.
+
+```xml
+<application
+    android:name=".BaseApplication"
+    ...>
+    ...
+</application>
+```
 
 ## Usage
 
