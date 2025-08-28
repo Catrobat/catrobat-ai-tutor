@@ -79,6 +79,7 @@ Scaffold(
             onDismissRequest = { showTutor = false },
             codeContext = "...",
 //            outputContext = "..."
+//            systemContext - "..."
         )
     }
 }
@@ -87,6 +88,7 @@ Scaffold(
 - `AiTutorView` → the actual tutor dialog UI. You can also embed it directly in your screen if you don’t want the FAB.
 - `codeContext` → send the current code snippet to provide context for the AI.
 - `outputContext` → optional, send extra info (like compiler errors) to help the AI provide better answers.
+- `systemContext` → optional, provide additional  context, such as the programming language, version, or framework being used.
 
 
 ## License
