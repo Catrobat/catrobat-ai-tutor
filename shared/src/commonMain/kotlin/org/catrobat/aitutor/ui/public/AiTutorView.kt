@@ -34,13 +34,14 @@ import org.koin.compose.koinInject
  * )
  * ```
  *
- * Example of advanced usage with output context enabled:
+ * Example of advanced usage with output context and system context enabled:
  * ```
  * AiTutorView(
  *      show = isTutorVisible,
  *      onDismissRequest = { isTutorVisible = false },
  *      codeContext = "val x = 5",
- *      outputContext = "Error: Semicolon expected"
+ *      outputContext = "Error: Semicolon expected",
+ *      systemContext = "Phaser, a Desktop and Mobile HTML5 game framework"
  * )
  * ```
  *
@@ -54,6 +55,8 @@ import org.koin.compose.koinInject
  * @param outputContext An optional string containing the actual output produced by the code.
  * If this parameter is provided (i.e., not `null`), a UI option to
  * include the output will be displayed to the user.
+ * @param systemContext An optional string for the integrator to provide additional,
+ * non-user-visible context, such as the programming language, version, or framework being used.
  */
 @Composable
 fun AiTutorView(
@@ -62,6 +65,7 @@ fun AiTutorView(
     onDismissRequest: () -> Unit,
     codeContext: String?,
     outputContext: String? = null,
+    systemContext: String? = null,
 ) {
     val viewModel: AiTutorViewModel = koinInject()
     val uiState by viewModel.uiState.collectAsState()
@@ -116,6 +120,7 @@ fun AiTutorView(
                         packageName = packageName,
                         codeContext = codeContext,
                         outputContext = outputContext,
+                        systemContext = systemContext,
                     )
                     onDismissRequest()
                 },

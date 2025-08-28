@@ -10,6 +10,7 @@ class CreateShareablePromptUseCase {
         isOutputContextIncluded: Boolean? = null,
         outputContext: String? = null,
         promptVersion: PromptVersion,
+        systemContext: String? = null,
     ): String {
         return promptVersion.strategy.createPrompt(
             userQuestion = userQuestion,
@@ -17,6 +18,7 @@ class CreateShareablePromptUseCase {
             codeContext = codeContext,
             isOutputContextIncluded = isOutputContextIncluded,
             outputContext = outputContext,
+            systemContext = systemContext,
         )
     }
 }

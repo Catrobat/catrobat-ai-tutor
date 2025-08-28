@@ -7,6 +7,7 @@ interface PromptStrategy {
         codeContext: String?,
         isOutputContextIncluded: Boolean? = null,
         outputContext: String? = null,
+        systemContext: String? = null,
     ): String
 }
 
@@ -17,6 +18,7 @@ internal class V1PromptStrategy : PromptStrategy {
         codeContext: String?,
         isOutputContextIncluded: Boolean?,
         outputContext: String?,
+        systemContext: String?,
     ): String {
         val codeContextSection =
             if (isCodeContextIncluded && !codeContext.isNullOrBlank()) {
@@ -32,9 +34,17 @@ internal class V1PromptStrategy : PromptStrategy {
                 ""
             }
 
+        val systemContextSection =
+            if (!systemContext.isNullOrBlank()) {
+                "**System Context:**\n$systemContext\n"
+            } else {
+                ""
+            }
+
         return """
             **Analyze the following programming question. Provide a direct code solution first, then a brief explanation.**
                         
+            $systemContextSection
             **User Question:** $userQuestion
             $codeContextSection
             $outputContextSection
@@ -57,6 +67,7 @@ internal class V2PromptStrategy : PromptStrategy {
         codeContext: String?,
         isOutputContextIncluded: Boolean?,
         outputContext: String?,
+        systemContext: String?,
     ): String {
         val codeContextSection =
             if (isCodeContextIncluded && !codeContext.isNullOrBlank()) {
@@ -68,6 +79,13 @@ internal class V2PromptStrategy : PromptStrategy {
         val outputContextSection =
             if (isOutputContextIncluded == true && !outputContext.isNullOrBlank()) {
                 "**Code Output:**\n```\n$outputContext\n```"
+            } else {
+                ""
+            }
+
+        val systemContextSection =
+            if (!systemContext.isNullOrBlank()) {
+                "**System Context:**\n$systemContext\n"
             } else {
                 ""
             }
@@ -85,6 +103,7 @@ internal class V2PromptStrategy : PromptStrategy {
             Do not make assumptions about the situation. Analyze the provided context (code, errors, output) to inform your answer.
             </instructions>
             
+            $systemContextSection
             **User Request:** $userQuestion
             $codeContextSection
             $outputContextSection
@@ -106,6 +125,7 @@ internal class V3PromptStrategy : PromptStrategy {
         codeContext: String?,
         isOutputContextIncluded: Boolean?,
         outputContext: String?,
+        systemContext: String?,
     ): String {
         val codeContextSection =
             if (isCodeContextIncluded && !codeContext.isNullOrBlank()) {
@@ -121,6 +141,13 @@ internal class V3PromptStrategy : PromptStrategy {
                 ""
             }
 
+        val systemContextSection =
+            if (!systemContext.isNullOrBlank()) {
+                "**System Context:**\n$systemContext\n"
+            } else {
+                ""
+            }
+
         return """
             You are an AI coding assistant. You are pair programming with a USER to solve their coding task.
             Your main goal is to follow the USER's instructions at each message. Analyze the provided context to solve the user's coding task.
@@ -130,6 +157,7 @@ internal class V3PromptStrategy : PromptStrategy {
             **</user_query>**
 
             <additional_data>
+            $systemContextSection
             $codeContextSection
             $outputContextSection
             </additional_data>
@@ -151,6 +179,7 @@ internal class V4PromptStrategy : PromptStrategy {
         codeContext: String?,
         isOutputContextIncluded: Boolean?,
         outputContext: String?,
+        systemContext: String?,
     ): String {
         val codeContextSection =
             if (isCodeContextIncluded && !codeContext.isNullOrBlank()) {
@@ -162,6 +191,13 @@ internal class V4PromptStrategy : PromptStrategy {
         val outputContextSection =
             if (isOutputContextIncluded == true && !outputContext.isNullOrBlank()) {
                 "**Output Context:**\n```\n$outputContext\n```"
+            } else {
+                ""
+            }
+
+        val systemContextSection =
+            if (!systemContext.isNullOrBlank()) {
+                "**System Context:**\n$systemContext\n"
             } else {
                 ""
             }
@@ -178,6 +214,7 @@ internal class V4PromptStrategy : PromptStrategy {
             **User Task:**
             $userQuestion
             
+            $systemContextSection
             $codeContextSection
             $outputContextSection
             
