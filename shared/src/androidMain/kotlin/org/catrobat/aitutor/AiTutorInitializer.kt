@@ -1,0 +1,28 @@
+package org.catrobat.aitutor
+
+import android.content.Context
+import org.catrobat.aitutor.di.commonModule
+import org.catrobat.aitutor.di.platformModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext.startKoin
+
+/**
+ * Public initializer for the AI Tutor library.
+ * The consuming application must call the init() method once,
+ * typically in its Application class.
+ */
+object AiTutorInitializer {
+    /**
+     * Initializes the dependency injection framework for the library.
+     *
+     * @param context The Android Application context.
+     */
+    fun init(context: Context) {
+        startKoin {
+            androidLogger()
+            androidContext(context.applicationContext)
+            modules(commonModule, platformModule())
+        }
+    }
+}
