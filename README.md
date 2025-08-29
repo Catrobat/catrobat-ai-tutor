@@ -73,15 +73,13 @@ Scaffold(
 ) { paddingValues ->
     // Your screen content here...
 
-    if (showTutor) {
-        AiTutorView(
-            show = true,
-            onDismissRequest = { showTutor = false },
-            codeContext = "...",
-//            outputContext = "..."
-//            systemContext - "..."
-        )
-    }
+    AiTutorView(
+        show = showTutor,
+        onDismissRequest = { showTutor = false },
+        codeContext = "...",
+//      outputContext = "..."
+//      systemContext - "..."
+      )
 }
 ```
 - `AiTutorFloatingActionButton` → a pre-styled button to launch the tutor.
