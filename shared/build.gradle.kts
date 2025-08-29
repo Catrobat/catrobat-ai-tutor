@@ -47,6 +47,9 @@ kotlin {
             // Koin
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
+
+            // Coil
+            implementation(libs.coil3.coil.network.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -75,7 +78,6 @@ kotlin {
 
             // Coil
             implementation(libs.coil.compose)
-            implementation(libs.coil3.coil.network.okhttp)
 
             // About Libraries
             implementation(libs.aboutlibraries.core)

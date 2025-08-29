@@ -47,9 +47,11 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.close
 import org.catrobat.shared.generated.resources.logo_catrobat
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +77,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                         IconButton(onClick = onDismissRequest) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Close",
+                                contentDescription = stringResource(Res.string.close),
                                 tint = AiTutorColors.onSurfaceVariant,
                             )
                         }
