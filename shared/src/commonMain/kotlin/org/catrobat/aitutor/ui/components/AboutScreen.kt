@@ -125,7 +125,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                         ) {
                             Image(
                                 painter = painterResource(Res.drawable.logo_catrobat),
-                                contentDescription = stringResource(Res.string.about),
+                                contentDescription = null,
                                 modifier =
                                     Modifier
                                         .size(64.dp)
