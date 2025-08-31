@@ -47,7 +47,6 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.shared.generated.resources.Res
-import org.catrobat.shared.generated.resources.about
 import org.catrobat.shared.generated.resources.catrobat_ai_tutor
 import org.catrobat.shared.generated.resources.close
 import org.catrobat.shared.generated.resources.developers
