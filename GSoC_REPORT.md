@@ -4,7 +4,10 @@
 **Mentor(s)**: Wolfgang Slany, Paul Spiesberger  
 **Organization**: International Catrobat Association  
 **Project**: AI Tutor for Pocket Code Students  
-**GitHub Repository**: https://github.com/Catrobat/catrobat-ai-tutor
+**GitHub Repository**:
+- https://github.com/Catrobat/catrobat-ai-tutor
+- https://github.com/Catrobat/catrobat-ai-tutor-ktxpy-editor
+- https://github.com/Catrobat/catrobat-ai-tutor-js-editor
 
 ---
 
@@ -35,11 +38,11 @@ This design empowers users by:
 
 - The KMP library is functional for Android.
 - The PoC app demonstrates:
-    - Detecting installed AI apps.
-    - Constructing prompts.
-    - Sending prompts to AI apps via Intents.
-    - Copy-paste fallback mechanism.
-    - Tutorial/Help UI.
+  - Detecting installed AI apps.
+  - Constructing prompts.
+  - Sending prompts to AI apps via Intents.
+  - Copy-paste fallback mechanism.
+  - Tutorial/Help UI.
 - Initial preparation for publishing the library to Maven Central.
 
 ---
@@ -55,7 +58,7 @@ This design empowers users by:
 
 ## 5. Code Contributions
 
-All work was pushed to the [Catrobat AI Tutor repository](https://github.com/Catrobat/catrobat-ai-tutor) and the [PoC AI Tutor](https://github.com/Catrobat/catrobat-ai-tutor-ktxpy-editor).  
+All work was pushed to the [Catrobat AI Tutor repository](https://github.com/Catrobat/catrobat-ai-tutor), the [PoC AI Tutor (Python)](https://github.com/Catrobat/catrobat-ai-tutor-ktxpy-editor), and the [PoC AI Tutor (JavaScript)](https://github.com/Catrobat/catrobat-ai-tutor-js-editor).  
 Pull requests include:
 - Add local Maven publishing setup ([PR link](https://github.com/Catrobat/catrobat-ai-tutor/pull/1)).
 - AI App Intent Bridge and UI ([PR link](https://github.com/Catrobat/catrobat-ai-tutor/pull/5)).
