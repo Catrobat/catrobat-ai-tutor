@@ -47,8 +47,14 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.about
+import org.catrobat.shared.generated.resources.catrobat_ai_tutor
 import org.catrobat.shared.generated.resources.close
+import org.catrobat.shared.generated.resources.developers
 import org.catrobat.shared.generated.resources.logo_catrobat
+import org.catrobat.shared.generated.resources.open_source_libraries
+import org.catrobat.shared.generated.resources.source_code
+import org.catrobat.shared.generated.resources.version
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -119,7 +125,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                         ) {
                             Image(
                                 painter = painterResource(Res.drawable.logo_catrobat),
-                                contentDescription = "About",
+                                contentDescription = stringResource(Res.string.about),
                                 modifier =
                                     Modifier
                                         .size(64.dp)
@@ -127,14 +133,14 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                             )
                             Spacer(Modifier.height(16.dp))
                             Text(
-                                text = "Catrobat AI Tutor",
+                                text = stringResource(Res.string.catrobat_ai_tutor),
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = AiTutorColors.onSurface,
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                text = "Version 0.0.1",
+                                text = stringResource(Res.string.version, "0.0.1"),
                                 fontSize = 16.sp,
                                 color = AiTutorColors.onSurfaceVariant,
                             )
@@ -144,7 +150,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
 
                     // Developers Section
                     item {
-                        SectionHeader(title = "Developers")
+                        SectionHeader(title = stringResource(Res.string.developers))
                     }
                     item {
                         DeveloperInfoCard(
@@ -164,7 +170,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                     // Source Code Section
                     item {
                         Spacer(Modifier.height(16.dp))
-                        SectionHeader(title = "Source Code")
+                        SectionHeader(title = stringResource(Res.string.source_code))
                         LinkCard(
                             "GitHub Repository",
                             "https://github.com/Catrobat/catrobat-ai-tutor",
@@ -175,7 +181,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
 
                     // Header for the actual libraries list
                     item {
-                        SectionHeader(title = "Open Source Libraries")
+                        SectionHeader(title = stringResource(Res.string.open_source_libraries))
                         Spacer(Modifier.height(8.dp))
                     }
                 },

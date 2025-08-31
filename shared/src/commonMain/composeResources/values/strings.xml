@@ -1,4 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="catrobat_ai_tutor">Catrobat AI Tutor</string>
+
+    <!--    Common Strings-->
     <string name="close">Close</string>
+    <string name="more">More</string>
+    <string name="about">About</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+
+    <!--    Content Description-->
+    <string name="ask_ai_tutor">Ask AI Tutor</string>
+    <string name="share_with_other_apps">Share with other apps</string>
+    <string name="show_tutorial">Show Tutorial</string>
+
+    <!--    Input View-->
+    <string name="include_code_context">Include code context</string>
+    <string name="include_code_output">Include code output</string>
+    <string name="prompt_version_debug">Prompt Version (Debug)</string>
+    <string name="type_your_question_here">Type your question here...</string>
+
+    <!--    Tutorial View-->
+    <string name="tutorial_header">Welcome to the AI Tutor!</string>
+    <string name="tutorial_step_1">1. Ask Your Question</string>
+    <string name="tutorial_step_1_description">Type your question. You can also include your current code for better context.</string>
+    <string name="tutorial_step_2">2. Choose Your AI</string>
+    <string name="tutorial_step_2_description">Select your favorite AI app (like Gemini or ChatGPT) from the list of installed apps.</string>
+    <string name="tutorial_step_3">3. Launch and Learn</string>
+    <string name="tutorial_step_3_description">We'll prepare a special prompt and launch the AI app for you to get the answer.</string>
+    <string name="tutorial_step_4">4. Copy &amp; Paste</string>
+    <string name="tutorial_step_4_description">Copy the code solution from the AI app, then return here to paste it into your project.</string>
+    <string name="skip">Skip</string>
+    <string name="got_it">Got It!</string>
+    <string name="next">Next</string>
+
+    <!--    App Chooser View-->
+    <string name="choose_ai_app_of_your_choice">Choose AI App of your choice</string>
+
+    <!--    About Screen-->
+    <string name="about_app">About App</string>
+    <string name="version">Version %1$s</string>
+    <string name="developers">Developers</string>
+    <string name="source_code">Source Code</string>
+    <string name="open_source_libraries">Open Source Libraries</string>
 </resources>

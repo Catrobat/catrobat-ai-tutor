@@ -48,6 +48,16 @@ import androidx.compose.ui.window.DialogProperties
 import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.aitutor.util.isDebug
+import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.about
+import org.catrobat.shared.generated.resources.cancel
+import org.catrobat.shared.generated.resources.include_code_context
+import org.catrobat.shared.generated.resources.include_code_output
+import org.catrobat.shared.generated.resources.prompt_version_debug
+import org.catrobat.shared.generated.resources.send
+import org.catrobat.shared.generated.resources.show_tutorial
+import org.catrobat.shared.generated.resources.type_your_question_here
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,7 +96,7 @@ internal fun InputView(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     ContextSwitchRow(
-                        text = "Include code context",
+                        text = stringResource(Res.string.include_code_context),
                         checked = isCodeContextIncluded,
                         onCheckedChange = onToggleCodeContext,
                     )
@@ -94,7 +104,7 @@ internal fun InputView(
                     // Output Context (Conditionally present)
                     if (isOutputContextIncluded != null) {
                         ContextSwitchRow(
-                            text = "Include code output",
+                            text = stringResource(Res.string.include_code_output),
                             checked = isOutputContextIncluded,
                             onCheckedChange = onToggleOutputContext,
                         )
@@ -116,7 +126,7 @@ internal fun InputView(
                                 readOnly = true,
                                 value = selectedPromptVersion.displayName,
                                 onValueChange = {},
-                                label = { Text("Prompt Version (Debug)") },
+                                label = { Text(text = stringResource(Res.string.prompt_version_debug)) },
                                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                                 colors =
                                     TextFieldDefaults.colors().copy(
@@ -166,13 +176,13 @@ internal fun InputView(
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = {
                             Text(
-                                "Type your question here...",
+                                text = stringResource(Res.string.type_your_question_here),
                                 color = AiTutorColors.onSurfaceVariant,
                             )
                         },
                         leadingIcon = {
                             Icon(
-                                Icons.Default.AutoAwesome,
+                                imageVector = Icons.Default.AutoAwesome,
                                 contentDescription = null,
                                 tint = AiTutorColors.onSurfaceVariant,
                             )
@@ -209,21 +219,24 @@ internal fun InputView(
                             IconButton(onClick = onAboutRequest) {
                                 Icon(
                                     imageVector = Icons.Outlined.Info,
-                                    contentDescription = "About",
+                                    contentDescription = stringResource(Res.string.about),
                                     tint = AiTutorColors.onSurfaceVariant,
                                 )
                             }
                             IconButton(onClick = onHelpRequest) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.HelpOutline,
-                                    contentDescription = "Show Tutorial",
+                                    contentDescription = stringResource(Res.string.show_tutorial),
                                     tint = AiTutorColors.onSurfaceVariant,
                                 )
                             }
                         }
 
                         TextButton(onClick = onDismissRequest) {
-                            Text("Cancel", color = AiTutorColors.onSurfaceVariant)
+                            Text(
+                                text = stringResource(Res.string.cancel),
+                                color = AiTutorColors.onSurfaceVariant,
+                            )
                         }
                         Spacer(Modifier.width(8.dp))
                         Button(
@@ -245,7 +258,7 @@ internal fun InputView(
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,
-                                contentDescription = "Send",
+                                contentDescription = stringResource(Res.string.send),
                             )
                         }
                     }

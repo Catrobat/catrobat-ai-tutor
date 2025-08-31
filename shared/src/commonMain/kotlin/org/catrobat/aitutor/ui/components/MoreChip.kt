@@ -21,6 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.more
+import org.catrobat.shared.generated.resources.share_with_other_apps
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MoreChip(onClick: () -> Unit) {
@@ -43,7 +47,7 @@ fun MoreChip(onClick: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Default.MoreHoriz,
-                contentDescription = "Share with other apps",
+                contentDescription = stringResource(Res.string.share_with_other_apps),
                 tint = AiTutorColors.onSurfaceVariant,
                 modifier = Modifier.fillMaxSize(),
             )
@@ -51,7 +55,7 @@ fun MoreChip(onClick: () -> Unit) {
 
         Spacer(Modifier.height(8.dp))
         Text(
-            "More",
+            text = stringResource(Res.string.more),
             style = MaterialTheme.typography.labelSmall,
             color = AiTutorColors.onSurfaceVariant,
         )
