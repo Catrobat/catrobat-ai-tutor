@@ -44,37 +44,51 @@ import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.ask_your_question
 import org.catrobat.shared.generated.resources.choose_your_ai
 import org.catrobat.shared.generated.resources.copy_and_paste
+import org.catrobat.shared.generated.resources.got_it
 import org.catrobat.shared.generated.resources.launch_and_learn
+import org.catrobat.shared.generated.resources.next
+import org.catrobat.shared.generated.resources.skip
+import org.catrobat.shared.generated.resources.tutorial_header
+import org.catrobat.shared.generated.resources.tutorial_step_1
+import org.catrobat.shared.generated.resources.tutorial_step_1_description
+import org.catrobat.shared.generated.resources.tutorial_step_2
+import org.catrobat.shared.generated.resources.tutorial_step_2_description
+import org.catrobat.shared.generated.resources.tutorial_step_3
+import org.catrobat.shared.generated.resources.tutorial_step_3_description
+import org.catrobat.shared.generated.resources.tutorial_step_4
+import org.catrobat.shared.generated.resources.tutorial_step_4_description
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 private data class TutorialPageData(
     val imageResource: DrawableResource,
-    val title: String,
-    val description: String,
+    val title: StringResource,
+    val description: StringResource,
 )
 
 private val tutorialPages =
     listOf(
         TutorialPageData(
             imageResource = Res.drawable.ask_your_question,
-            title = "1. Ask Your Question",
-            description = "Type your question. You can also include your current code for better context.",
+            title = Res.string.tutorial_step_1,
+            description = Res.string.tutorial_step_1_description,
         ),
         TutorialPageData(
             imageResource = Res.drawable.choose_your_ai,
-            title = "2. Choose Your AI",
-            description = "Select your favorite AI app (like Gemini or ChatGPT) from the list of installed apps.",
+            title = Res.string.tutorial_step_2,
+            description = Res.string.tutorial_step_2_description,
         ),
         TutorialPageData(
             imageResource = Res.drawable.launch_and_learn,
-            title = "3. Launch and Learn",
-            description = "We'll prepare a special prompt and launch the AI app for you to get the answer.",
+            title = Res.string.tutorial_step_3,
+            description = Res.string.tutorial_step_3_description,
         ),
         TutorialPageData(
             imageResource = Res.drawable.copy_and_paste,
-            title = "4. Copy & Paste",
-            description = "Copy the code solution from the AI app, then return here to paste it into your project.",
+            title = Res.string.tutorial_step_4,
+            description = Res.string.tutorial_step_4_description,
         ),
     )
 
@@ -114,7 +128,7 @@ private fun TutorialPagerContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Welcome to the AI Tutor!",
+            text = stringResource(Res.string.tutorial_header),
             style = MaterialTheme.typography.headlineSmall,
             color = AiTutorColors.onSurface,
             fontWeight = FontWeight.Bold,
@@ -162,7 +176,7 @@ private fun TutorialPage(data: TutorialPageData) {
             contentScale = ContentScale.Fit,
         )
         Text(
-            text = data.title,
+            text = stringResource(data.title),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = AiTutorColors.onSurface,
@@ -170,7 +184,7 @@ private fun TutorialPage(data: TutorialPageData) {
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = data.description,
+            text = stringResource(data.description),
             style = MaterialTheme.typography.bodyMedium,
             color = AiTutorColors.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -227,7 +241,7 @@ private fun PagerButtons(
             Spacer(modifier = Modifier.width(1.dp)) // To balance the Row
         } else {
             TextButton(onClick = onDone) {
-                Text("Skip", color = AiTutorColors.primary)
+                Text(text = stringResource(Res.string.skip), color = AiTutorColors.primary)
             }
         }
 
@@ -237,7 +251,7 @@ private fun PagerButtons(
             colors = ButtonDefaults.buttonColors(containerColor = AiTutorColors.primary),
         ) {
             Text(
-                text = if (isLastPage) "Got It!" else "Next",
+                text = stringResource(if (isLastPage) Res.string.got_it else Res.string.next),
                 color = AiTutorColors.onPrimary,
             )
         }

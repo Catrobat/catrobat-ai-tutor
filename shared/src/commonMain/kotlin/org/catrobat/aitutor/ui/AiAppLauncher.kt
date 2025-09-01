@@ -1,7 +1,7 @@
 package org.catrobat.aitutor.ui
 
 expect class AiAppLauncher {
-    fun launchApp(
+    suspend fun launchApp(
         prompt: String,
         packageName: String? = null,
     )

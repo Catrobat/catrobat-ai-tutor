@@ -18,6 +18,9 @@ import org.catrobat.aitutor.domain.usecase.GetTutorialSeenStateUseCase
 import org.catrobat.aitutor.domain.usecase.SetTutorialSeenUseCase
 import org.catrobat.aitutor.ui.AiAppLauncher
 import org.catrobat.aitutor.ui.TutorUiStep
+import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.error_loading_installed_ai_apps
+import org.jetbrains.compose.resources.getString
 
 class AiTutorViewModel(
     private val getInstalledAiAppsUseCase: GetInstalledAiAppsUseCase,
@@ -121,7 +124,9 @@ class AiTutorViewModel(
                 promptVersion = currentState.selectedPromptVersion,
                 systemContext = systemContext,
             )
-        aiAppLauncher.launchApp(finalPrompt, packageName)
+        viewModelScope.launch {
+            aiAppLauncher.launchApp(finalPrompt, packageName)
+        }
     }
 
     private fun loadInstalledApps() {
@@ -132,7 +137,12 @@ class AiTutorViewModel(
                 _uiState.update { it.copy(installedApps = apps, isLoading = false) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false) }
-                _errorMessageFlow.emit("Failed to load installed AI apps: ${e.message}")
+                _errorMessageFlow.emit(
+                    getString(
+                        Res.string.error_loading_installed_ai_apps,
+                        e.message ?: "",
+                    ),
+                )
             }
         }
     }

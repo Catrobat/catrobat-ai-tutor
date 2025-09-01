@@ -10,6 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.ask_ai_tutor
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * A pre-styled `FloatingActionButton` (FAB) designed to launch the AI Tutor.
@@ -57,6 +60,9 @@ fun AiTutorFloatingActionButton(
         contentColor = AiTutorColors.onPrimary,
         elevation = elevation(defaultElevation = 8.dp),
     ) {
-        Icon(Icons.Default.AutoAwesome, contentDescription = "Ask AI Tutor")
+        Icon(
+            imageVector = Icons.Default.AutoAwesome,
+            contentDescription = stringResource(Res.string.ask_ai_tutor),
+        )
     }
 }

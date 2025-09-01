@@ -23,6 +23,9 @@ import androidx.compose.ui.window.DialogProperties
 import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.aitutor.ui.viewmodel.AiTutorUiState
 import org.catrobat.aitutor.util.platformImagePainter
+import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.choose_ai_app_of_your_choice
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -51,7 +54,7 @@ internal fun AppChooserView(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Choose AI App of your choice",
+                        text = stringResource(Res.string.choose_ai_app_of_your_choice),
                         style = MaterialTheme.typography.titleMedium,
                         color = AiTutorColors.onSurface,
                         modifier = Modifier.padding(bottom = 16.dp),

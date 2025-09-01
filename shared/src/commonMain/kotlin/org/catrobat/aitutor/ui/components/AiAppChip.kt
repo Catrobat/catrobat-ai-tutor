@@ -1,5 +1,3 @@
-// shared/src/commonMain/kotlin/org/catrobat/aitutor/ui/components/AiAppChip.kt
-
 package org.catrobat.aitutor.ui.components
 
 import androidx.compose.foundation.Image

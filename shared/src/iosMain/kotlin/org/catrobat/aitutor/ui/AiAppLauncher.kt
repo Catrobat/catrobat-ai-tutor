@@ -1,7 +1,7 @@
 package org.catrobat.aitutor.ui
 
 actual class AiAppLauncher {
-    actual fun launchApp(
+    actual suspend fun launchApp(
         prompt: String,
         packageName: String?,
     ) {
