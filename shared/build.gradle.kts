@@ -142,7 +142,7 @@ mavenPublishing {
             }
             developer {
                 id = "spipau"
-                name = " Paul Spiesberger"
+                name = "Paul Spiesberger"
                 url = "https://github.com/spipau"
             }
         }
