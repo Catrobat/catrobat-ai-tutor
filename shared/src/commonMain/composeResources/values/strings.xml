@@ -42,4 +42,13 @@
     <string name="developers">Developers</string>
     <string name="source_code">Source Code</string>
     <string name="open_source_libraries">Open Source Libraries</string>
+
+    <!--    AiAppLauncher-->
+    <string name="send_prompt_with">Send prompt with...</string>
+    <string name="could_not_send_prompt_directly">Couldn't send prompt directly. Please paste it manually.</string>
+    <string name="could_not_launch_this_app">Could not launch this app.</string>
+    <string name="no_app_found_to_handle_this_action">No app found to handle this action.</string>
+
+    <!--    AiTutorViewModel-->
+    <string name="error_loading_installed_ai_apps">Failed to load installed AI apps: %1$s</string>
 </resources>

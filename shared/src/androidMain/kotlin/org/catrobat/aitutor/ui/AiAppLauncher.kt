@@ -4,6 +4,13 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import kotlinx.coroutines.runBlocking
+import org.catrobat.shared.generated.resources.Res
+import org.catrobat.shared.generated.resources.could_not_launch_this_app
+import org.catrobat.shared.generated.resources.could_not_send_prompt_directly
+import org.catrobat.shared.generated.resources.no_app_found_to_handle_this_action
+import org.catrobat.shared.generated.resources.send_prompt_with
+import org.jetbrains.compose.resources.getString
 
 actual class AiAppLauncher(private val context: Context) {
     actual fun launchApp(
@@ -24,7 +31,8 @@ actual class AiAppLauncher(private val context: Context) {
             // Use a chooser if no specific package is set (for the "More" option)
             val chooserIntent =
                 if (packageName == null) {
-                    Intent.createChooser(sendIntent, "Send prompt with...")
+                    val chooserTitle = runBlocking { getString(Res.string.send_prompt_with) }
+                    Intent.createChooser(sendIntent, chooserTitle)
                 } else {
                     sendIntent
                 }
@@ -39,15 +47,22 @@ actual class AiAppLauncher(private val context: Context) {
                     // You should probably copy the prompt to the clipboard here as well.
                     Toast.makeText(
                         context,
-                        "Couldn't send prompt directly. Please paste it manually.",
+                        runBlocking { getString(Res.string.could_not_send_prompt_directly) },
                         Toast.LENGTH_LONG,
                     ).show()
                 } else {
-                    Toast.makeText(context, "Could not launch this app.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        runBlocking { getString(Res.string.could_not_launch_this_app) },
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
             } else {
-                Toast.makeText(context, "No app found to handle this action.", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    context,
+                    runBlocking { getString(Res.string.no_app_found_to_handle_this_action) },
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
         }
     }
