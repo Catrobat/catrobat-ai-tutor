@@ -49,6 +49,7 @@ import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.catrobat_ai_tutor
 import org.catrobat.shared.generated.resources.close
+import org.catrobat.shared.generated.resources.content_description_logo_catrobat
 import org.catrobat.shared.generated.resources.developers
 import org.catrobat.shared.generated.resources.logo_catrobat
 import org.catrobat.shared.generated.resources.open_source_libraries
@@ -124,7 +125,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                         ) {
                             Image(
                                 painter = painterResource(Res.drawable.logo_catrobat),
-                                contentDescription = null,
+                                contentDescription = stringResource(Res.string.content_description_logo_catrobat),
                                 modifier =
                                     Modifier
                                         .size(64.dp)

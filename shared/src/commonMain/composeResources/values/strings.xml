@@ -42,6 +42,7 @@
     <string name="developers">Developers</string>
     <string name="source_code">Source Code</string>
     <string name="open_source_libraries">Open Source Libraries</string>
+    <string name="content_description_logo_catrobat">The logo of Catrobat: a cat with bat wings</string>
 
     <!--    AiAppLauncher-->
     <string name="send_prompt_with">Send prompt with...</string>
