@@ -124,7 +124,9 @@ class AiTutorViewModel(
                 promptVersion = currentState.selectedPromptVersion,
                 systemContext = systemContext,
             )
-        aiAppLauncher.launchApp(finalPrompt, packageName)
+        viewModelScope.launch {
+            aiAppLauncher.launchApp(finalPrompt, packageName)
+        }
     }
 
     private fun loadInstalledApps() {

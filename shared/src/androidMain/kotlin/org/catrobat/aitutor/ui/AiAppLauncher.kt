@@ -13,7 +13,7 @@ import org.catrobat.shared.generated.resources.send_prompt_with
 import org.jetbrains.compose.resources.getString
 
 actual class AiAppLauncher(private val context: Context) {
-    actual fun launchApp(
+    actual suspend fun launchApp(
         prompt: String,
         packageName: String?,
     ) {
@@ -47,20 +47,20 @@ actual class AiAppLauncher(private val context: Context) {
                     // You should probably copy the prompt to the clipboard here as well.
                     Toast.makeText(
                         context,
-                        runBlocking { getString(Res.string.could_not_send_prompt_directly) },
+                        getString(Res.string.could_not_send_prompt_directly),
                         Toast.LENGTH_LONG,
                     ).show()
                 } else {
                     Toast.makeText(
                         context,
-                        runBlocking { getString(Res.string.could_not_launch_this_app) },
+                        getString(Res.string.could_not_launch_this_app),
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
             } else {
                 Toast.makeText(
                     context,
-                    runBlocking { getString(Res.string.no_app_found_to_handle_this_action) },
+                    getString(Res.string.no_app_found_to_handle_this_action),
                     Toast.LENGTH_SHORT,
                 ).show()
             }
