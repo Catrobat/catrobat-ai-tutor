@@ -1,12 +1,11 @@
 package org.catrobat.aitutor.domain.usecase
 
-import org.catrobat.aitutor.domain.prompt.V1PromptStrategy
 import org.catrobat.aitutor.domain.prompt.PromptVersion
+import org.catrobat.aitutor.domain.prompt.V1PromptStrategy
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CreateShareablePromptUseCaseTest {
-
     private val useCase = CreateShareablePromptUseCase()
 
     @Test
@@ -16,24 +15,26 @@ class CreateShareablePromptUseCaseTest {
         val outputContext = "12345678910"
         val systemContext = "You are a programming expert."
 
-        val expectedPrompt = V1PromptStrategy().createPrompt(
-            userQuestion = userQuestion,
-            isCodeContextIncluded = true,
-            codeContext = codeContext,
-            isOutputContextIncluded = true,
-            outputContext = outputContext,
-            systemContext = systemContext
-        )
+        val expectedPrompt =
+            V1PromptStrategy().createPrompt(
+                userQuestion = userQuestion,
+                isCodeContextIncluded = true,
+                codeContext = codeContext,
+                isOutputContextIncluded = true,
+                outputContext = outputContext,
+                systemContext = systemContext,
+            )
 
-        val result = useCase(
-            userQuestion = userQuestion,
-            isCodeContextIncluded = true,
-            codeContext = codeContext,
-            isOutputContextIncluded = true,
-            outputContext = outputContext,
-            promptVersion = PromptVersion.V1,
-            systemContext = systemContext
-        )
+        val result =
+            useCase(
+                userQuestion = userQuestion,
+                isCodeContextIncluded = true,
+                codeContext = codeContext,
+                isOutputContextIncluded = true,
+                outputContext = outputContext,
+                promptVersion = PromptVersion.V1,
+                systemContext = systemContext,
+            )
 
         assertEquals(expectedPrompt, result)
     }
@@ -43,24 +44,26 @@ class CreateShareablePromptUseCaseTest {
         val userQuestion = "Why is my app crashing?"
         val codeContext = "val x = null; x!!.toString()"
 
-        val expectedPrompt = V1PromptStrategy().createPrompt(
-            userQuestion = userQuestion,
-            isCodeContextIncluded = false,
-            codeContext = codeContext,
-            isOutputContextIncluded = null,
-            outputContext = null,
-            systemContext = null
-        )
+        val expectedPrompt =
+            V1PromptStrategy().createPrompt(
+                userQuestion = userQuestion,
+                isCodeContextIncluded = false,
+                codeContext = codeContext,
+                isOutputContextIncluded = null,
+                outputContext = null,
+                systemContext = null,
+            )
 
-        val result = useCase(
-            userQuestion = userQuestion,
-            isCodeContextIncluded = false,
-            codeContext = codeContext,
-            isOutputContextIncluded = null,
-            outputContext = null,
-            promptVersion = PromptVersion.V1,
-            systemContext = null
-        )
+        val result =
+            useCase(
+                userQuestion = userQuestion,
+                isCodeContextIncluded = false,
+                codeContext = codeContext,
+                isOutputContextIncluded = null,
+                outputContext = null,
+                promptVersion = PromptVersion.V1,
+                systemContext = null,
+            )
 
         assertEquals(expectedPrompt, result)
     }

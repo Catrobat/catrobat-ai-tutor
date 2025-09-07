@@ -67,87 +67,93 @@ class AiTutorViewModelTest {
     }
 
     private fun createViewModel() {
-        viewModel = AiTutorViewModel(
-            getInstalledAiAppsUseCase,
-            createShareablePromptUseCase,
-            aiAppLauncher,
-            getTutorialSeenStateUseCase,
-            setTutorialSeenUseCase
-        )
+        viewModel =
+            AiTutorViewModel(
+                getInstalledAiAppsUseCase,
+                createShareablePromptUseCase,
+                aiAppLauncher,
+                getTutorialSeenStateUseCase,
+                setTutorialSeenUseCase,
+            )
     }
 
     @Test
-    fun `init should load installed apps and update state on success`() = runTest {
-        val mockIcon = mock<PlatformImage>()
-        val fakeApps = listOf(AiAppInfo("Test App", "com.test.app", mockIcon))
-        everySuspend { aiAppRepository.getInstalledAiApps() } returns fakeApps
+    fun `init should load installed apps and update state on success`() =
+        runTest {
+            val mockIcon = mock<PlatformImage>()
+            val fakeApps = listOf(AiAppInfo("Test App", "com.test.app", mockIcon))
+            everySuspend { aiAppRepository.getInstalledAiApps() } returns fakeApps
 
-        createViewModel()
+            createViewModel()
 
-        val state = viewModel.uiState.value
-        assertFalse(state.isLoading)
-        assertEquals(fakeApps, state.installedApps)
-    }
-
-
-    @Test
-    fun `handleTutorVisibility should show tutorial if not seen before`() = runTest {
-        every { settingsRepository.hasSeenTutorial } returns flowOf(false)
-        createViewModel()
-
-        viewModel.handleTutorVisibility(true)
-
-        assertEquals(TutorUiStep.ShowingTutorial, viewModel.uiState.value.currentStep)
-    }
+            val state = viewModel.uiState.value
+            assertFalse(state.isLoading)
+            assertEquals(fakeApps, state.installedApps)
+        }
 
     @Test
-    fun `handleTutorVisibility should show input if tutorial has been seen`() = runTest {
-        every { settingsRepository.hasSeenTutorial } returns flowOf(true)
-        createViewModel()
+    fun `handleTutorVisibility should show tutorial if not seen before`() =
+        runTest {
+            every { settingsRepository.hasSeenTutorial } returns flowOf(false)
+            createViewModel()
 
-        viewModel.handleTutorVisibility(true)
+            viewModel.handleTutorVisibility(true)
 
-        assertEquals(TutorUiStep.AwaitingInput, viewModel.uiState.value.currentStep)
-    }
-
-    @Test
-    fun `dismissTutorial should set tutorial as seen and move to input state`() = runTest {
-        createViewModel()
-
-        viewModel.dismissTutorial()
-
-        verifySuspend { settingsRepository.setTutorialSeen(true) }
-        assertEquals(TutorUiStep.AwaitingInput, viewModel.uiState.value.currentStep)
-    }
+            assertEquals(TutorUiStep.ShowingTutorial, viewModel.uiState.value.currentStep)
+        }
 
     @Test
-    fun `launchAiApp should create prompt and prepare correct intent`() = runTest {
-        val userQuestion = "My question"
-        val codeContext = "val code = 1"
-        val packageName = "com.test.app"
-        createViewModel()
-        viewModel.onUserQuestionChanged(userQuestion)
+    fun `handleTutorVisibility should show input if tutorial has been seen`() =
+        runTest {
+            every { settingsRepository.hasSeenTutorial } returns flowOf(true)
+            createViewModel()
 
-        val expectedPrompt = createShareablePromptUseCase(
-            userQuestion = userQuestion,
-            isCodeContextIncluded = true,
-            codeContext = codeContext,
-            isOutputContextIncluded = null,
-            outputContext = null,
-            promptVersion = PromptVersion.V1,
-            systemContext = null
-        )
+            viewModel.handleTutorVisibility(true)
 
-        viewModel.launchAiApp(packageName = packageName, codeContext = codeContext)
+            assertEquals(TutorUiStep.AwaitingInput, viewModel.uiState.value.currentStep)
+        }
 
-        // Use Robolectric's shadow application to check the intent
-        val shadowApp = shadowOf(ApplicationProvider.getApplicationContext<Application>())
-        val startedIntent = shadowApp.nextStartedActivity
+    @Test
+    fun `dismissTutorial should set tutorial as seen and move to input state`() =
+        runTest {
+            createViewModel()
 
-        assertNotNull(startedIntent, "An intent should have been prepared to start an activity.")
-        assertEquals(Intent.ACTION_SEND, startedIntent.action)
-        assertEquals("text/plain", startedIntent.type)
-        assertEquals(packageName, startedIntent.`package`)
-        assertEquals(expectedPrompt, startedIntent.getStringExtra(Intent.EXTRA_TEXT))
-    }
+            viewModel.dismissTutorial()
+
+            verifySuspend { settingsRepository.setTutorialSeen(true) }
+            assertEquals(TutorUiStep.AwaitingInput, viewModel.uiState.value.currentStep)
+        }
+
+    @Test
+    fun `launchAiApp should create prompt and prepare correct intent`() =
+        runTest {
+            val userQuestion = "My question"
+            val codeContext = "val code = 1"
+            val packageName = "com.test.app"
+            createViewModel()
+            viewModel.onUserQuestionChanged(userQuestion)
+
+            val expectedPrompt =
+                createShareablePromptUseCase(
+                    userQuestion = userQuestion,
+                    isCodeContextIncluded = true,
+                    codeContext = codeContext,
+                    isOutputContextIncluded = null,
+                    outputContext = null,
+                    promptVersion = PromptVersion.V1,
+                    systemContext = null,
+                )
+
+            viewModel.launchAiApp(packageName = packageName, codeContext = codeContext)
+
+            // Use Robolectric's shadow application to check the intent
+            val shadowApp = shadowOf(ApplicationProvider.getApplicationContext<Application>())
+            val startedIntent = shadowApp.nextStartedActivity
+
+            assertNotNull(startedIntent, "An intent should have been prepared to start an activity.")
+            assertEquals(Intent.ACTION_SEND, startedIntent.action)
+            assertEquals("text/plain", startedIntent.type)
+            assertEquals(packageName, startedIntent.`package`)
+            assertEquals(expectedPrompt, startedIntent.getStringExtra(Intent.EXTRA_TEXT))
+        }
 }
