@@ -25,6 +25,12 @@ kotlin {
                 }
             }
         }
+
+        dependencies {
+            testImplementation("junit:junit:4.13.2")
+            testImplementation("org.robolectric:robolectric:4.16")
+            testImplementation("androidx.test.ext:junit:1.3.0")
+        }
     }
 
     val xcf = XCFramework()
