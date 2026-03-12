@@ -23,4 +23,5 @@ data class AiTutorUiState(
     val chatHistory: List<ChatMessage> = emptyList(),
     val isInAppChatLoading: Boolean = false,
     val inAppApiError: String? = null,
+    val isApiKeySaved: Boolean = false,
 )

@@ -7,4 +7,5 @@ enum class TutorUiStep {
     ChoosingApp,
     ShowingAbout,
     InAppChat,
+    ApiKeySetup,
 }

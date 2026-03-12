@@ -54,6 +54,9 @@ kotlin {
 
             // Ktor
             implementation(libs.ktor.client.android)
+
+            // Security
+            implementation(libs.androidx.security.crypto)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

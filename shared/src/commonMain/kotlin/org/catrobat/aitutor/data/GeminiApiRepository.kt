@@ -12,12 +12,14 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class GeminiApiRepository(
-    private val apiKey: String,
-    private val httpClient: HttpClient = HttpClient()
+    private val apiKeyStore: ApiKeyStore,
+    private val httpClient: HttpClient = HttpClient(),
 ) {
     suspend fun sendMessage(prompt: String): Result<String> {
+        val apiKey = apiKeyStore.getApiKey() ?: return Result.failure(Exception("API Key not found"))
         return try {
-            val response: String = httpClient.post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$apiKey") {
+            val response: String =
+                httpClient.post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$apiKey") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     """

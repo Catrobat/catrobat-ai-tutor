@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import org.catrobat.aitutor.data.AndroidAiAppRepository
 import org.catrobat.aitutor.data.InstalledAiAppDataSource
+import org.catrobat.aitutor.data.ApiKeyStore
+import org.catrobat.aitutor.data.AndroidApiKeyStore
 import org.catrobat.aitutor.domain.repository.AiAppRepository
 import org.catrobat.aitutor.ui.AiAppLauncher
 import org.koin.android.ext.koin.androidContext
@@ -22,7 +24,10 @@ actual fun platformModule(): Module =
         single { AiAppLauncher(androidContext()) }
 
         single<DataStore<Preferences>> { createDataStore(androidContext()) }
+
+        single<ApiKeyStore> { AndroidApiKeyStore(androidContext()) }
     }
+
 
 fun createDataStore(context: Context): DataStore<Preferences> =
     PreferenceDataStoreFactory.create {

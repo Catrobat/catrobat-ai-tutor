@@ -12,6 +12,7 @@ import org.catrobat.aitutor.ui.components.AppChooserView
 import org.catrobat.aitutor.ui.components.InAppChatView
 import org.catrobat.aitutor.ui.components.InputView
 import org.catrobat.aitutor.ui.components.TutorialView
+import org.catrobat.aitutor.ui.components.ApiKeySetupView
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
 import org.koin.compose.koinInject
 
@@ -113,6 +114,7 @@ fun AiTutorView(
                 },
                 onHelpRequest = viewModel::showTutorial,
                 onAboutRequest = viewModel::showAboutScreen,
+                onChangeApiKeyRequest = { viewModel.onCurrentStepChanged(TutorUiStep.ApiKeySetup) },
             )
         }
 
@@ -150,6 +152,16 @@ fun AiTutorView(
         TutorUiStep.ShowingAbout -> {
             AboutScreen(
                 onDismissRequest = viewModel::dismissAboutScreen,
+                onChangeApiKeyRequest = { viewModel.onCurrentStepChanged(TutorUiStep.ApiKeySetup) }
+            )
+        }
+
+        TutorUiStep.ApiKeySetup -> {
+            ApiKeySetupView(
+                onSave = { key -> viewModel.saveApiKey(key) },
+                onDismiss = { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingInput) },
+                onClearKey = viewModel::clearApiKey,
+                isKeyAlreadySaved = uiState.isApiKeySaved
             )
         }
     }

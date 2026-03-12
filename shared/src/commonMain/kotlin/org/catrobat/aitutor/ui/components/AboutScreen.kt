@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -61,7 +62,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
 @Composable
-internal fun AboutScreen(onDismissRequest: () -> Unit) {
+internal fun AboutScreen(
+    onDismissRequest: () -> Unit,
+    onChangeApiKeyRequest: () -> Unit,
+) {
     val libraries by rememberLibraries {
         Res.readBytes("files/aboutlibraries.json").decodeToString()
     }
@@ -144,6 +148,16 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                                 fontSize = 16.sp,
                                 color = AiTutorColors.onSurfaceVariant,
                             )
+
+                            Spacer(Modifier.height(16.dp))
+                            TextButton(onClick = onChangeApiKeyRequest) {
+                                Text(
+                                    text = "Manage API Key",
+                                    color = AiTutorColors.primary,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+
                             Spacer(Modifier.height(24.dp))
                         }
                     }

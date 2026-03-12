@@ -19,16 +19,12 @@ object AiTutorInitializer {
      * Initializes the dependency injection framework for the library.
      *
      * @param context The Android Application context.
-     * @param geminiApiKey The Gemini API key used for in-app chat capability.
      */
-    fun init(context: Context, geminiApiKey: String = "") {
+    fun init(context: Context) {
         startKoin {
             androidLogger()
             androidContext(context.applicationContext)
-            val dynamicModule = module {
-                single { GeminiApiRepository(geminiApiKey) }
-            }
-            modules(commonModule, platformModule(), dynamicModule)
+            modules(commonModule, platformModule())
         }
     }
 }

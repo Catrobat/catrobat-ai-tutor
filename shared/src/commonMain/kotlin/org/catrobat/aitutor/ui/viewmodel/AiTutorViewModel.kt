@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.catrobat.aitutor.data.ApiKeyStore
 import org.catrobat.aitutor.data.GeminiApiRepository
 import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
@@ -30,6 +31,7 @@ class AiTutorViewModel(
     private val getTutorialSeenStateUseCase: GetTutorialSeenStateUseCase,
     private val setTutorialSeenUseCase: SetTutorialSeenUseCase,
     private val geminiApiRepository: GeminiApiRepository,
+    private val apiKeyStore: ApiKeyStore,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AiTutorUiState())
     val uiState: StateFlow<AiTutorUiState> = _uiState.asStateFlow()
@@ -47,7 +49,8 @@ class AiTutorViewModel(
                 val hasSeenTutorial = getTutorialSeenStateUseCase().first()
                 val nextStep =
                     if (hasSeenTutorial) TutorUiStep.AwaitingInput else TutorUiStep.ShowingTutorial
-                _uiState.update { it.copy(currentStep = nextStep) }
+                val isApiKeySaved = !apiKeyStore.getApiKey().isNullOrBlank()
+                _uiState.update { it.copy(currentStep = nextStep, isApiKeySaved = isApiKeySaved) }
             }
         } else {
             _uiState.update {
@@ -131,11 +134,23 @@ class AiTutorViewModel(
         }
     }
 
+    private var lastCodeContext: String? = null
+    private var lastOutputContext: String? = null
+    private var lastSystemContext: String? = null
+
     fun submitInAppPrompt(
         codeContext: String?,
         outputContext: String? = null,
         systemContext: String? = null,
     ) {
+        if (apiKeyStore.getApiKey().isNullOrBlank()) {
+            lastCodeContext = codeContext
+            lastOutputContext = outputContext
+            lastSystemContext = systemContext
+            _uiState.update { it.copy(currentStep = TutorUiStep.ApiKeySetup) }
+            return
+        }
+
         val currentState = _uiState.value
         val finalPrompt =
             createShareablePromptUseCase(
@@ -174,6 +189,24 @@ class AiTutorViewModel(
                     )
                 }
             }
+        }
+    }
+
+    fun saveApiKey(key: String) {
+        apiKeyStore.saveApiKey(key)
+        _uiState.update { it.copy(isApiKeySaved = true) }
+        submitInAppPrompt(lastCodeContext, lastOutputContext, lastSystemContext)
+    }
+
+    fun clearApiKey() {
+        apiKeyStore.clearApiKey()
+        _uiState.update {
+            it.copy(
+                chatHistory = emptyList(),
+                inAppApiError = null,
+                currentStep = TutorUiStep.AwaitingInput,
+                isApiKeySaved = false
+            )
         }
     }
 

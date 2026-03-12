@@ -3,6 +3,7 @@ package org.catrobat.aitutor.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -77,6 +79,7 @@ internal fun InputView(
     onAskInApp: (String) -> Unit,
     onHelpRequest: () -> Unit,
     onAboutRequest: () -> Unit,
+    onChangeApiKeyRequest: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -203,17 +206,34 @@ internal fun InputView(
 
                     Spacer(Modifier.height(16.dp))
 
+                    Spacer(Modifier.height(8.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(
+                            onClick = onChangeApiKeyRequest,
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "Change API Key",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AiTutorColors.primary,
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         // About and Help Button
                         Row(
-                            modifier =
-                                Modifier
-                                    .weight(1f)
-                                    .height(24.dp),
+                            modifier = Modifier.weight(1f),
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
