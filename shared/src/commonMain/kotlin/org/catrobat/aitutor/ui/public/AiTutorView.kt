@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.aitutor.ui.components.AboutScreen
 import org.catrobat.aitutor.ui.components.AppChooserView
+import org.catrobat.aitutor.ui.components.InAppChatView
 import org.catrobat.aitutor.ui.components.InputView
 import org.catrobat.aitutor.ui.components.TutorialView
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
@@ -106,6 +107,10 @@ fun AiTutorView(
                     viewModel.onUserQuestionChanged(question)
                     viewModel.onCurrentStepChanged(TutorUiStep.ChoosingApp)
                 },
+                onAskInApp = { question ->
+                    viewModel.onUserQuestionChanged(question)
+                    viewModel.submitInAppPrompt(codeContext, outputContext, systemContext)
+                },
                 onHelpRequest = viewModel::showTutorial,
                 onAboutRequest = viewModel::showAboutScreen,
             )
@@ -129,6 +134,17 @@ fun AiTutorView(
 
         TutorUiStep.Hidden -> {
             // Do nothing
+        }
+
+        TutorUiStep.InAppChat -> {
+            InAppChatView(
+                uiState = uiState,
+                onSendMessage = { newMsg ->
+                    viewModel.onUserQuestionChanged(newMsg)
+                    viewModel.submitInAppPrompt(codeContext, outputContext, systemContext)
+                },
+                onDismissRequest = onDismissRequest
+            )
         }
 
         TutorUiStep.ShowingAbout -> {

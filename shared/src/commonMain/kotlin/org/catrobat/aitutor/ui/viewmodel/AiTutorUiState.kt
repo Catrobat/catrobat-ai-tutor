@@ -4,6 +4,8 @@ import org.catrobat.aitutor.domain.model.AiAppInfo
 import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.ui.TutorUiStep
 
+data class ChatMessage(val role: String, val text: String)
+
 data class AiTutorUiState(
     val installedApps: List<AiAppInfo> = emptyList(),
     val isLoading: Boolean = false,
@@ -17,4 +19,8 @@ data class AiTutorUiState(
     // --- Debug/Prompt Selection ---
     val availablePromptVersions: List<PromptVersion> = PromptVersion.entries,
     val selectedPromptVersion: PromptVersion = PromptVersion.V1,
+    // --- In-App Chat States ---
+    val chatHistory: List<ChatMessage> = emptyList(),
+    val isInAppChatLoading: Boolean = false,
+    val inAppApiError: String? = null,
 )

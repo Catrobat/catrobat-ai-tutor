@@ -74,6 +74,7 @@ internal fun InputView(
     onInputTextChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
     onSend: (String) -> Unit,
+    onAskInApp: (String) -> Unit,
     onHelpRequest: () -> Unit,
     onAboutRequest: () -> Unit,
 ) {
@@ -236,6 +237,16 @@ internal fun InputView(
                             Text(
                                 text = stringResource(Res.string.cancel),
                                 color = AiTutorColors.onSurfaceVariant,
+                            )
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        TextButton(
+                            onClick = { onAskInApp(inputText) },
+                            enabled = inputText.isNotBlank()
+                        ) {
+                            Text(
+                                text = "Ask In-App",
+                                color = AiTutorColors.primary,
                             )
                         }
                         Spacer(Modifier.width(8.dp))

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.catrobat.aitutor.data.GeminiApiRepository
 import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
 import org.catrobat.aitutor.domain.usecase.GetInstalledAiAppsUseCase
@@ -28,6 +29,7 @@ class AiTutorViewModel(
     private val aiAppLauncher: AiAppLauncher,
     private val getTutorialSeenStateUseCase: GetTutorialSeenStateUseCase,
     private val setTutorialSeenUseCase: SetTutorialSeenUseCase,
+    private val geminiApiRepository: GeminiApiRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AiTutorUiState())
     val uiState: StateFlow<AiTutorUiState> = _uiState.asStateFlow()
@@ -126,6 +128,52 @@ class AiTutorViewModel(
             )
         viewModelScope.launch {
             aiAppLauncher.launchApp(finalPrompt, packageName)
+        }
+    }
+
+    fun submitInAppPrompt(
+        codeContext: String?,
+        outputContext: String? = null,
+        systemContext: String? = null,
+    ) {
+        val currentState = _uiState.value
+        val finalPrompt =
+            createShareablePromptUseCase(
+                userQuestion = currentState.userQuestion,
+                isCodeContextIncluded = currentState.isCodeContextIncluded,
+                codeContext = codeContext,
+                isOutputContextIncluded = currentState.isOutputContextIncluded,
+                outputContext = outputContext,
+                promptVersion = currentState.selectedPromptVersion,
+                systemContext = systemContext,
+            )
+
+        _uiState.update {
+            it.copy(
+                currentStep = TutorUiStep.InAppChat,
+                chatHistory = it.chatHistory + ChatMessage(role = "user", text = finalPrompt),
+                isInAppChatLoading = true,
+                inAppApiError = null,
+            )
+        }
+
+        viewModelScope.launch {
+            val result = geminiApiRepository.sendMessage(finalPrompt)
+            result.onSuccess { responseText ->
+                _uiState.update {
+                    it.copy(
+                        chatHistory = it.chatHistory + ChatMessage(role = "ai", text = responseText),
+                        isInAppChatLoading = false,
+                    )
+                }
+            }.onFailure { error ->
+                _uiState.update {
+                    it.copy(
+                        inAppApiError = error.message ?: "Unknown error occurred",
+                        isInAppChatLoading = false,
+                    )
+                }
+            }
         }
     }
 
