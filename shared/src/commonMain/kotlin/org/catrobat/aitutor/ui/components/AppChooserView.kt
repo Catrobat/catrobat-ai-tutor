@@ -40,7 +40,7 @@ internal fun AppChooserView(
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         Box(
-            modifier = modifier.fillMaxSize().then(modifier),
+            modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter,
         ) {
             Surface(
