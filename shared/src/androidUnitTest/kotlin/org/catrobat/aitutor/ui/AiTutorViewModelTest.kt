@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -98,6 +99,7 @@ class AiTutorViewModelTest {
             createViewModel()
 
             viewModel.handleTutorVisibility(true)
+            advanceUntilIdle()
 
             assertEquals(TutorUiStep.ShowingTutorial, viewModel.uiState.value.currentStep)
         }
@@ -109,6 +111,7 @@ class AiTutorViewModelTest {
             createViewModel()
 
             viewModel.handleTutorVisibility(true)
+            advanceUntilIdle()
 
             assertEquals(TutorUiStep.AwaitingInput, viewModel.uiState.value.currentStep)
         }
@@ -119,6 +122,7 @@ class AiTutorViewModelTest {
             createViewModel()
 
             viewModel.dismissTutorial()
+            advanceUntilIdle()
 
             verifySuspend { settingsRepository.setTutorialSeen(true) }
             assertEquals(TutorUiStep.AwaitingInput, viewModel.uiState.value.currentStep)
@@ -145,6 +149,7 @@ class AiTutorViewModelTest {
                 )
 
             viewModel.launchAiApp(packageName = packageName, codeContext = codeContext)
+            advanceUntilIdle()
 
             // Use Robolectric's shadow application to check the intent
             val shadowApp = shadowOf(ApplicationProvider.getApplicationContext<Application>())
