@@ -1,5 +1,6 @@
 package org.catrobat.aitutor.di
 
+import embedded.koin.dsl.module
 import org.catrobat.aitutor.data.DataStoreSettingsRepository
 import org.catrobat.aitutor.domain.repository.SettingsRepository
 import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
@@ -7,8 +8,6 @@ import org.catrobat.aitutor.domain.usecase.GetInstalledAiAppsUseCase
 import org.catrobat.aitutor.domain.usecase.GetTutorialSeenStateUseCase
 import org.catrobat.aitutor.domain.usecase.SetTutorialSeenUseCase
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
-import org.koin.compose.viewmodel.dsl.viewModelOf
-import org.koin.dsl.module
 
 val commonModule =
     module {
@@ -22,5 +21,5 @@ val commonModule =
         single { SetTutorialSeenUseCase(get()) }
 
         // ViewModel
-        viewModelOf(::AiTutorViewModel)
+        factory { AiTutorViewModel(get(), get(), get(), get(), get()) }
     }
