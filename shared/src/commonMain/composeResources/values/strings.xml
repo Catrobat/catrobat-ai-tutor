@@ -13,6 +13,7 @@
     <string name="ask_ai_tutor">Ask AI Tutor</string>
     <string name="share_with_other_apps">Share with other apps</string>
     <string name="show_tutorial">Show Tutorial</string>
+    <string name="paste_ai_answer">Paste AI Answer</string>
 
     <!--    Input View-->
     <string name="include_code_context">Include code context</string>
@@ -52,4 +53,9 @@
 
     <!--    AiTutorViewModel-->
     <string name="error_loading_installed_ai_apps">Failed to load installed AI apps: %1$s</string>
+
+    <!--    ClipboardPasteView-->
+    <string name="paste_answer_title">Paste AI Answer</string>
+    <string name="paste_answer_description">If you've copied the AI's answer, tap Paste below to apply it. If not, tap Cancel to continue your work.</string>
+    <string name="paste_from_clipboard">Paste from Clipboard</string>
 </resources>
