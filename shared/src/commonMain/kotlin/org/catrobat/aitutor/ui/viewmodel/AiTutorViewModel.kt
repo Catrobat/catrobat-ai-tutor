@@ -2,6 +2,7 @@ package org.catrobat.aitutor.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -89,7 +90,15 @@ class AiTutorViewModel(
     }
 
     fun onCurrentStepChanged(newStep: TutorUiStep) {
-        _uiState.update { it.copy(currentStep = newStep) }
+        viewModelScope.launch {
+            if (newStep == TutorUiStep.AwaitingPaste) {
+                delay(500)
+            }
+
+            _uiState.update {
+                it.copy(currentStep = newStep)
+            }
+        }
     }
 
     // Handler for the optional output context switch
