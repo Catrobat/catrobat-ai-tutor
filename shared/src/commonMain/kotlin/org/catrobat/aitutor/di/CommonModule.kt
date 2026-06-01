@@ -1,5 +1,6 @@
 package org.catrobat.aitutor.di
 
+import embedded.koin.core.module.dsl.factoryOf
 import embedded.koin.dsl.module
 import org.catrobat.aitutor.data.DataStoreSettingsRepository
 import org.catrobat.aitutor.domain.repository.SettingsRepository
@@ -21,5 +22,5 @@ val commonModule =
         single { SetTutorialSeenUseCase(get()) }
 
         // ViewModel
-        factory { AiTutorViewModel(get(), get(), get(), get(), get()) }
+        factoryOf(::AiTutorViewModel)
     }
