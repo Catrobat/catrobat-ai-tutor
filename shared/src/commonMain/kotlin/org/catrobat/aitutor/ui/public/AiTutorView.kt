@@ -17,6 +17,13 @@ import org.catrobat.aitutor.ui.components.InputView
 import org.catrobat.aitutor.ui.components.TutorialView
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
 
+private val aiTutorViewModelFactory =
+    viewModelFactory {
+        initializer<AiTutorViewModel> {
+            AiTutorKoin.app.koin.get(AiTutorViewModel::class)
+        }
+    }
+
 /**
  * The main entry point for displaying the AI Tutor user interface.
  *
@@ -70,13 +77,7 @@ fun AiTutorView(
     outputContext: String? = null,
     systemContext: String? = null,
 ) {
-    val viewModel: AiTutorViewModel =
-        viewModel(
-            factory =
-                viewModelFactory {
-                    initializer<AiTutorViewModel> { AiTutorKoin.app.koin.get(AiTutorViewModel::class) }
-                },
-        )
+    val viewModel: AiTutorViewModel = viewModel(factory = aiTutorViewModelFactory)
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(show, outputContext) {
