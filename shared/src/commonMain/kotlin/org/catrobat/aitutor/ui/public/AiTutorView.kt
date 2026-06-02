@@ -121,9 +121,12 @@ fun AiTutorView(
                 },
                 onHelpRequest = viewModel::showTutorial,
                 onAboutRequest = viewModel::showAboutScreen,
-                onPasteAiAnswerRequest = if (onClipboardPaste != null) {
-                    { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingPaste) }
-                } else null,
+                onPasteAiAnswerRequest =
+                    if (onClipboardPaste != null) {
+                        { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingPaste) }
+                    } else {
+                        null
+                    },
             )
         }
 
@@ -151,9 +154,13 @@ fun AiTutorView(
             ClipboardPasteView(
                 onPasteResult = { text ->
                     onClipboardPaste?.invoke(text)
+                    viewModel.resetPasteStep()
                     onDismissRequest()
                 },
-                onDismissRequest = onDismissRequest,
+                onDismissRequest = {
+                    viewModel.resetPasteStep()
+                    onDismissRequest()
+                },
             )
         }
 

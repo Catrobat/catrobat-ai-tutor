@@ -89,6 +89,10 @@ class AiTutorViewModel(
         _uiState.update { it.copy(selectedPromptVersion = version) }
     }
 
+    fun resetPasteStep() {
+        _uiState.update { it.copy(currentStep = TutorUiStep.Hidden) }
+    }
+
     fun onCurrentStepChanged(newStep: TutorUiStep) {
         viewModelScope.launch {
             if (newStep == TutorUiStep.AwaitingPaste) {
