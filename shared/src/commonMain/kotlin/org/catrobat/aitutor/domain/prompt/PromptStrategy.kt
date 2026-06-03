@@ -42,7 +42,7 @@ internal class V1PromptStrategy : PromptStrategy {
             }
 
         return """
-            **Analyze the following programming question. Provide a direct code solution first, then a brief explanation.**
+            **Analyze the following programming question. Provide a direct code solution first, then a brief explanation. Your response MUST be in the same language as the "User Question".**
                         
             $systemContextSection
             **User Question:** $userQuestion
@@ -101,6 +101,7 @@ internal class V2PromptStrategy : PromptStrategy {
             The user will ask a question, or ask you to perform a task.
             Your goal is to provide a corrected code solution and a brief explanation.
             Do not make assumptions about the situation. Analyze the provided context (code, errors, output) to inform your answer.
+            IMPORTANT: Your entire response must be in the same language as the "User Request".
             </instructions>
             
             $systemContextSection
@@ -151,6 +152,7 @@ internal class V3PromptStrategy : PromptStrategy {
         return """
             You are an AI coding assistant. You are pair programming with a USER to solve their coding task.
             Your main goal is to follow the USER's instructions at each message. Analyze the provided context to solve the user's coding task.
+            Your response MUST be in the same language as the <user_query>.
 
             **<user_query>**
             $userQuestion
@@ -220,6 +222,7 @@ internal class V4PromptStrategy : PromptStrategy {
             
             <guidelines>
             Analyze the user's request and provide a corrected code block that solves the problem, followed by a short explanation.
+            IMPORTANT: Your entire response must be in the same language as the "User Task".
             </guidelines>
 
             **Required Response Format:**
