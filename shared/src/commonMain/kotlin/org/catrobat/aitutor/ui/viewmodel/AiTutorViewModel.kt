@@ -72,10 +72,14 @@ class AiTutorViewModel(
         _uiState.update { it.copy(userQuestion = newQuestion) }
     }
 
-    fun initializeContexts(initialIsOutputContextIncluded: Boolean?) {
+    fun initializeContexts(
+        initialIsOutputContextIncluded: Boolean?,
+        initialPromptVersion: PromptVersion?,
+    ) {
         _uiState.update {
             it.copy(
                 isOutputContextIncluded = initialIsOutputContextIncluded,
+                selectedPromptVersion = initialPromptVersion ?: PromptVersion.V1,
             )
         }
     }
