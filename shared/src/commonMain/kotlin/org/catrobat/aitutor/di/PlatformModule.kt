@@ -1,6 +1,6 @@
 package org.catrobat.aitutor.di
 
-import org.koin.core.module.Module
+import embedded.koin.core.module.Module
 
 expect fun platformModule(): Module
 
