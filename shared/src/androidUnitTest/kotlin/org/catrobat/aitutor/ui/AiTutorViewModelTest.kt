@@ -129,6 +129,35 @@ class AiTutorViewModelTest {
         }
 
     @Test
+    fun `initializeContexts with non-null version sets selectedPromptVersion`() =
+        runTest {
+            createViewModel()
+
+            viewModel.initializeContexts(
+                initialIsOutputContextIncluded = null,
+                initialPromptVersion = PromptVersion.V2,
+            )
+
+            assertEquals(PromptVersion.V2, viewModel.uiState.value.selectedPromptVersion)
+        }
+
+    @Test
+    fun `initializeContexts with null version preserves current selection`() =
+        runTest {
+            createViewModel()
+            viewModel.onPromptVersionChanged(PromptVersion.V3)
+
+            viewModel.initializeContexts(
+                initialIsOutputContextIncluded = true,
+                initialPromptVersion = null,
+            )
+
+            val state = viewModel.uiState.value
+            assertEquals(PromptVersion.V3, state.selectedPromptVersion)
+            assertEquals(true, state.isOutputContextIncluded)
+        }
+
+    @Test
     fun `launchAiApp should create prompt and prepare correct intent`() =
         runTest {
             val userQuestion = "My question"
