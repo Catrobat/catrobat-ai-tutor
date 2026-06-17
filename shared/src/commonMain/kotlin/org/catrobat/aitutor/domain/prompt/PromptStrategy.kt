@@ -235,7 +235,7 @@ internal class V4PromptStrategy : PromptStrategy {
     }
 }
 
-internal class PocketCodeSpriteEditorPrompt : PromptStrategy {
+internal class PocketCodeSpriteEditorPromptStrategy : PromptStrategy {
     override fun createPrompt(
         userQuestion: String,
         isCodeContextIncluded: Boolean,
