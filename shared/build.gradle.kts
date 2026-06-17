@@ -46,11 +46,13 @@ kotlin {
             implementation(libs.accompanist.drawablepainter)
 
             // Koin
-            implementation(libs.koin.android)
-            implementation(libs.koin.androidx.compose)
+            implementation(libs.embedded.koin.android)
 
             // Coil
             implementation(libs.coil3.coil.network.okhttp)
+
+            // App Startup
+            implementation(libs.androidx.startup)
         }
         androidUnitTest.dependencies {
             implementation(libs.junit)
@@ -74,9 +76,7 @@ kotlin {
             implementation(libs.viewmodel.compose)
 
             // Koin
-            api(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
+            api(libs.embedded.koin.core)
 
             // Datastore
             implementation(libs.androidx.datastore)
