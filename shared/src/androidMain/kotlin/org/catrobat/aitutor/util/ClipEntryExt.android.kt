@@ -1,0 +1,14 @@
+package org.catrobat.aitutor.util
+
+import androidx.compose.ui.platform.ClipEntry
+
+actual suspend fun ClipEntry.getText(): String? =
+    try {
+        buildString {
+            for (i in 0 until clipData.itemCount) {
+                clipData.getItemAt(i)?.text?.let { append(it) }
+            }
+        }.ifBlank { null }
+    } catch (_: Exception) {
+        null
+    }
