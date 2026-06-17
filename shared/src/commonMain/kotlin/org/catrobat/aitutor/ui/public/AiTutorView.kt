@@ -6,11 +6,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import org.catrobat.aitutor.domain.prompt.PromptVersion
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.catrobat.aitutor.di.AiTutorKoin
+import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.aitutor.ui.components.AboutScreen
 import org.catrobat.aitutor.ui.components.AppChooserView
