@@ -76,10 +76,10 @@ class AiTutorViewModel(
         initialIsOutputContextIncluded: Boolean?,
         initialPromptVersion: PromptVersion?,
     ) {
-        _uiState.update {
-            it.copy(
+        _uiState.update { state ->
+            state.copy(
                 isOutputContextIncluded = initialIsOutputContextIncluded,
-                selectedPromptVersion = initialPromptVersion ?: PromptVersion.V1,
+                selectedPromptVersion = initialPromptVersion ?: state.selectedPromptVersion,
             )
         }
     }
