@@ -507,6 +507,8 @@ internal class PocketCodeSpriteEditorPromptStrategy : PromptStrategy {
               GoNStepsBackBrick       — go back N layers — STEPS
               ComeToFrontBrick        — go to front layer — (no formula)
               VibrationBrick          — vibrate device — VIBRATE_DURATION_IN_SECONDS
+              ArcBrick                — go in arc, radius + angle, curving left/right — SIZE, DEGREES + <direction> enum: LEFT, RIGHT
+              GoThroughBrick          — go through start X/Y then to target X/Y (straight path) — X_POSITION, Y_POSITION, X_DESTINATION, Y_DESTINATION (+ <startCoordinates> boolean)
 
             Physics:
               SetPhysicsObjectTypeBrick — motion type — <type> enum: DYNAMIC, FIXED, NONE
