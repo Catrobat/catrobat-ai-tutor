@@ -55,7 +55,6 @@ Scaffold(
             applyAiResult(pastedText)
         },
         onError = { error ->
-            // error.type: AiTutorErrorType, error.message: localized String
             Toast.makeText(context, error.message, Toast.LENGTH_LONG).show()
         },
       )
