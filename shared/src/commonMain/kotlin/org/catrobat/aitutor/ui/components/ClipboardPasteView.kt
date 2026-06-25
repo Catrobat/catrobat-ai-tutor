@@ -60,6 +60,7 @@ internal fun ClipboardPasteView(
                     onPasteResult(text)
                 } else {
                     onClipboardPasteError(noTextFoundError)
+                    onDismissRequest()
                 }
             }
         },
