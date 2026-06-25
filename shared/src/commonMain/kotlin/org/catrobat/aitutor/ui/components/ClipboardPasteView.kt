@@ -33,6 +33,7 @@ import org.catrobat.aitutor.util.getText
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.cancel
 import org.catrobat.shared.generated.resources.paste_answer_description
+import org.catrobat.shared.generated.resources.paste_answer_error_no_text_found
 import org.catrobat.shared.generated.resources.paste_answer_title
 import org.catrobat.shared.generated.resources.paste_from_clipboard
 import org.jetbrains.compose.resources.stringResource
@@ -42,9 +43,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 internal fun ClipboardPasteView(
     onPasteResult: (String) -> Unit,
     onDismissRequest: () -> Unit,
+    onClipboardPasteError: (String) -> Unit,
 ) {
     val clipboard = LocalClipboard.current
     val scope = rememberCoroutineScope()
+    val noTextFoundError = stringResource(Res.string.paste_answer_error_no_text_found)
     ClipboardPasteViewContent(
         title = stringResource(Res.string.paste_answer_title),
         description = stringResource(Res.string.paste_answer_description),
@@ -53,7 +56,11 @@ internal fun ClipboardPasteView(
         onPaste = {
             scope.launch {
                 val text = clipboard.getClipEntry()?.getText()
-                if (!text.isNullOrBlank()) onPasteResult(text)
+                if (!text.isNullOrBlank()) {
+                    onPasteResult(text)
+                } else {
+                    onClipboardPasteError(noTextFoundError)
+                }
             }
         },
         onDismissRequest = onDismissRequest,

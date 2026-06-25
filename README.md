@@ -54,6 +54,10 @@ Scaffold(
             // The AI's answer copied back from the external app — validate/apply it.
             applyAiResult(pastedText)
         },
+        onError = { error ->
+            // error.type: AiTutorErrorType, error.message: localized String
+            Toast.makeText(context, error.message, Toast.LENGTH_LONG).show()
+        },
       )
 }
 ```
@@ -63,6 +67,7 @@ Scaffold(
 - `outputContext` → optional, send extra info (like compiler errors) to help the AI provide better answers.
 - `systemContext` → optional, provide additional context, such as the programming language, version, or framework being used.
 - `onClipboardPaste` → optional, enables the paste-back flow. When provided, the tutor shows a "Paste AI Answer" dialog after the user returns from the AI app and delivers the clipboard text to this callback.
+- `onError` → optional, invoked when the tutor hits a recoverable error (failed to load AI apps, empty-clipboard paste, or an app-launch problem). It receives an `AiTutorError` with a `type` (`AiTutorErrorType`) and a localized `message`.
 
 ## Dependencies
 
