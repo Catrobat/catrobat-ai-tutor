@@ -22,6 +22,7 @@ import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.error_loading_installed_ai_apps
 import org.jetbrains.compose.resources.getString
+import kotlin.time.Duration.Companion.milliseconds
 
 class AiTutorViewModel(
     private val getInstalledAiAppsUseCase: GetInstalledAiAppsUseCase,
@@ -95,8 +96,9 @@ class AiTutorViewModel(
 
     fun onCurrentStepChanged(newStep: TutorUiStep) {
         viewModelScope.launch {
+            // Delay so the paste dialog doesn't appear immediately over the launching AI app.
             if (newStep == TutorUiStep.AwaitingPaste) {
-                delay(500)
+                delay(500.milliseconds)
             }
 
             _uiState.update {
