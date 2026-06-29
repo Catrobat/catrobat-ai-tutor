@@ -94,7 +94,6 @@ private val aiTutorViewModelFactory =
  *     }
  * }
  * ```
- * The view stays open so the user can retry. When `null` (the default), errors are ignored.
  */
 @Composable
 fun AiTutorView(
