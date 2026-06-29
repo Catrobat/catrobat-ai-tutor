@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -108,10 +109,11 @@ fun AiTutorView(
 ) {
     val viewModel: AiTutorViewModel = viewModel(factory = aiTutorViewModelFactory)
     val uiState by viewModel.uiState.collectAsState()
+    val currentOnError by rememberUpdatedState(onError)
 
     LaunchedEffect(Unit) {
         viewModel.errors.collect { error ->
-            onError?.invoke(error)
+            currentOnError?.invoke(error)
         }
     }
 
