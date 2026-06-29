@@ -33,7 +33,7 @@ actual class AiAppLauncher(private val context: Context) {
             // Use a chooser if no specific package is set (for the "More" option)
             val chooserIntent =
                 if (packageName == null) {
-                    val chooserTitle = runBlocking { getString(Res.string.send_prompt_with) }
+                    val chooserTitle = getString(Res.string.send_prompt_with)
                     Intent.createChooser(sendIntent, chooserTitle)
                 } else {
                     sendIntent
