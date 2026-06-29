@@ -3,7 +3,6 @@ package org.catrobat.aitutor.ui
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import kotlinx.coroutines.runBlocking
 import org.catrobat.aitutor.domain.model.AiTutorError
 import org.catrobat.aitutor.domain.model.AiTutorErrorType
 import org.catrobat.aitutor.domain.model.LaunchResult
