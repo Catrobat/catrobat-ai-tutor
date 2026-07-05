@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.catrobat.aitutor.di.AiTutorKoin
+import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.aitutor.ui.components.AboutScreen
 import org.catrobat.aitutor.ui.components.AppChooserView
@@ -49,6 +50,7 @@ private val aiTutorViewModelFactory =
  * AiTutorView(
  *      show = isTutorVisible,
  *      onDismissRequest = { isTutorVisible = false },
+ *      promptVersion = PromptVersion.V2,
  *      codeContext = "val x = 5",
  *      outputContext = "Error: Semicolon expected",
  *      systemContext = "Phaser, a Desktop and Mobile HTML5 game framework"
@@ -60,6 +62,11 @@ private val aiTutorViewModelFactory =
  * display it and `false` to hide it.
  * @param onDismissRequest A callback invoked when the user requests to dismiss the view,
  * for example, by tapping the cancel button or pressing back.
+ * @param promptVersion The prompt template version to use when building the shareable prompt.
+ * Defaults to [PromptVersion.V1]. Passing `null` is treated the same as [PromptVersion.V1].
+ * This value seeds the selection each time the view is shown. In debug builds the user can
+ * still override it via the in-UI prompt-version dropdown, in release builds it is fixed to
+ * the value provided here.
  * @param codeContext A string containing the user's code snippet. This is the primary
  * context for the AI's analysis.
  * @param outputContext An optional string containing the actual output produced by the code.
@@ -73,6 +80,7 @@ fun AiTutorView(
     modifier: Modifier = Modifier,
     show: Boolean,
     onDismissRequest: () -> Unit,
+    promptVersion: PromptVersion? = PromptVersion.V1,
     codeContext: String?,
     outputContext: String? = null,
     systemContext: String? = null,
@@ -80,10 +88,11 @@ fun AiTutorView(
     val viewModel: AiTutorViewModel = viewModel(factory = aiTutorViewModelFactory)
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(show, outputContext) {
+    LaunchedEffect(show, outputContext, promptVersion) {
         if (show) {
             viewModel.initializeContexts(
                 initialIsOutputContextIncluded = if (outputContext == null) null else true,
+                initialPromptVersion = promptVersion,
             )
         }
     }
