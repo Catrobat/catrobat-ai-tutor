@@ -1,13 +1,10 @@
 package org.catrobat.aitutor.domain.prompt
 
-private val v1PromptTemplate by lazy { readTextResource("prompts/v1-prompt.md") }
-private val v2PromptTemplate by lazy { readTextResource("prompts/v2-prompt.md") }
-private val v3PromptTemplate by lazy { readTextResource("prompts/v3-prompt.md") }
-private val v4PromptTemplate by lazy { readTextResource("prompts/v4-prompt.md") }
-private val pocketCodePromptTemplate by lazy { readTextResource("prompts/pocketcode-sprite-editor-prompt.md") }
-
 interface PromptStrategy {
+    val templateFileName: String
+
     fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -18,7 +15,10 @@ interface PromptStrategy {
 }
 
 internal class V1PromptStrategy : PromptStrategy {
+    override val templateFileName = "v1-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -47,7 +47,7 @@ internal class V1PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return v1PromptTemplate
+        return template
             .replace("\$systemContextSection", systemContextSection)
             .replace("\$userQuestion", userQuestion)
             .replace("\$codeContextSection", codeContextSection)
@@ -57,7 +57,10 @@ internal class V1PromptStrategy : PromptStrategy {
 }
 
 internal class V2PromptStrategy : PromptStrategy {
+    override val templateFileName = "v2-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -86,7 +89,7 @@ internal class V2PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return v2PromptTemplate
+        return template
             .replace("\$systemContextSection", systemContextSection)
             .replace("\$userQuestion", userQuestion)
             .replace("\$codeContextSection", codeContextSection)
@@ -96,7 +99,10 @@ internal class V2PromptStrategy : PromptStrategy {
 }
 
 internal class V3PromptStrategy : PromptStrategy {
+    override val templateFileName = "v3-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -125,7 +131,7 @@ internal class V3PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return v3PromptTemplate
+        return template
             .replace("\$systemContextSection", systemContextSection)
             .replace("\$userQuestion", userQuestion)
             .replace("\$codeContextSection", codeContextSection)
@@ -135,7 +141,10 @@ internal class V3PromptStrategy : PromptStrategy {
 }
 
 internal class V4PromptStrategy : PromptStrategy {
+    override val templateFileName = "v4-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -164,7 +173,7 @@ internal class V4PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return v4PromptTemplate
+        return template
             .replace("\$systemContextSection", systemContextSection)
             .replace("\$userQuestion", userQuestion)
             .replace("\$codeContextSection", codeContextSection)
@@ -174,7 +183,10 @@ internal class V4PromptStrategy : PromptStrategy {
 }
 
 internal class PocketCodeSpriteEditorPromptStrategy : PromptStrategy {
+    override val templateFileName = "pocketcode-sprite-editor-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -203,7 +215,7 @@ internal class PocketCodeSpriteEditorPromptStrategy : PromptStrategy {
                 ""
             }
 
-        return pocketCodePromptTemplate
+        return template
             .replace("\$systemContextSection", systemContextSection)
             .replace("\$userQuestion", userQuestion)
             .replace("\$spriteXmlSection", spriteXmlSection)
