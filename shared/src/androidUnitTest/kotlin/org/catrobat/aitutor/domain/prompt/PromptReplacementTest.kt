@@ -56,4 +56,29 @@ class PromptReplacementTest {
                 }
             }
         }
+
+    @Test
+    fun `every prompt replaces all placeholders when contexts are null`() =
+        runTest {
+            PromptVersion.entries.forEach { version ->
+                val template = templateRepository.getTemplate(version.strategy.templateFileName)
+                val result =
+                    version.strategy.createPrompt(
+                        template = template,
+                        userQuestion = userQuestion,
+                        isCodeContextIncluded = false,
+                        codeContext = null,
+                        isOutputContextIncluded = false,
+                        outputContext = null,
+                        systemContext = null,
+                    )
+
+                placeholders.forEach { placeholder ->
+                    assertFalse(
+                        result.contains(placeholder),
+                        "Placeholder $placeholder was not replaced for $version:\n$result",
+                    )
+                }
+            }
+        }
 }
