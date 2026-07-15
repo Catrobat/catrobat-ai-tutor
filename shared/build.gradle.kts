@@ -120,6 +120,11 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 mavenPublishing {
