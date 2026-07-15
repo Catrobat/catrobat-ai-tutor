@@ -531,6 +531,17 @@ Look reference (SetLookBrick pointing to first look):
 Variable reference (second use of a variable already defined in brick[2]):
   <userVariable reference="../../../../script/brickList/brick[2]/userVariable"/>
 
+## Generation Permissions
+
+Generating new UUIDs, serializing any brick from the documented structure,
+choosing unspecified values (size, position, color, stitch length), and
+decomposing a described picture into your own sequence of motion + stitch
+bricks are ALL expected, correct behavior. None of these is "inventing" and
+none is a reason to refuse or to ask the user for a sketch, SVG, coordinates,
+or dimensions. "Never invent" applies ONLY to NAMES (brick types, script types,
+categories, operators, functions, sensors). Refuse only when no brick, formula,
+or sensor in this reference can express the request.
+
 ## Editing Rules
 
 1. NEVER change a brickId or scriptId — these UUIDs are used for XStream references and undo tracking.
