@@ -14,6 +14,7 @@ import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.aitutor.ui.components.AboutScreen
 import org.catrobat.aitutor.ui.components.AppChooserView
+import org.catrobat.aitutor.ui.components.ClipboardPasteView
 import org.catrobat.aitutor.ui.components.InputView
 import org.catrobat.aitutor.ui.components.TutorialView
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
@@ -45,7 +46,7 @@ private val aiTutorViewModelFactory =
  * )
  * ```
  *
- * Example of advanced usage with output context and system context enabled:
+ * Example of advanced usage with output context, system context, and clipboard paste enabled:
  * ```
  * AiTutorView(
  *      show = isTutorVisible,
@@ -53,7 +54,12 @@ private val aiTutorViewModelFactory =
  *      promptVersion = PromptVersion.V2,
  *      codeContext = "val x = 5",
  *      outputContext = "Error: Semicolon expected",
- *      systemContext = "Phaser, a Desktop and Mobile HTML5 game framework"
+ *      systemContext = "Phaser, a Desktop and Mobile HTML5 game framework",
+ *      onClipboardPaste = { pastedText ->
+ *          // Host app receives the AI's answer from the clipboard,
+ *          // e.g. validate and apply the returned XML or code snippet.
+ *          applyAiResult(pastedText)
+ *      }
  * )
  * ```
  *
@@ -74,6 +80,12 @@ private val aiTutorViewModelFactory =
  * include the output will be displayed to the user.
  * @param systemContext An optional string for the integrator to provide additional,
  * non-user-visible context, such as the programming language, version, or framework being used.
+ * @param onClipboardPaste An optional callback that enables the clipboard paste flow. When
+ * provided, the view does **not** dismiss after the user selects an AI app. Instead, it shows a
+ * "Paste AI Answer" dialog when the user returns to the host app. Tapping "Paste from clipboard"
+ * reads the clipboard and delivers its text to this callback, then dismisses the view. Tapping
+ * Cancel dismisses without invoking the callback. When `null` (the default), the view dismisses
+ * immediately after the user selects an AI app, preserving the original behavior.
  */
 @Composable
 fun AiTutorView(
@@ -84,6 +96,7 @@ fun AiTutorView(
     codeContext: String?,
     outputContext: String? = null,
     systemContext: String? = null,
+    onClipboardPaste: ((pastedText: String) -> Unit)? = null,
 ) {
     val viewModel: AiTutorViewModel = viewModel(factory = aiTutorViewModelFactory)
     val uiState by viewModel.uiState.collectAsState()
@@ -127,6 +140,12 @@ fun AiTutorView(
                 },
                 onHelpRequest = viewModel::showTutorial,
                 onAboutRequest = viewModel::showAboutScreen,
+                onPasteAiAnswerRequest =
+                    if (onClipboardPaste != null) {
+                        { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingPaste) }
+                    } else {
+                        null
+                    },
             )
         }
 
@@ -141,6 +160,24 @@ fun AiTutorView(
                         outputContext = outputContext,
                         systemContext = systemContext,
                     )
+                    if (onClipboardPaste != null) {
+                        viewModel.onCurrentStepChanged(TutorUiStep.AwaitingPaste)
+                    } else {
+                        onDismissRequest()
+                    }
+                },
+            )
+        }
+
+        TutorUiStep.AwaitingPaste -> {
+            ClipboardPasteView(
+                onPasteResult = { text ->
+                    onClipboardPaste?.invoke(text)
+                    viewModel.resetPasteStep()
+                    onDismissRequest()
+                },
+                onDismissRequest = {
+                    viewModel.resetPasteStep()
                     onDismissRequest()
                 },
             )

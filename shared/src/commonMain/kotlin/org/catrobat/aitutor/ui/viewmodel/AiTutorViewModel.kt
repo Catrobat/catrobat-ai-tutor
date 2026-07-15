@@ -2,6 +2,7 @@ package org.catrobat.aitutor.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,6 +22,7 @@ import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.error_loading_installed_ai_apps
 import org.jetbrains.compose.resources.getString
+import kotlin.time.Duration.Companion.milliseconds
 
 class AiTutorViewModel(
     private val getInstalledAiAppsUseCase: GetInstalledAiAppsUseCase,
@@ -92,8 +94,21 @@ class AiTutorViewModel(
         _uiState.update { it.copy(selectedPromptVersion = version) }
     }
 
+    fun resetPasteStep() {
+        _uiState.update { it.copy(currentStep = TutorUiStep.Hidden) }
+    }
+
     fun onCurrentStepChanged(newStep: TutorUiStep) {
-        _uiState.update { it.copy(currentStep = newStep) }
+        viewModelScope.launch {
+            // Delay so the paste dialog doesn't appear immediately over the launching AI app.
+            if (newStep == TutorUiStep.AwaitingPaste) {
+                delay(500.milliseconds)
+            }
+
+            _uiState.update {
+                it.copy(currentStep = newStep)
+            }
+        }
     }
 
     // Handler for the optional output context switch

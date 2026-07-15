@@ -97,6 +97,10 @@ kotlin {
     }
 }
 
+dependencies {
+    debugImplementation(libs.compose.ui.tooling)
+}
+
 compose.resources {
     publicResClass = true
     packageOfResClass = "org.catrobat.shared.generated.resources"

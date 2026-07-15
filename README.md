@@ -50,6 +50,10 @@ Scaffold(
         codeContext = "...",
 //      outputContext = "..."
 //      systemContext - "..."
+        onClipboardPaste = { pastedText ->
+            // The AI's answer copied back from the external app — validate/apply it.
+            applyAiResult(pastedText)
+        },
       )
 }
 ```
@@ -57,7 +61,8 @@ Scaffold(
 - `AiTutorView` → the actual tutor dialog UI. You can also embed it directly in your screen if you don’t want the FAB.
 - `codeContext` → send the current code snippet to provide context for the AI.
 - `outputContext` → optional, send extra info (like compiler errors) to help the AI provide better answers.
-- `systemContext` → optional, provide additional  context, such as the programming language, version, or framework being used.
+- `systemContext` → optional, provide additional context, such as the programming language, version, or framework being used.
+- `onClipboardPaste` → optional, enables the paste-back flow. When provided, the tutor shows a "Paste AI Answer" dialog after the user returns from the AI app and delivers the clipboard text to this callback.
 
 ## Dependencies
 

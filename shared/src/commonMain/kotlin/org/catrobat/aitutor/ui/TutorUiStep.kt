@@ -6,4 +6,5 @@ enum class TutorUiStep {
     AwaitingInput,
     ChoosingApp,
     ShowingAbout,
+    AwaitingPaste,
 }
