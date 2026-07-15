@@ -17,6 +17,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.catrobat.aitutor.data.ComposeResourcePromptTemplateRepository
 import org.catrobat.aitutor.domain.model.AiAppInfo
 import org.catrobat.aitutor.domain.model.PlatformImage
 import org.catrobat.aitutor.domain.prompt.PromptVersion
@@ -26,6 +27,7 @@ import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
 import org.catrobat.aitutor.domain.usecase.GetInstalledAiAppsUseCase
 import org.catrobat.aitutor.domain.usecase.GetTutorialSeenStateUseCase
 import org.catrobat.aitutor.domain.usecase.SetTutorialSeenUseCase
+import org.catrobat.aitutor.initComposeResourcesContext
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -45,7 +47,7 @@ class AiTutorViewModelTest {
     private val settingsRepository = mock<SettingsRepository>(MockMode.autoUnit)
 
     // Instances of the Use Cases and Launcher
-    private val createShareablePromptUseCase = CreateShareablePromptUseCase()
+    private val createShareablePromptUseCase = CreateShareablePromptUseCase(ComposeResourcePromptTemplateRepository())
     private val getInstalledAiAppsUseCase = GetInstalledAiAppsUseCase(aiAppRepository)
     private val getTutorialSeenStateUseCase = GetTutorialSeenStateUseCase(settingsRepository)
     private val setTutorialSeenUseCase = SetTutorialSeenUseCase(settingsRepository)
@@ -58,6 +60,7 @@ class AiTutorViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         val context = ApplicationProvider.getApplicationContext<Application>()
+        initComposeResourcesContext()
         aiAppLauncher = AiAppLauncher(context)
         everySuspend { aiAppRepository.getInstalledAiApps() } returns emptyList()
     }

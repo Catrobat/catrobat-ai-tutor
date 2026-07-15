@@ -1,7 +1,10 @@
 package org.catrobat.aitutor.domain.prompt
 
 interface PromptStrategy {
+    val templateFileName: String
+
     fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -12,7 +15,10 @@ interface PromptStrategy {
 }
 
 internal class V1PromptStrategy : PromptStrategy {
+    override val templateFileName = "v1-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -41,27 +47,20 @@ internal class V1PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return """
-            **Analyze the following programming question. Provide a direct code solution first, then a brief explanation. Your response MUST be in the same language as the "User Question".**
-                        
-            $systemContextSection
-            **User Question:** $userQuestion
-            $codeContextSection
-            $outputContextSection
-
-            **Required Response Format:**
-            1. **Corrected Code:** Put the corrected code directly between the following markers inside a markdown block.
-            2. **Explanation:** After the code block, briefly explain the solution or the fix.
-
-            ### START - COPY THIS CODE BACK TO THE APP ###
-            [Your corrected code here]
-            ### END - COPY THIS CODE BACK TO THE APP ###
-            """.trimIndent()
+        return template
+            .replace("\$systemContextSection", systemContextSection)
+            .replace("\$userQuestion", userQuestion)
+            .replace("\$codeContextSection", codeContextSection)
+            .replace("\$outputContextSection", outputContextSection)
+            .trimIndent()
     }
 }
 
 internal class V2PromptStrategy : PromptStrategy {
+    override val templateFileName = "v2-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -90,37 +89,20 @@ internal class V2PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return """
-            <identity>
-            You are an AI programming assistant.
-            Follow the user's requirements carefully & to the letter. Keep your answers short and impersonal.
-            You are a highly sophisticated automated coding agent with expert-level knowledge across many different programming languages and frameworks.
-            </identity>
-
-            <instructions>
-            The user will ask a question, or ask you to perform a task.
-            Your goal is to provide a corrected code solution and a brief explanation.
-            Do not make assumptions about the situation. Analyze the provided context (code, errors, output) to inform your answer.
-            IMPORTANT: Your entire response must be in the same language as the "User Request".
-            </instructions>
-            
-            $systemContextSection
-            **User Request:** $userQuestion
-            $codeContextSection
-            $outputContextSection
-
-            **Required Response Format:**
-            1. **Corrected Code:** Put the corrected code directly between the following markers inside a markdown block.
-            2. **Explanation:** After the code block, briefly explain the solution or the fix.
-            ### START - COPY THIS CODE BACK TO THE APP ###
-            [Your corrected code here]
-            ### END - COPY THIS CODE BACK TO THE APP ###
-            """.trimIndent()
+        return template
+            .replace("\$systemContextSection", systemContextSection)
+            .replace("\$userQuestion", userQuestion)
+            .replace("\$codeContextSection", codeContextSection)
+            .replace("\$outputContextSection", outputContextSection)
+            .trimIndent()
     }
 }
 
 internal class V3PromptStrategy : PromptStrategy {
+    override val templateFileName = "v3-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -149,33 +131,20 @@ internal class V3PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return """
-            You are an AI coding assistant. You are pair programming with a USER to solve their coding task.
-            Your main goal is to follow the USER's instructions at each message. Analyze the provided context to solve the user's coding task.
-            Your response MUST be in the same language as the <user_query>.
-
-            **<user_query>**
-            $userQuestion
-            **</user_query>**
-
-            <additional_data>
-            $systemContextSection
-            $codeContextSection
-            $outputContextSection
-            </additional_data>
-
-            **Required Response Format:**
-            1. **Corrected Code:** Provide the complete, corrected code block between the specified markers.
-            2. **Explanation:** After the code, provide a brief explanation of the changes.
-            ### START - COPY THIS CODE BACK TO THE APP ###
-            [Your corrected code here]
-            ### END - COPY THIS CODE BACK TO THE APP ###
-            """.trimIndent()
+        return template
+            .replace("\$systemContextSection", systemContextSection)
+            .replace("\$userQuestion", userQuestion)
+            .replace("\$codeContextSection", codeContextSection)
+            .replace("\$outputContextSection", outputContextSection)
+            .trimIndent()
     }
 }
 
 internal class V4PromptStrategy : PromptStrategy {
+    override val templateFileName = "v4-prompt.md"
+
     override fun createPrompt(
+        template: String,
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -204,33 +173,53 @@ internal class V4PromptStrategy : PromptStrategy {
                 ""
             }
 
-        return """
-            <identity>
-            You are a powerful agentic AI coding assistant. You are pair programming with the user to solve their coding task. The task may require creating a new codebase, modifying or debugging an existing codebase, or simply answering a question.
-            </identity>
+        return template
+            .replace("\$systemContextSection", systemContextSection)
+            .replace("\$userQuestion", userQuestion)
+            .replace("\$codeContextSection", codeContextSection)
+            .replace("\$outputContextSection", outputContextSection)
+            .trimIndent()
+    }
+}
 
-            <purpose>
-            The user has a coding task to accomplish. Please take a look at the task and any provided context (code, errors, output). Your goal is to respond directly with a solution.
-            </purpose>
+internal class PocketCodeSpriteEditorPromptStrategy : PromptStrategy {
+    override val templateFileName = "pocketcode-sprite-editor-prompt.md"
 
-            **User Task:**
-            $userQuestion
-            
-            $systemContextSection
-            $codeContextSection
-            $outputContextSection
-            
-            <guidelines>
-            Analyze the user's request and provide a corrected code block that solves the problem, followed by a short explanation.
-            IMPORTANT: Your entire response must be in the same language as the "User Task".
-            </guidelines>
+    override fun createPrompt(
+        template: String,
+        userQuestion: String,
+        isCodeContextIncluded: Boolean,
+        codeContext: String?,
+        isOutputContextIncluded: Boolean?,
+        outputContext: String?,
+        systemContext: String?,
+    ): String {
+        val spriteXmlSection =
+            if (isCodeContextIncluded && !codeContext.isNullOrBlank()) {
+                "**Current Sprite XML:**\n```xml\n$codeContext\n```"
+            } else {
+                ""
+            }
 
-            **Required Response Format:**
-            1. **Corrected Code:** Put the corrected code directly between the following markers inside a markdown block.
-            2. **Explanation:** After the code block, briefly explain the solution or the fix.
-            ### START - COPY THIS CODE BACK TO THE APP ###
-            [Your corrected code here]
-            ### END - COPY THIS CODE BACK TO THE APP ###
-            """.trimIndent()
+        val outputContextSection =
+            if (isOutputContextIncluded == true && !outputContext.isNullOrBlank()) {
+                "**Runtime Output / Error:**\n```\n$outputContext\n```"
+            } else {
+                ""
+            }
+
+        val systemContextSection =
+            if (!systemContext.isNullOrBlank()) {
+                "**Project / Scene Context:**\n$systemContext\n"
+            } else {
+                ""
+            }
+
+        return template
+            .replace("\$systemContextSection", systemContextSection)
+            .replace("\$userQuestion", userQuestion)
+            .replace("\$spriteXmlSection", spriteXmlSection)
+            .replace("\$outputContextSection", outputContextSection)
+            .trimIndent()
     }
 }
