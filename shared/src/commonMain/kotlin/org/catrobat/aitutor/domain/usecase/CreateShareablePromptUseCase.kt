@@ -1,9 +1,12 @@
 package org.catrobat.aitutor.domain.usecase
 
 import org.catrobat.aitutor.domain.prompt.PromptVersion
+import org.catrobat.aitutor.domain.repository.PromptTemplateRepository
 
-class CreateShareablePromptUseCase {
-    operator fun invoke(
+class CreateShareablePromptUseCase(
+    private val promptTemplateRepository: PromptTemplateRepository,
+) {
+    suspend operator fun invoke(
         userQuestion: String,
         isCodeContextIncluded: Boolean,
         codeContext: String?,
@@ -12,7 +15,10 @@ class CreateShareablePromptUseCase {
         promptVersion: PromptVersion,
         systemContext: String? = null,
     ): String {
-        return promptVersion.strategy.createPrompt(
+        val strategy = promptVersion.strategy
+        val template = promptTemplateRepository.getTemplate(strategy.templateFileName)
+        return strategy.createPrompt(
+            template = template,
             userQuestion = userQuestion,
             isCodeContextIncluded = isCodeContextIncluded,
             codeContext = codeContext,

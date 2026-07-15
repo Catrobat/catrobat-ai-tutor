@@ -118,17 +118,17 @@ class AiTutorViewModel(
         systemContext: String? = null,
     ) {
         val currentState = _uiState.value
-        val finalPrompt =
-            createShareablePromptUseCase(
-                userQuestion = currentState.userQuestion,
-                isCodeContextIncluded = currentState.isCodeContextIncluded,
-                codeContext = codeContext,
-                isOutputContextIncluded = currentState.isOutputContextIncluded,
-                outputContext = outputContext,
-                promptVersion = currentState.selectedPromptVersion,
-                systemContext = systemContext,
-            )
         viewModelScope.launch {
+            val finalPrompt =
+                createShareablePromptUseCase(
+                    userQuestion = currentState.userQuestion,
+                    isCodeContextIncluded = currentState.isCodeContextIncluded,
+                    codeContext = codeContext,
+                    isOutputContextIncluded = currentState.isOutputContextIncluded,
+                    outputContext = outputContext,
+                    promptVersion = currentState.selectedPromptVersion,
+                    systemContext = systemContext,
+                )
             aiAppLauncher.launchApp(finalPrompt, packageName)
         }
     }
