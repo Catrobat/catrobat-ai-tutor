@@ -48,9 +48,7 @@ internal fun ClipboardPasteView(
     val clipboard = LocalClipboard.current
     val scope = rememberCoroutineScope()
     val noTextFoundError = stringResource(Res.string.paste_answer_error_no_text_found)
-) {
-    val clipboard = LocalClipboard.current
-    val scope = rememberCoroutineScope()
+
     ClipboardPasteViewContent(
         title = stringResource(Res.string.paste_answer_title),
         description = stringResource(Res.string.paste_answer_description),
