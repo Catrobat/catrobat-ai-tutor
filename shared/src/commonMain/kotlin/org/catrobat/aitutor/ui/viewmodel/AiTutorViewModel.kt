@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -77,10 +79,14 @@ class AiTutorViewModel(
         _uiState.update { it.copy(userQuestion = newQuestion) }
     }
 
-    fun initializeContexts(initialIsOutputContextIncluded: Boolean?) {
-        _uiState.update {
-            it.copy(
+    fun initializeContexts(
+        initialIsOutputContextIncluded: Boolean?,
+        initialPromptVersion: PromptVersion?,
+    ) {
+        _uiState.update { state ->
+            state.copy(
                 isOutputContextIncluded = initialIsOutputContextIncluded,
+                selectedPromptVersion = initialPromptVersion ?: state.selectedPromptVersion,
             )
         }
     }
