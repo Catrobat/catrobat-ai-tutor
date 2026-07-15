@@ -51,12 +51,15 @@ import org.catrobat.aitutor.util.isDebug
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.about
 import org.catrobat.shared.generated.resources.cancel
+import org.catrobat.shared.generated.resources.ic_content_paste
 import org.catrobat.shared.generated.resources.include_code_context
 import org.catrobat.shared.generated.resources.include_code_output
+import org.catrobat.shared.generated.resources.paste_ai_answer
 import org.catrobat.shared.generated.resources.prompt_version_debug
 import org.catrobat.shared.generated.resources.send
 import org.catrobat.shared.generated.resources.show_tutorial
 import org.catrobat.shared.generated.resources.type_your_question_here
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,6 +79,7 @@ internal fun InputView(
     onSend: (String) -> Unit,
     onHelpRequest: () -> Unit,
     onAboutRequest: () -> Unit,
+    onPasteAiAnswerRequest: (() -> Unit)? = null,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -229,6 +233,15 @@ internal fun InputView(
                                     contentDescription = stringResource(Res.string.show_tutorial),
                                     tint = AiTutorColors.onSurfaceVariant,
                                 )
+                            }
+                            onPasteAiAnswerRequest?.let {
+                                IconButton(onClick = it) {
+                                    Icon(
+                                        painter = painterResource(Res.drawable.ic_content_paste),
+                                        contentDescription = stringResource(Res.string.paste_ai_answer),
+                                        tint = AiTutorColors.onSurfaceVariant,
+                                    )
+                                }
                             }
                         }
 
