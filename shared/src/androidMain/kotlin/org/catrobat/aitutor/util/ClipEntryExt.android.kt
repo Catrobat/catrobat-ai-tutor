@@ -1,5 +1,6 @@
 package org.catrobat.aitutor.util
 
+import android.content.ClipData
 import androidx.compose.ui.platform.ClipEntry
 
 actual suspend fun ClipEntry.getText(): String? =
@@ -12,3 +13,5 @@ actual suspend fun ClipEntry.getText(): String? =
     } catch (_: Exception) {
         null
     }
+
+actual fun clipEntryOf(text: String): ClipEntry = ClipEntry(ClipData.newPlainText("code context", text))
