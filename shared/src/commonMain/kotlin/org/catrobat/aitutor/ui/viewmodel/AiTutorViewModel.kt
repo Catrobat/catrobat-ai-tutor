@@ -94,7 +94,7 @@ class AiTutorViewModel(
         _uiState.update { it.copy(selectedPromptVersion = version) }
     }
 
-    fun resetPasteStep() {
+    fun resetClipboardFlow() {
         _uiState.update { it.copy(currentStep = TutorUiStep.Hidden) }
     }
 
