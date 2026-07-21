@@ -20,6 +20,9 @@
     <string name="include_code_output">Include code output</string>
     <string name="prompt_version_debug">Prompt Version (Debug)</string>
     <string name="type_your_question_here">Type your question here...</string>
+    <string name="help">Help</string>
+    <string name="paste">Paste</string>
+    <string name="copy">Copy</string>
 
     <!--    Tutorial View-->
     <string name="tutorial_header">Welcome to the AI Tutor!</string>
@@ -58,4 +61,12 @@
     <string name="paste_answer_title">Paste AI Answer</string>
     <string name="paste_answer_description">If you've copied the AI's answer, tap Paste below to apply it. If not, tap Cancel to continue your work.</string>
     <string name="paste_from_clipboard">Paste from Clipboard</string>
+    <string name="switch_to_copy_code">Want to copy your code instead?</string>
+
+    <!--    ClipboardCopyView-->
+    <string name="copy_code_context_title">Copy Code Context</string>
+    <string name="copy_code_context_description">Copy your code below, then paste it into your AI app manually.</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
+    <string name="copied_to_clipboard">Copied!</string>
+    <string name="switch_to_paste_answer">Want to paste the AI's answer instead?</string>
 </resources>
