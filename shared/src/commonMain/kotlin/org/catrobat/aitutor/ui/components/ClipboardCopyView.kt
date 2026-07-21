@@ -18,7 +18,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboard
@@ -29,50 +33,59 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.coroutines.launch
 import org.catrobat.aitutor.ui.theme.AiTutorColors
-import org.catrobat.aitutor.util.getText
+import org.catrobat.aitutor.util.clipEntryOf
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.cancel
-import org.catrobat.shared.generated.resources.paste_answer_description
-import org.catrobat.shared.generated.resources.paste_answer_title
-import org.catrobat.shared.generated.resources.paste_from_clipboard
-import org.catrobat.shared.generated.resources.switch_to_copy_code
+import org.catrobat.shared.generated.resources.copied_to_clipboard
+import org.catrobat.shared.generated.resources.copy_code_context_description
+import org.catrobat.shared.generated.resources.copy_code_context_title
+import org.catrobat.shared.generated.resources.copy_to_clipboard
+import org.catrobat.shared.generated.resources.switch_to_paste_answer
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun ClipboardPasteView(
-    onPasteResult: (String) -> Unit,
-    onSwitchToCopy: () -> Unit,
+internal fun ClipboardCopyView(
+    codeContext: String,
+    onSwitchToPaste: () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     val clipboard = LocalClipboard.current
     val scope = rememberCoroutineScope()
-    ClipboardPasteViewContent(
-        title = stringResource(Res.string.paste_answer_title),
-        description = stringResource(Res.string.paste_answer_description),
+    var isCopied by remember { mutableStateOf(false) }
+
+    ClipboardCopyViewContent(
+        title = stringResource(Res.string.copy_code_context_title),
+        description = stringResource(Res.string.copy_code_context_description),
         cancelText = stringResource(Res.string.cancel),
-        pasteText = stringResource(Res.string.paste_from_clipboard),
-        switchToCopyText = stringResource(Res.string.switch_to_copy_code),
-        onPaste = {
+        copyText = stringResource(Res.string.copy_to_clipboard),
+        copiedText = stringResource(Res.string.copied_to_clipboard),
+        switchToPasteText = stringResource(Res.string.switch_to_paste_answer),
+        isCopyEnabled = codeContext.isNotBlank(),
+        isCopied = isCopied,
+        onCopy = {
             scope.launch {
-                val text = clipboard.getClipEntry()?.getText()
-                if (!text.isNullOrBlank()) onPasteResult(text)
+                clipboard.setClipEntry(clipEntryOf(codeContext))
+                isCopied = true
             }
         },
-        onSwitchToCopy = onSwitchToCopy,
+        onSwitchToPaste = onSwitchToPaste,
         onDismissRequest = onDismissRequest,
     )
 }
 
 @Composable
-private fun ClipboardPasteViewContent(
+private fun ClipboardCopyViewContent(
     title: String,
     description: String,
     cancelText: String,
-    pasteText: String,
-    switchToCopyText: String,
-    onPaste: () -> Unit,
-    onSwitchToCopy: () -> Unit,
+    copyText: String,
+    copiedText: String,
+    switchToPasteText: String,
+    isCopyEnabled: Boolean,
+    isCopied: Boolean,
+    onCopy: () -> Unit,
+    onSwitchToPaste: () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     Dialog(
@@ -119,17 +132,18 @@ private fun ClipboardPasteViewContent(
                         )
                     }
                     Button(
-                        onClick = onPaste,
+                        onClick = onCopy,
+                        enabled = isCopyEnabled,
                         colors = ButtonDefaults.buttonColors(containerColor = AiTutorColors.primary),
                     ) {
                         Text(
-                            text = pasteText,
+                            text = if (isCopied) copiedText else copyText,
                             color = AiTutorColors.onPrimary,
                         )
                     }
                 }
                 Spacer(Modifier.height(8.dp))
-                SwitchFlowLink(text = switchToCopyText, onClick = onSwitchToCopy)
+                SwitchFlowLink(text = switchToPasteText, onClick = onSwitchToPaste)
             }
         }
     }
@@ -137,17 +151,20 @@ private fun ClipboardPasteViewContent(
 
 @Preview
 @Composable
-private fun ClipboardPasteViewPreview() {
+private fun ClipboardCopyViewPreview() {
     Surface {
         Box(Modifier.fillMaxSize()) {
-            ClipboardPasteViewContent(
-                title = "Paste the AI's answer",
-                description = "Copy the response from your AI app, then paste it back here to continue.",
+            ClipboardCopyViewContent(
+                title = "Copy Code Context",
+                description = "Copy your code below, then paste it into your AI app manually.",
                 cancelText = "Cancel",
-                pasteText = "Paste from clipboard",
-                switchToCopyText = "Want to copy your code instead?",
-                onPaste = {},
-                onSwitchToCopy = {},
+                copyText = "Copy to Clipboard",
+                copiedText = "Copied!",
+                switchToPasteText = "Want to paste the AI's answer instead?",
+                isCopyEnabled = true,
+                isCopied = false,
+                onCopy = {},
+                onSwitchToPaste = {},
                 onDismissRequest = {},
             )
         }
