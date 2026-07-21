@@ -1,6 +1,10 @@
 package org.catrobat.aitutor.domain.prompt
 
-enum class PromptVersion(val displayName: String, val strategy: PromptStrategy) {
+enum class PromptVersion(
+    val displayName: String,
+    val strategy: PromptStrategy,
+    val requiresUserQuestion: Boolean = true,
+) {
     V1("Default Prompt", V1PromptStrategy()),
     V2("VSCode/Copilot Style", V2PromptStrategy()),
     V3("Cursor AI Style", V3PromptStrategy()),
