@@ -6,4 +6,5 @@ enum class PromptVersion(val displayName: String, val strategy: PromptStrategy) 
     V3("Cursor AI Style", V3PromptStrategy()),
     V4("Trae AI Style", V4PromptStrategy()),
     POCKET_CODE_SPRITE("PocketCode Sprite", PocketCodeSpriteEditorPromptStrategy()),
+    EMBROIDERY_DESIGNER_SPRITE("Embroidery Designer Sprite", EmbroideryDesignerSpriteEditorPromptStrategy()),
 }
