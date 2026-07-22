@@ -120,7 +120,7 @@ internal fun InputView(
                         InputBottomBar(
                             sendEnabled = !selectedPromptVersion.requiresUserQuestion || inputText.isNotBlank(),
                             onCancel = onDismissRequest,
-                            onSend = { onSend(inputText) },
+                            onSend = { onSend(if (selectedPromptVersion.requiresUserQuestion) inputText else "") },
                         )
                     }
                 }
