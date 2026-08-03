@@ -1,0 +1,3 @@
+[submodule "koin-embedded"]
+	path = koin-embedded
+	url = https://github.com/InsertKoinIO/koin-embedded.git
