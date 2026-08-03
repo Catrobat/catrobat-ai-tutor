@@ -1,7 +1,5 @@
 package org.catrobat.aitutor.di
 
-import embedded.koin.core.module.dsl.factoryOf
-import embedded.koin.dsl.module
 import org.catrobat.aitutor.data.ComposeResourcePromptTemplateRepository
 import org.catrobat.aitutor.data.DataStoreSettingsRepository
 import org.catrobat.aitutor.domain.repository.PromptTemplateRepository
@@ -10,6 +8,8 @@ import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
 import org.catrobat.aitutor.domain.usecase.GetInstalledAiAppsUseCase
 import org.catrobat.aitutor.domain.usecase.GetTutorialSeenStateUseCase
 import org.catrobat.aitutor.domain.usecase.SetTutorialSeenUseCase
+import org.catrobat.aitutor.internal.koin.core.module.dsl.factoryOf
+import org.catrobat.aitutor.internal.koin.dsl.module
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
 
 val commonModule =

@@ -76,7 +76,7 @@ kotlin {
             implementation(libs.viewmodel.compose)
 
             // Koin
-            api(libs.embedded.koin.core)
+            implementation(libs.embedded.koin.core)
 
             // Datastore
             implementation(libs.androidx.datastore)

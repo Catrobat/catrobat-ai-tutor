@@ -5,12 +5,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import embedded.koin.android.ext.koin.androidContext
-import embedded.koin.core.module.Module
-import embedded.koin.dsl.module
 import org.catrobat.aitutor.data.AndroidAiAppRepository
 import org.catrobat.aitutor.data.InstalledAiAppDataSource
 import org.catrobat.aitutor.domain.repository.AiAppRepository
+import org.catrobat.aitutor.internal.koin.android.ext.koin.androidContext
+import org.catrobat.aitutor.internal.koin.core.module.Module
+import org.catrobat.aitutor.internal.koin.dsl.module
 import org.catrobat.aitutor.ui.AiAppLauncher
 
 actual fun platformModule(): Module =

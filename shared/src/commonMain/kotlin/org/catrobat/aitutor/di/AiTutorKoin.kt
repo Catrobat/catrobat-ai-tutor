@@ -1,6 +1,6 @@
 package org.catrobat.aitutor.di
 
-import embedded.koin.core.KoinApplication
+import org.catrobat.aitutor.internal.koin.core.KoinApplication
 import kotlin.concurrent.Volatile
 
 internal object AiTutorKoin {

@@ -11,10 +11,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            name = "kotzilla"
-            url = uri("https://repository.kotzilla.io/repository/Koin-Embedded/")
-        }
+        mavenLocal()
     }
 }
 
