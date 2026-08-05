@@ -46,7 +46,6 @@ actual class AiAppLauncher(private val context: Context) {
                 val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName)
                 return if (launchIntent != null) {
                     context.startActivity(launchIntent)
-                    // You should probably copy the prompt to the clipboard here as well.
                     LaunchResult.Error(
                         AiTutorError(
                             type = AiTutorErrorType.PROMPT_NOT_SENT_DIRECTLY,
