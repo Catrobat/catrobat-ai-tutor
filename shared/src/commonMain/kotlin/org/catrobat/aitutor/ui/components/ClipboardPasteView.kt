@@ -57,13 +57,11 @@ internal fun ClipboardPasteView(
         onPaste = {
             scope.launch {
                 val text = clipboard.getClipEntry()?.getText()
-                if (!text.isNullOrBlank()) {
-                    onPasteResult(text)
-                } else {
+                if (text.isNullOrBlank()) {
                     onClipboardPasteError(noTextFoundError)
-                    onDismissRequest()
+                } else {
+                    onPasteResult(text)
                 }
-                if (!text.isNullOrBlank()) onPasteResult(text)
             }
         },
         onDismissRequest = onDismissRequest,

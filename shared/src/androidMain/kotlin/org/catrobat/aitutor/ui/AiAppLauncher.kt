@@ -40,7 +40,7 @@ actual class AiAppLauncher(private val context: Context) {
             chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(chooserIntent)
             return LaunchResult.Success
-       } catch (_: ActivityNotFoundException) {
+        } catch (_: ActivityNotFoundException) {
             // Fallback for apps that don't handle ACTION_SEND
             if (packageName != null) {
                 val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName)

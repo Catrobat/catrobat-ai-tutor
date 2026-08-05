@@ -211,6 +211,7 @@ fun AiTutorView(
                             message = message,
                         ),
                     )
+                    onDismissRequest()
                 },
             )
         }
