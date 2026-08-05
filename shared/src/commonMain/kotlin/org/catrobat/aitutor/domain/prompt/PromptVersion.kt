@@ -10,4 +10,9 @@ enum class PromptVersion(
     V3("Cursor AI Style", V3PromptStrategy()),
     V4("Trae AI Style", V4PromptStrategy()),
     POCKET_CODE_SPRITE("PocketCode Sprite", PocketCodeSpriteEditorPromptStrategy()),
+    EMBROIDERY_DESIGNER_TUTOR(
+        "Embroidery Designer Tutor",
+        EmbroideryDesignerTutorPromptStrategy(),
+        requiresUserQuestion = false,
+    ),
 }
