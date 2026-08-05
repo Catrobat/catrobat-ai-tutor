@@ -5,11 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.catrobat.aitutor.di.AiTutorKoin
+import org.catrobat.aitutor.domain.model.AiTutorError
+import org.catrobat.aitutor.domain.model.AiTutorErrorType
 import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.aitutor.ui.components.AboutScreen
@@ -86,6 +89,19 @@ private val aiTutorViewModelFactory =
  * reads the clipboard and delivers its text to this callback, then dismisses the view. Tapping
  * Cancel dismisses without invoking the callback. When `null` (the default), the view dismisses
  * immediately after the user selects an AI app, preserving the original behavior.
+ * @param onError An optional callback invoked when the AI Tutor encounters a recoverable error,
+ * such as failing to load the installed AI apps, attempting to paste an empty clipboard, or
+ * failing to launch the selected AI app. It receives an [AiTutorError] carrying both a
+ * [AiTutorErrorType] and a localized message the host app can surface (e.g. as a toast or
+ * snackbar), e.g.:
+ * ```
+ * onError = { error ->
+ *     when (error.type) {
+ *         AiTutorErrorType.CLIPBOARD_PASTE -> showToast(error.message)
+ *         else -> showToast(error.message)
+ *     }
+ * }
+ * ```
  */
 @Composable
 fun AiTutorView(
@@ -97,9 +113,17 @@ fun AiTutorView(
     outputContext: String? = null,
     systemContext: String? = null,
     onClipboardPaste: ((pastedText: String) -> Unit)? = null,
+    onError: ((error: AiTutorError) -> Unit)? = null,
 ) {
     val viewModel: AiTutorViewModel = viewModel(factory = aiTutorViewModelFactory)
     val uiState by viewModel.uiState.collectAsState()
+    val currentOnError by rememberUpdatedState(onError)
+
+    LaunchedEffect(Unit) {
+        viewModel.errors.collect { error ->
+            currentOnError?.invoke(error)
+        }
+    }
 
     LaunchedEffect(show, outputContext, promptVersion) {
         if (show) {
@@ -178,6 +202,15 @@ fun AiTutorView(
                 },
                 onDismissRequest = {
                     viewModel.resetPasteStep()
+                    onDismissRequest()
+                },
+                onClipboardPasteError = { message ->
+                    viewModel.emitError(
+                        AiTutorError(
+                            type = AiTutorErrorType.CLIPBOARD_PASTE,
+                            message = message,
+                        ),
+                    )
                     onDismissRequest()
                 },
             )

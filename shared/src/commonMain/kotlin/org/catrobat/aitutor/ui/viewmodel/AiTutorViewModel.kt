@@ -2,16 +2,19 @@ package org.catrobat.aitutor.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.catrobat.aitutor.domain.model.AiTutorError
+import org.catrobat.aitutor.domain.model.AiTutorErrorType
+import org.catrobat.aitutor.domain.model.LaunchResult
 import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.domain.usecase.CreateShareablePromptUseCase
 import org.catrobat.aitutor.domain.usecase.GetInstalledAiAppsUseCase
@@ -34,8 +37,8 @@ class AiTutorViewModel(
     private val _uiState = MutableStateFlow(AiTutorUiState())
     val uiState: StateFlow<AiTutorUiState> = _uiState.asStateFlow()
 
-    private val _errorMessageFlow = MutableSharedFlow<String>()
-    val errorMessageFlow: SharedFlow<String> = _errorMessageFlow.asSharedFlow()
+    private val _errors = Channel<AiTutorError>(Channel.BUFFERED)
+    val errors: Flow<AiTutorError> = _errors.receiveAsFlow()
 
     init {
         loadInstalledApps()
@@ -98,6 +101,12 @@ class AiTutorViewModel(
         _uiState.update { it.copy(currentStep = TutorUiStep.Hidden) }
     }
 
+    fun emitError(error: AiTutorError) {
+        viewModelScope.launch {
+            _errors.send(error)
+        }
+    }
+
     fun onCurrentStepChanged(newStep: TutorUiStep) {
         viewModelScope.launch {
             // Delay so the paste dialog doesn't appear immediately over the launching AI app.
@@ -144,7 +153,10 @@ class AiTutorViewModel(
                     promptVersion = currentState.selectedPromptVersion,
                     systemContext = systemContext,
                 )
-            aiAppLauncher.launchApp(finalPrompt, packageName)
+            when (val result = aiAppLauncher.launchApp(finalPrompt, packageName)) {
+                is LaunchResult.Error -> _errors.send(result.error)
+                LaunchResult.Success -> Unit
+            }
         }
     }
 
@@ -156,10 +168,14 @@ class AiTutorViewModel(
                 _uiState.update { it.copy(installedApps = apps, isLoading = false) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false) }
-                _errorMessageFlow.emit(
-                    getString(
-                        Res.string.error_loading_installed_ai_apps,
-                        e.message ?: "",
+                _errors.send(
+                    AiTutorError(
+                        type = AiTutorErrorType.LOADING_INSTALLED_APPS,
+                        message =
+                            getString(
+                                Res.string.error_loading_installed_ai_apps,
+                                e.message ?: "",
+                            ),
                     ),
                 )
             }

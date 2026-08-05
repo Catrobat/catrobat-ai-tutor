@@ -58,4 +58,5 @@
     <string name="paste_answer_title">Paste AI Answer</string>
     <string name="paste_answer_description">If you've copied the AI's answer, tap Paste below to apply it. If not, tap Cancel to continue your work.</string>
     <string name="paste_from_clipboard">Paste from Clipboard</string>
+    <string name="paste_answer_error_no_text_found">No text found in clipboard. Please copy the AI's answer first.</string>
 </resources>
