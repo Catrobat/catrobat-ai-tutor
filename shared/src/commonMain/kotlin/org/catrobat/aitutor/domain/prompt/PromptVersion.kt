@@ -9,5 +9,6 @@ enum class PromptVersion(
     V2("VSCode/Copilot Style", V2PromptStrategy()),
     V3("Cursor AI Style", V3PromptStrategy()),
     V4("Trae AI Style", V4PromptStrategy()),
-    POCKET_CODE_SPRITE("PocketCode Sprite", PocketCodeSpriteEditorPromptStrategy()),
+    POCKET_CODE_SPRITE_EDITOR("PocketCode Sprite Editor", PocketCodeSpriteEditorPromptStrategy()),
+    EMBROIDERY_DESIGNER_SPRITE_EDITOR("Embroidery Designer Sprite Editor", EmbroideryDesignerSpriteEditorPromptStrategy()),
 }
