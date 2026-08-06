@@ -215,6 +215,15 @@ fun AiTutorView(
                     viewModel.resetClipboardFlow()
                     onDismissRequest()
                 },
+                onClipboardPasteError = { message ->
+                    viewModel.emitError(
+                        AiTutorError(
+                            type = AiTutorErrorType.CLIPBOARD_PASTE,
+                            message = message,
+                        ),
+                    )
+                    onDismissRequest()
+                },
             )
         }
 
@@ -224,15 +233,6 @@ fun AiTutorView(
                 onSwitchToPaste = { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingPaste) },
                 onDismissRequest = {
                     viewModel.resetClipboardFlow()
-                    onDismissRequest()
-                },
-                onClipboardPasteError = { message ->
-                    viewModel.emitError(
-                        AiTutorError(
-                            type = AiTutorErrorType.CLIPBOARD_PASTE,
-                            message = message,
-                        ),
-                    )
                     onDismissRequest()
                 },
             )
