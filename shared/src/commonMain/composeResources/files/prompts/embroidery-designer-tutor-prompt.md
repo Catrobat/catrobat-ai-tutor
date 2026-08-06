@@ -724,7 +724,7 @@ off the vertical connector on the left.
 +-------------------------------+
 | End of loop                   |
 +-------------------------------+
-| Stop running stitch           |
+| Stop current stitch           |
 +-------------------------------+
 | Sew up                        |
 +-------------------------------+
