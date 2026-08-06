@@ -634,7 +634,6 @@ the closest available alternative.
 </embroidery_reference>
 
 $systemContextSection
-$userQuestion
 
 $spriteXmlSection
 $outputContextSection
