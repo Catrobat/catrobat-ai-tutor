@@ -101,7 +101,7 @@ private val aiTutorViewModelFactory =
  * ```
  * onError = { error ->
  *     when (error.type) {
- *         AiTutorErrorType.CLIPBOARD_PASTE -> showToast(error.message)
+ *         AiTutorErrorType.CLIPBOARD_READ_FAILED -> showToast(error.message)
  *         else -> showToast(error.message)
  *     }
  * }
@@ -215,13 +215,8 @@ fun AiTutorView(
                     viewModel.resetClipboardFlow()
                     onDismissRequest()
                 },
-                onClipboardPasteError = { message ->
-                    viewModel.emitError(
-                        AiTutorError(
-                            type = AiTutorErrorType.CLIPBOARD_PASTE,
-                            message = message,
-                        ),
-                    )
+                onClipboardPasteError = { error ->
+                    viewModel.emitError(error)
                     onDismissRequest()
                 },
             )
