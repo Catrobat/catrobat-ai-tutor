@@ -28,10 +28,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.coroutines.launch
+import org.catrobat.aitutor.domain.model.AiTutorError
+import org.catrobat.aitutor.domain.model.AiTutorErrorType
+import org.catrobat.aitutor.domain.model.ClipboardReadResult
 import org.catrobat.aitutor.ui.theme.AiTutorColors
 import org.catrobat.aitutor.util.getText
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.cancel
+import org.catrobat.shared.generated.resources.clipboard_read_empty
+import org.catrobat.shared.generated.resources.clipboard_read_failed
 import org.catrobat.shared.generated.resources.paste_answer_description
 import org.catrobat.shared.generated.resources.paste_answer_title
 import org.catrobat.shared.generated.resources.paste_from_clipboard
@@ -44,9 +49,14 @@ internal fun ClipboardPasteView(
     onPasteResult: (String) -> Unit,
     onSwitchToCopy: () -> Unit,
     onDismissRequest: () -> Unit,
+    onClipboardPasteError: (AiTutorError) -> Unit,
 ) {
     val clipboard = LocalClipboard.current
     val scope = rememberCoroutineScope()
+
+    val emptyMessage = stringResource(Res.string.clipboard_read_empty)
+    val failedMessage = stringResource(Res.string.clipboard_read_failed)
+
     ClipboardPasteViewContent(
         title = stringResource(Res.string.paste_answer_title),
         description = stringResource(Res.string.paste_answer_description),
@@ -55,8 +65,25 @@ internal fun ClipboardPasteView(
         switchToCopyText = stringResource(Res.string.switch_to_copy_code),
         onPaste = {
             scope.launch {
-                val text = clipboard.getClipEntry()?.getText()
-                if (!text.isNullOrBlank()) onPasteResult(text)
+                val result = clipboard.getClipEntry()?.getText() ?: ClipboardReadResult.Empty
+                when (result) {
+                    is ClipboardReadResult.Success -> onPasteResult(result.text)
+                    ClipboardReadResult.Empty ->
+                        onClipboardPasteError(
+                            AiTutorError(
+                                type = AiTutorErrorType.CLIPBOARD_READ_EMPTY,
+                                message = emptyMessage,
+                            ),
+                        )
+
+                    is ClipboardReadResult.Error ->
+                        onClipboardPasteError(
+                            AiTutorError(
+                                type = AiTutorErrorType.CLIPBOARD_READ_FAILED,
+                                message = failedMessage,
+                            ),
+                        )
+                }
             }
         },
         onSwitchToCopy = onSwitchToCopy,

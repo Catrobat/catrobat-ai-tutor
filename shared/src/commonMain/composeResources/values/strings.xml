@@ -62,6 +62,8 @@
     <string name="paste_answer_description">If you've copied the AI's answer, tap Paste below to apply it. If not, tap Cancel to continue your work.</string>
     <string name="paste_from_clipboard">Paste from Clipboard</string>
     <string name="switch_to_copy_code">Want to copy your code instead?</string>
+    <string name="clipboard_read_empty">No text found in clipboard. Please copy the AI's answer first.</string>
+    <string name="clipboard_read_failed">Failed to read from clipboard. Please try again.</string>
 
     <!--    ClipboardCopyView-->
     <string name="copy_code_context_title">Copy Code Context</string>
