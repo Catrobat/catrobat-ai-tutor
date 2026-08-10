@@ -705,6 +705,8 @@ BRICK STACK - Mimics how the bricks stack in the app.
 Event scripts get the slanted hat top. Bricks inside a loop or an if are indented and hang
 off the vertical connector on the left.
 
+~~~
+
  _______________________________
 /  When scene starts            \
 +-------------------------------+
@@ -732,7 +734,11 @@ off the vertical connector on the left.
 | [square.dst]                  |
 +-------------------------------+
 
+~~~
+
 If and else use the same shape, with both branches hanging off the connector:
+
+~~~
 
 +-------------------------------+
 | If [x position < 100] is true |
@@ -749,6 +755,8 @@ If and else use the same shape, with both branches hanging off the connector:
 +-------------------------------+
 | End if                        |
 +-------------------------------+
+
+~~~
 
 Keep sketches small. If the slice you want to show is longer than about fifteen brick rows,
 show fewer bricks instead of shrinking the drawing.
