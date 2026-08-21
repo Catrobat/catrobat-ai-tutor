@@ -8,6 +8,7 @@ A standalone AI Tutor library for Catrobat and other Android apps.
 - `AiTutorView` composable with tutorial, input field, and copy-paste fallback.
 - Pre-styled `AiTutorFloatingActionButton` to launch the tutor.
 - Dynamic UI for including optional context (e.g., compiler errors).
+- `AiTutorTheme` to restyle the tutor with your own colors.
 - Kotlin Multiplatform (Android working, iOS planned).
 
 ## Getting Started
@@ -67,6 +68,32 @@ Scaffold(
 - `systemContext` → optional, provide additional context, such as the programming language, version, or framework being used.
 - `onClipboardPaste` → optional, enables the paste-back flow. When provided, the tutor shows a "Paste AI Answer" dialog after the user returns from the AI app and delivers the clipboard text to this callback.
 - `onError` → optional, invoked when the tutor hits a recoverable error (failed to load AI apps, empty-clipboard paste, or an app-launch problem). It receives an `AiTutorError` with a `type` (`AiTutorErrorType`) and a localized `message`.
+
+## Theming
+
+The tutor uses its own colors by default. To apply your app's branding
+instead, wrap it in `AiTutorTheme`:
+
+```kotlin
+AiTutorTheme(colors = AiTutorColors.default().copy(primary = Color(0xFF00E5A0))) {
+    AiTutorView(
+        show = showTutor,
+        onDismissRequest = { showTutor = false },
+        codeContext = "...",
+    )
+}
+```
+
+The example above changes `primary` and leaves every other color at its
+default. You can override any of them:
+
+- `primary` → accent color for calls to action, links, and selection indicators.
+- `onPrimary` → content color drawn on top of `primary`.
+- `surface` → background of dialogs, cards, and the about screen.
+- `onSurface` → primary text and icon color drawn on top of `surface`.
+- `onSurfaceVariant` → secondary text and icon color used for supporting text.
+- `secondaryContainer` → background of pills, chips, and menus.
+- `onSecondaryContainer` → content color drawn on top of `secondaryContainer`.
 
 ## Dependencies
 
