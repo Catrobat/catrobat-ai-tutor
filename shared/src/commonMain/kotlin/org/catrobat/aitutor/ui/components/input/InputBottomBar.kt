@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.cancel
 import org.catrobat.shared.generated.resources.send
@@ -41,7 +41,7 @@ internal fun InputBottomBar(
         TextButton(onClick = onCancel) {
             Text(
                 text = stringResource(Res.string.cancel),
-                color = AiTutorColors.onSurfaceVariant,
+                color = AiTutorTheme.colors.onSurfaceVariant,
             )
         }
         Spacer(Modifier.width(8.dp))
@@ -50,10 +50,10 @@ internal fun InputBottomBar(
             enabled = sendEnabled,
             colors =
                 ButtonDefaults.buttonColors(
-                    containerColor = AiTutorColors.primary,
-                    disabledContainerColor = AiTutorColors.primary.copy(alpha = 0.12f),
-                    contentColor = AiTutorColors.onPrimary,
-                    disabledContentColor = AiTutorColors.onPrimary.copy(alpha = 0.38f),
+                    containerColor = AiTutorTheme.colors.primary,
+                    disabledContainerColor = AiTutorTheme.colors.primary.copy(alpha = 0.12f),
+                    contentColor = AiTutorTheme.colors.onPrimary,
+                    disabledContentColor = AiTutorTheme.colors.onPrimary.copy(alpha = 0.38f),
                 ),
         ) {
             Icon(
@@ -67,7 +67,7 @@ internal fun InputBottomBar(
 @Preview
 @Composable
 private fun InputBottomBarPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(Modifier.padding(16.dp)) {
             InputBottomBar(
                 sendEnabled = true,

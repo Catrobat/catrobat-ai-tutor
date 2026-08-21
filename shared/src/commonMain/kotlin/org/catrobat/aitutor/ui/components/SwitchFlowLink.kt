@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 
 @Composable
 internal fun SwitchFlowLink(
@@ -47,13 +47,13 @@ internal fun SwitchFlowLink(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.CompareArrows,
                 contentDescription = null,
-                tint = AiTutorColors.primary,
+                tint = AiTutorTheme.colors.primary,
                 modifier = Modifier.size(18.dp),
             )
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
-                color = AiTutorColors.primary,
+                color = AiTutorTheme.colors.primary,
                 fontWeight = FontWeight.Medium,
             )
         }

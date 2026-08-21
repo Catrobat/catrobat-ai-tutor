@@ -45,7 +45,7 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.chipColors
 import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.catrobat_ai_tutor
 import org.catrobat.shared.generated.resources.close
@@ -71,7 +71,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         Scaffold(
-            containerColor = AiTutorColors.surface,
+            containerColor = AiTutorTheme.colors.surface,
             topBar = {
                 TopAppBar(
                     title = { /* No title needed */ },
@@ -84,7 +84,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = stringResource(Res.string.close),
-                                tint = AiTutorColors.onSurfaceVariant,
+                                tint = AiTutorTheme.colors.onSurfaceVariant,
                             )
                         }
                     },
@@ -100,18 +100,18 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 colors =
                     LibraryDefaults.libraryColors(
-                        backgroundColor = AiTutorColors.surface,
-                        contentColor = AiTutorColors.onSurface,
-                        dialogConfirmButtonColor = AiTutorColors.primary,
+                        backgroundColor = AiTutorTheme.colors.surface,
+                        contentColor = AiTutorTheme.colors.onSurface,
+                        dialogConfirmButtonColor = AiTutorTheme.colors.primary,
                         licenseChipColors =
                             LibraryDefaults.chipColors(
-                                containerColor = AiTutorColors.primary,
-                                contentColor = AiTutorColors.onPrimary,
+                                containerColor = AiTutorTheme.colors.primary,
+                                contentColor = AiTutorTheme.colors.onPrimary,
                             ),
                         versionChipColors =
                             LibraryDefaults.chipColors(
-                                containerColor = AiTutorColors.secondaryContainer,
-                                contentColor = AiTutorColors.onSecondaryContainer,
+                                containerColor = AiTutorTheme.colors.secondaryContainer,
+                                contentColor = AiTutorTheme.colors.onSecondaryContainer,
                             ),
                     ),
                 divider = {
@@ -136,13 +136,13 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                                 text = stringResource(Res.string.catrobat_ai_tutor),
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = AiTutorColors.onSurface,
+                                color = AiTutorTheme.colors.onSurface,
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
                                 text = stringResource(Res.string.version, "0.0.1"),
                                 fontSize = 16.sp,
-                                color = AiTutorColors.onSurfaceVariant,
+                                color = AiTutorTheme.colors.onSurfaceVariant,
                             )
                             Spacer(Modifier.height(24.dp))
                         }
@@ -195,7 +195,7 @@ private fun SectionHeader(title: String) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
-        color = AiTutorColors.onSurfaceVariant,
+        color = AiTutorTheme.colors.onSurfaceVariant,
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -211,7 +211,7 @@ private fun DeveloperInfoCard(
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = AiTutorColors.secondaryContainer,
+        color = AiTutorTheme.colors.secondaryContainer,
         modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth(),
     ) {
         Row(
@@ -234,9 +234,9 @@ private fun DeveloperInfoCard(
                 Text(
                     text = name,
                     fontWeight = FontWeight.SemiBold,
-                    color = AiTutorColors.onSecondaryContainer,
+                    color = AiTutorTheme.colors.onSecondaryContainer,
                 )
-                Text(text = githubUrl, fontSize = 14.sp, color = AiTutorColors.onSurfaceVariant)
+                Text(text = githubUrl, fontSize = 14.sp, color = AiTutorTheme.colors.onSurfaceVariant)
             }
         }
     }
@@ -251,7 +251,7 @@ private fun LinkCard(
     val uriHandler = LocalUriHandler.current
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = AiTutorColors.secondaryContainer,
+        color = AiTutorTheme.colors.secondaryContainer,
         modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth(),
         onClick = { uriHandler.openUri(url) },
     ) {
@@ -265,10 +265,10 @@ private fun LinkCard(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = AiTutorColors.onSecondaryContainer,
+                tint = AiTutorTheme.colors.onSecondaryContainer,
             )
             Spacer(Modifier.width(16.dp))
-            Text(text = title, color = AiTutorColors.onSecondaryContainer)
+            Text(text = title, color = AiTutorTheme.colors.onSecondaryContainer)
         }
     }
 }

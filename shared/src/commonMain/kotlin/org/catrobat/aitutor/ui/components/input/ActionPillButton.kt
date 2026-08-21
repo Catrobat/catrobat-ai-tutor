@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -34,7 +34,7 @@ internal fun ActionPillButton(
         onClick = onClick,
         modifier = modifier.height(40.dp),
         shape = RoundedCornerShape(16.dp),
-        color = AiTutorColors.secondaryContainer,
+        color = AiTutorTheme.colors.secondaryContainer,
     ) {
         Row(
             modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp),
@@ -46,7 +46,7 @@ internal fun ActionPillButton(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
-                color = AiTutorColors.onSecondaryContainer,
+                color = AiTutorTheme.colors.onSecondaryContainer,
                 maxLines = 1,
             )
         }
@@ -56,14 +56,14 @@ internal fun ActionPillButton(
 @Preview
 @Composable
 private fun ActionPillButtonPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(Modifier.padding(16.dp)) {
             ActionPillButton(
                 icon = { modifier ->
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.HelpOutline,
                         contentDescription = null,
-                        tint = AiTutorColors.onSecondaryContainer,
+                        tint = AiTutorTheme.colors.onSecondaryContainer,
                         modifier = modifier,
                     )
                 },

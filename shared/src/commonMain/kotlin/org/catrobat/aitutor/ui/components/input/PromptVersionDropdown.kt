@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.catrobat.aitutor.domain.prompt.PromptVersion
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.prompt_version_debug
 import org.jetbrains.compose.resources.stringResource
@@ -59,23 +59,23 @@ internal fun PromptVersionDropdown(
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors =
                 TextFieldDefaults.colors().copy(
-                    focusedContainerColor = AiTutorColors.secondaryContainer,
-                    unfocusedContainerColor = AiTutorColors.secondaryContainer,
+                    focusedContainerColor = AiTutorTheme.colors.secondaryContainer,
+                    unfocusedContainerColor = AiTutorTheme.colors.secondaryContainer,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = AiTutorColors.onSurface,
-                    focusedLabelColor = AiTutorColors.onSurfaceVariant,
-                    unfocusedLabelColor = AiTutorColors.onSurfaceVariant,
-                    focusedTextColor = AiTutorColors.onSurface,
-                    unfocusedTextColor = AiTutorColors.onSurfaceVariant,
-                    focusedTrailingIconColor = AiTutorColors.onSurfaceVariant,
-                    unfocusedTrailingIconColor = AiTutorColors.onSurfaceVariant,
+                    cursorColor = AiTutorTheme.colors.onSurface,
+                    focusedLabelColor = AiTutorTheme.colors.onSurfaceVariant,
+                    unfocusedLabelColor = AiTutorTheme.colors.onSurfaceVariant,
+                    focusedTextColor = AiTutorTheme.colors.onSurface,
+                    unfocusedTextColor = AiTutorTheme.colors.onSurfaceVariant,
+                    focusedTrailingIconColor = AiTutorTheme.colors.onSurfaceVariant,
+                    unfocusedTrailingIconColor = AiTutorTheme.colors.onSurfaceVariant,
                 ),
             shape = RoundedCornerShape(16.dp),
         )
         ExposedDropdownMenu(
             expanded = expanded,
-            containerColor = AiTutorColors.secondaryContainer,
+            containerColor = AiTutorTheme.colors.secondaryContainer,
             onDismissRequest = { expanded = false },
         ) {
             availablePromptVersions.forEach { selectionOption ->
@@ -88,8 +88,8 @@ internal fun PromptVersionDropdown(
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     colors =
                         MenuDefaults.itemColors().copy(
-                            textColor = AiTutorColors.onSurface,
-                            disabledTextColor = AiTutorColors.onSurfaceVariant,
+                            textColor = AiTutorTheme.colors.onSurface,
+                            disabledTextColor = AiTutorTheme.colors.onSurfaceVariant,
                         ),
                 )
             }
@@ -100,7 +100,7 @@ internal fun PromptVersionDropdown(
 @Preview
 @Composable
 private fun PromptVersionDropdownPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(Modifier.padding(16.dp)) {
             PromptVersionDropdown(
                 availablePromptVersions = PromptVersion.entries,

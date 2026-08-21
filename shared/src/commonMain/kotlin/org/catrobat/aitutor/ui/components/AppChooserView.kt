@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.aitutor.ui.viewmodel.AiTutorUiState
 import org.catrobat.aitutor.util.platformImagePainter
 import org.catrobat.shared.generated.resources.Res
@@ -48,7 +48,7 @@ internal fun AppChooserView(
                     Modifier
                         .padding(horizontal = 16.dp, vertical = 24.dp)
                         .widthIn(max = 580.dp),
-                color = AiTutorColors.surface.copy(alpha = 0.95f),
+                color = AiTutorTheme.colors.surface.copy(alpha = 0.95f),
                 shape = RoundedCornerShape(24.dp),
                 shadowElevation = 8.dp,
             ) {
@@ -56,11 +56,11 @@ internal fun AppChooserView(
                     Text(
                         text = stringResource(Res.string.choose_ai_app_of_your_choice),
                         style = MaterialTheme.typography.titleMedium,
-                        color = AiTutorColors.onSurface,
+                        color = AiTutorTheme.colors.onSurface,
                         modifier = Modifier.padding(bottom = 16.dp),
                     )
                     if (uiState.isLoading) {
-                        CircularProgressIndicator(color = AiTutorColors.primary)
+                        CircularProgressIndicator(color = AiTutorTheme.colors.primary)
                     } else {
                         FlowRow(
                             modifier = Modifier.fillMaxWidth(),

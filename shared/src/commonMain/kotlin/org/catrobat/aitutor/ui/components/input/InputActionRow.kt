@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.ic_content_paste
 import org.jetbrains.compose.resources.painterResource
@@ -60,7 +60,7 @@ internal fun InputActionRow(
                     Icon(
                         painter = painterResource(Res.drawable.ic_content_paste),
                         contentDescription = null,
-                        tint = AiTutorColors.onSecondaryContainer,
+                        tint = AiTutorTheme.colors.onSecondaryContainer,
                         modifier = modifier,
                     )
                 },
@@ -73,7 +73,7 @@ internal fun InputActionRow(
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = null,
-                        tint = AiTutorColors.onSecondaryContainer,
+                        tint = AiTutorTheme.colors.onSecondaryContainer,
                         modifier = modifier,
                     )
                 },
@@ -87,7 +87,7 @@ internal fun InputActionRow(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.HelpOutline,
                         contentDescription = null,
-                        tint = AiTutorColors.onSecondaryContainer,
+                        tint = AiTutorTheme.colors.onSecondaryContainer,
                         modifier = modifier,
                     )
                 },
@@ -100,7 +100,7 @@ internal fun InputActionRow(
                     Icon(
                         imageVector = Icons.Outlined.Info,
                         contentDescription = null,
-                        tint = AiTutorColors.onSecondaryContainer,
+                        tint = AiTutorTheme.colors.onSecondaryContainer,
                         modifier = modifier,
                     )
                 },
@@ -115,7 +115,7 @@ internal fun InputActionRow(
 @Preview
 @Composable
 private fun InputActionRowWithClipboardFlowPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(Modifier.padding(16.dp)) {
             InputActionRow(
                 hasClipboardFlow = true,
@@ -136,7 +136,7 @@ private fun InputActionRowWithClipboardFlowPreview() {
 @Preview
 @Composable
 private fun InputActionRowWithoutClipboardFlowPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(Modifier.padding(16.dp)) {
             InputActionRow(
                 hasClipboardFlow = false,

@@ -67,6 +67,9 @@ private val aiTutorViewModelFactory =
  * )
  * ```
  *
+ * The tutor uses its own colors by default. Wrap it in
+ * [org.catrobat.aitutor.ui.theme.AiTutorTheme] to apply the host app's own palette instead.
+ *
  * @param modifier The [Modifier] to be applied to the component.
  * @param show A boolean that controls the visibility of the AI Tutor view. Set to `true` to
  * display it and `false` to hide it.
