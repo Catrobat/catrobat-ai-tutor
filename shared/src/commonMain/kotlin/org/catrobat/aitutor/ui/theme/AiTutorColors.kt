@@ -2,7 +2,6 @@ package org.catrobat.aitutor.ui.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import org.catrobat.aitutor.ui.theme.AiTutorColors.Companion.default
 
 /**
  * The colors the AI Tutor draws itself with.
