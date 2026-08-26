@@ -11,4 +11,9 @@ enum class PromptVersion(
     V4("Trae AI Style", V4PromptStrategy()),
     POCKET_CODE_SPRITE_EDITOR("PocketCode Sprite Editor", PocketCodeSpriteEditorPromptStrategy()),
     EMBROIDERY_DESIGNER_SPRITE_EDITOR("Embroidery Designer Sprite Editor", EmbroideryDesignerSpriteEditorPromptStrategy()),
+    EMBROIDERY_DESIGNER_TUTOR(
+        "Embroidery Designer Tutor",
+        EmbroideryDesignerTutorPromptStrategy(),
+        requiresUserQuestion = false,
+    ),
 }

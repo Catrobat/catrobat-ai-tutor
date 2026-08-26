@@ -265,3 +265,44 @@ internal class EmbroideryDesignerSpriteEditorPromptStrategy : PromptStrategy {
             .trimIndent()
     }
 }
+
+internal class EmbroideryDesignerTutorPromptStrategy : PromptStrategy {
+    override val templateFileName = "embroidery-designer-tutor-prompt.md"
+
+    override fun createPrompt(
+        template: String,
+        userQuestion: String,
+        isCodeContextIncluded: Boolean,
+        codeContext: String?,
+        isOutputContextIncluded: Boolean?,
+        outputContext: String?,
+        systemContext: String?,
+    ): String {
+        val spriteXmlSection =
+            if (isCodeContextIncluded && !codeContext.isNullOrBlank()) {
+                "**Current Sprite XML:**\n```xml\n$codeContext\n```"
+            } else {
+                ""
+            }
+
+        val outputContextSection =
+            if (isOutputContextIncluded == true && !outputContext.isNullOrBlank()) {
+                "**Runtime Output / Error:**\n```\n$outputContext\n```"
+            } else {
+                ""
+            }
+
+        val systemContextSection =
+            if (!systemContext.isNullOrBlank()) {
+                "**Project / Scene Context:**\n$systemContext\n"
+            } else {
+                ""
+            }
+
+        return template
+            .replace("\$systemContextSection", systemContextSection)
+            .replace("\$spriteXmlSection", spriteXmlSection)
+            .replace("\$outputContextSection", outputContextSection)
+            .trimIndent()
+    }
+}
