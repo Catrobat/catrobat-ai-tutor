@@ -2,7 +2,8 @@ package org.catrobat.aitutor.domain.model
 
 enum class AiTutorErrorType {
     LOADING_INSTALLED_APPS,
-    CLIPBOARD_PASTE,
+    CLIPBOARD_READ_EMPTY,
+    CLIPBOARD_READ_FAILED,
     NO_APP_FOUND,
     COULD_NOT_LAUNCH_APP,
     PROMPT_NOT_SENT_DIRECTLY,

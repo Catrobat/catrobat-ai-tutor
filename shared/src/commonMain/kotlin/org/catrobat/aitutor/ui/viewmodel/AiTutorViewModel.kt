@@ -97,7 +97,7 @@ class AiTutorViewModel(
         _uiState.update { it.copy(selectedPromptVersion = version) }
     }
 
-    fun resetPasteStep() {
+    fun resetClipboardFlow() {
         _uiState.update { it.copy(currentStep = TutorUiStep.Hidden) }
     }
 
@@ -110,7 +110,7 @@ class AiTutorViewModel(
     fun onCurrentStepChanged(newStep: TutorUiStep) {
         viewModelScope.launch {
             // Delay so the paste dialog doesn't appear immediately over the launching AI app.
-            if (newStep == TutorUiStep.AwaitingPaste) {
+            if (_uiState.value.currentStep == TutorUiStep.ChoosingApp && newStep == TutorUiStep.AwaitingPaste) {
                 delay(500.milliseconds)
             }
 

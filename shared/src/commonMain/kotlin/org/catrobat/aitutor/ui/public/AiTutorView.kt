@@ -17,9 +17,10 @@ import org.catrobat.aitutor.domain.prompt.PromptVersion
 import org.catrobat.aitutor.ui.TutorUiStep
 import org.catrobat.aitutor.ui.components.AboutScreen
 import org.catrobat.aitutor.ui.components.AppChooserView
+import org.catrobat.aitutor.ui.components.ClipboardCopyView
 import org.catrobat.aitutor.ui.components.ClipboardPasteView
-import org.catrobat.aitutor.ui.components.InputView
 import org.catrobat.aitutor.ui.components.TutorialView
+import org.catrobat.aitutor.ui.components.input.InputView
 import org.catrobat.aitutor.ui.viewmodel.AiTutorViewModel
 
 private val aiTutorViewModelFactory =
@@ -88,7 +89,10 @@ private val aiTutorViewModelFactory =
  * "Paste AI Answer" dialog when the user returns to the host app. Tapping "Paste from clipboard"
  * reads the clipboard and delivers its text to this callback, then dismisses the view. Tapping
  * Cancel dismisses without invoking the callback. When `null` (the default), the view dismisses
- * immediately after the user selects an AI app, preserving the original behavior.
+ * immediately after the user selects an AI app, preserving the original behavior. This also
+ * controls whether the input screen shows the "Paste" and "Copy" shortcuts, which let the user
+ * jump straight to the paste dialog or copy [codeContext] to the clipboard without picking an
+ * AI app first.
  * @param onError An optional callback invoked when the AI Tutor encounters a recoverable error,
  * such as failing to load the installed AI apps, attempting to paste an empty clipboard, or
  * failing to launch the selected AI app. It receives an [AiTutorError] carrying both a
@@ -97,7 +101,7 @@ private val aiTutorViewModelFactory =
  * ```
  * onError = { error ->
  *     when (error.type) {
- *         AiTutorErrorType.CLIPBOARD_PASTE -> showToast(error.message)
+ *         AiTutorErrorType.CLIPBOARD_READ_FAILED -> showToast(error.message)
  *         else -> showToast(error.message)
  *     }
  * }
@@ -170,6 +174,12 @@ fun AiTutorView(
                     } else {
                         null
                     },
+                onCopyPromptRequest =
+                    if (onClipboardPaste != null) {
+                        { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingCopy) }
+                    } else {
+                        null
+                    },
             )
         }
 
@@ -197,20 +207,27 @@ fun AiTutorView(
             ClipboardPasteView(
                 onPasteResult = { text ->
                     onClipboardPaste?.invoke(text)
-                    viewModel.resetPasteStep()
+                    viewModel.resetClipboardFlow()
                     onDismissRequest()
                 },
+                onSwitchToCopy = { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingCopy) },
                 onDismissRequest = {
-                    viewModel.resetPasteStep()
+                    viewModel.resetClipboardFlow()
                     onDismissRequest()
                 },
-                onClipboardPasteError = { message ->
-                    viewModel.emitError(
-                        AiTutorError(
-                            type = AiTutorErrorType.CLIPBOARD_PASTE,
-                            message = message,
-                        ),
-                    )
+                onClipboardPasteError = { error ->
+                    viewModel.emitError(error)
+                    onDismissRequest()
+                },
+            )
+        }
+
+        TutorUiStep.AwaitingCopy -> {
+            ClipboardCopyView(
+                codeContext = codeContext.orEmpty(),
+                onSwitchToPaste = { viewModel.onCurrentStepChanged(TutorUiStep.AwaitingPaste) },
+                onDismissRequest = {
+                    viewModel.resetClipboardFlow()
                     onDismissRequest()
                 },
             )
