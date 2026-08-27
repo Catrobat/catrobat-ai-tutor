@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.coroutines.launch
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.ask_your_question
 import org.catrobat.shared.generated.resources.choose_your_ai
@@ -103,7 +103,7 @@ internal fun TutorialView(onDismissRequest: () -> Unit) {
                 Modifier
                     .padding(horizontal = 24.dp, vertical = 32.dp)
                     .widthIn(max = 580.dp),
-            color = AiTutorColors.surface.copy(alpha = 0.95f),
+            color = AiTutorTheme.colors.surface.copy(alpha = 0.95f),
             shape = RoundedCornerShape(24.dp),
             shadowElevation = 8.dp,
         ) {
@@ -130,7 +130,7 @@ private fun TutorialPagerContent(
         Text(
             text = stringResource(Res.string.tutorial_header),
             style = MaterialTheme.typography.headlineSmall,
-            color = AiTutorColors.onSurface,
+            color = AiTutorTheme.colors.onSurface,
             fontWeight = FontWeight.Bold,
         )
         Spacer(Modifier.height(24.dp))
@@ -179,14 +179,14 @@ private fun TutorialPage(data: TutorialPageData) {
             text = stringResource(data.title),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            color = AiTutorColors.onSurface,
+            color = AiTutorTheme.colors.onSurface,
             textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(8.dp))
         Text(
             text = stringResource(data.description),
             style = MaterialTheme.typography.bodyMedium,
-            color = AiTutorColors.onSurfaceVariant,
+            color = AiTutorTheme.colors.onSurfaceVariant,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
@@ -203,9 +203,9 @@ private fun PagerIndicator(pagerState: PagerState) {
             val color by animateColorAsState(
                 targetValue =
                     if (pagerState.currentPage == iteration) {
-                        AiTutorColors.primary
+                        AiTutorTheme.colors.primary
                     } else {
-                        AiTutorColors.primary.copy(
+                        AiTutorTheme.colors.primary.copy(
                             alpha = 0.3f,
                         )
                     },
@@ -241,18 +241,18 @@ private fun PagerButtons(
             Spacer(modifier = Modifier.width(1.dp)) // To balance the Row
         } else {
             TextButton(onClick = onDone) {
-                Text(text = stringResource(Res.string.skip), color = AiTutorColors.primary)
+                Text(text = stringResource(Res.string.skip), color = AiTutorTheme.colors.primary)
             }
         }
 
         // "Next" or "Got It!" button
         Button(
             onClick = if (isLastPage) onDone else onNext,
-            colors = ButtonDefaults.buttonColors(containerColor = AiTutorColors.primary),
+            colors = ButtonDefaults.buttonColors(containerColor = AiTutorTheme.colors.primary),
         ) {
             Text(
                 text = stringResource(if (isLastPage) Res.string.got_it else Res.string.next),
-                color = AiTutorColors.onPrimary,
+                color = AiTutorTheme.colors.onPrimary,
             )
         }
     }

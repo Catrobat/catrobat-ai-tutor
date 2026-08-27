@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -49,7 +49,7 @@ internal fun MoreActionPillButton(
                 Icon(
                     imageVector = Icons.Default.MoreHoriz,
                     contentDescription = null,
-                    tint = AiTutorColors.onSecondaryContainer,
+                    tint = AiTutorTheme.colors.onSecondaryContainer,
                     modifier = iconModifier,
                 )
             },
@@ -65,18 +65,18 @@ internal fun MoreActionPillButton(
             ) {
                 Surface(
                     modifier = Modifier.width(180.dp),
-                    color = AiTutorColors.secondaryContainer,
+                    color = AiTutorTheme.colors.secondaryContainer,
                     shape = RoundedCornerShape(16.dp),
                     shadowElevation = 8.dp,
                 ) {
                     Column {
                         DropdownMenuItem(
-                            text = { Text(text = helpLabel, color = AiTutorColors.onSurface) },
+                            text = { Text(text = helpLabel, color = AiTutorTheme.colors.onSurface) },
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.HelpOutline,
                                     contentDescription = null,
-                                    tint = AiTutorColors.onSurfaceVariant,
+                                    tint = AiTutorTheme.colors.onSurfaceVariant,
                                 )
                             },
                             onClick = {
@@ -85,12 +85,12 @@ internal fun MoreActionPillButton(
                             },
                         )
                         DropdownMenuItem(
-                            text = { Text(text = aboutLabel, color = AiTutorColors.onSurface) },
+                            text = { Text(text = aboutLabel, color = AiTutorTheme.colors.onSurface) },
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Outlined.Info,
                                     contentDescription = null,
-                                    tint = AiTutorColors.onSurfaceVariant,
+                                    tint = AiTutorTheme.colors.onSurfaceVariant,
                                 )
                             },
                             onClick = {
@@ -122,7 +122,7 @@ private class UpwardPopupPositionProvider(private val gapPx: Int) : PopupPositio
 @Preview
 @Composable
 private fun MoreActionPillButtonPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(
             Modifier.padding(
                 top = 102.dp,

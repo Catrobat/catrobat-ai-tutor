@@ -9,7 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.ask_ai_tutor
 import org.jetbrains.compose.resources.stringResource
@@ -56,8 +56,8 @@ fun AiTutorFloatingActionButton(
         onClick = onClick,
         modifier = modifier,
         shape = CircleShape,
-        containerColor = AiTutorColors.primary,
-        contentColor = AiTutorColors.onPrimary,
+        containerColor = AiTutorTheme.colors.primary,
+        contentColor = AiTutorTheme.colors.onPrimary,
         elevation = elevation(defaultElevation = 8.dp),
     ) {
         Icon(

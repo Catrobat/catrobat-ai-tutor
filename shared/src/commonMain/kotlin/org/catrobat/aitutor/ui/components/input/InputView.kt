@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.catrobat.aitutor.domain.prompt.PromptVersion
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.aitutor.util.isDebug
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.about
@@ -80,7 +80,7 @@ internal fun InputView(
                 }
 
                 Surface(
-                    color = AiTutorColors.surface.copy(alpha = 0.95f),
+                    color = AiTutorTheme.colors.surface.copy(alpha = 0.95f),
                     shape = RoundedCornerShape(24.dp),
                     shadowElevation = 8.dp,
                 ) {

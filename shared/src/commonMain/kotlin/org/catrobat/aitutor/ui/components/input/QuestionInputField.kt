@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.type_your_question_here
 import org.jetbrains.compose.resources.stringResource
@@ -47,14 +47,14 @@ internal fun QuestionInputField(
             placeholder = {
                 Text(
                     text = stringResource(Res.string.type_your_question_here),
-                    color = AiTutorColors.onSurfaceVariant,
+                    color = AiTutorTheme.colors.onSurfaceVariant,
                 )
             },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.AutoAwesome,
                     contentDescription = null,
-                    tint = AiTutorColors.onSurfaceVariant,
+                    tint = AiTutorTheme.colors.onSurfaceVariant,
                 )
             },
             colors =
@@ -63,9 +63,9 @@ internal fun QuestionInputField(
                     unfocusedContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = AiTutorColors.primary,
-                    focusedTextColor = AiTutorColors.onSurface,
-                    unfocusedTextColor = AiTutorColors.onSurfaceVariant,
+                    cursorColor = AiTutorTheme.colors.primary,
+                    focusedTextColor = AiTutorTheme.colors.onSurface,
+                    unfocusedTextColor = AiTutorTheme.colors.onSurfaceVariant,
                 ),
             shape = RoundedCornerShape(16.dp),
         )
@@ -77,7 +77,7 @@ internal fun QuestionInputField(
             Icon(
                 imageVector = Icons.Default.AutoAwesome,
                 contentDescription = null,
-                tint = AiTutorColors.primary,
+                tint = AiTutorTheme.colors.primary,
                 modifier = Modifier.size(40.dp),
             )
         }
@@ -87,7 +87,7 @@ internal fun QuestionInputField(
 @Preview
 @Composable
 private fun QuestionInputFieldPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(Modifier.padding(16.dp)) {
             QuestionInputField(
                 requiresUserQuestion = true,
@@ -101,7 +101,7 @@ private fun QuestionInputFieldPreview() {
 @Preview
 @Composable
 private fun QuestionInputFieldNoQuestionPreview() {
-    Surface(color = AiTutorColors.surface) {
+    Surface(color = AiTutorTheme.colors.surface) {
         Box(Modifier.padding(16.dp)) {
             QuestionInputField(
                 requiresUserQuestion = false,

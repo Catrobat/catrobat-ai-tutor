@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -24,7 +24,7 @@ internal fun ContextSwitchCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = AiTutorColors.surface.copy(alpha = 0.95f),
+        color = AiTutorTheme.colors.surface.copy(alpha = 0.95f),
         shape = RoundedCornerShape(24.dp),
         shadowElevation = 8.dp,
     ) {
@@ -35,7 +35,7 @@ internal fun ContextSwitchCard(
             ) {
                 Text(
                     text = text,
-                    color = AiTutorColors.onSurface,
+                    color = AiTutorTheme.colors.onSurface,
                     modifier = Modifier.weight(1f),
                 )
                 Switch(
@@ -43,8 +43,8 @@ internal fun ContextSwitchCard(
                     onCheckedChange = onCheckedChange,
                     colors =
                         SwitchDefaults.colors(
-                            checkedThumbColor = AiTutorColors.primary,
-                            checkedTrackColor = AiTutorColors.secondaryContainer,
+                            checkedThumbColor = AiTutorTheme.colors.primary,
+                            checkedTrackColor = AiTutorTheme.colors.secondaryContainer,
                         ),
                 )
             }
@@ -55,7 +55,7 @@ internal fun ContextSwitchCard(
 @Preview
 @Composable
 private fun ContextSwitchCardPreview() {
-    Surface(color = AiTutorColors.onSurface) {
+    Surface(color = AiTutorTheme.colors.onSurface) {
         Box(Modifier.padding(16.dp)) {
             ContextSwitchCard(
                 text = "Include code context",

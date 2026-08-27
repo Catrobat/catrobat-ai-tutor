@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.catrobat.aitutor.domain.model.AiAppInfo
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 
 @Composable
 internal fun AiAppChip(
@@ -49,7 +49,7 @@ internal fun AiAppChip(
         Text(
             text = appInfo.appName,
             style = MaterialTheme.typography.labelSmall,
-            color = AiTutorColors.onSurface,
+            color = AiTutorTheme.colors.onSurface,
             maxLines = 1,
             textAlign = TextAlign.Center,
         )

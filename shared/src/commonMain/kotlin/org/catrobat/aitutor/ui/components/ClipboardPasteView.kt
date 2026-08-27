@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import org.catrobat.aitutor.domain.model.AiTutorError
 import org.catrobat.aitutor.domain.model.AiTutorErrorType
 import org.catrobat.aitutor.domain.model.ClipboardReadResult
-import org.catrobat.aitutor.ui.theme.AiTutorColors
+import org.catrobat.aitutor.ui.theme.AiTutorTheme
 import org.catrobat.aitutor.util.getText
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.cancel
@@ -111,7 +111,7 @@ private fun ClipboardPasteViewContent(
                 Modifier
                     .padding(horizontal = 24.dp, vertical = 32.dp)
                     .widthIn(max = 580.dp),
-            color = AiTutorColors.surface.copy(alpha = 0.95f),
+            color = AiTutorTheme.colors.surface.copy(alpha = 0.95f),
             shape = RoundedCornerShape(24.dp),
             shadowElevation = 8.dp,
         ) {
@@ -122,14 +122,14 @@ private fun ClipboardPasteViewContent(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = AiTutorColors.onSurface,
+                    color = AiTutorTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(Modifier.height(16.dp))
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = AiTutorColors.onSurfaceVariant,
+                    color = AiTutorTheme.colors.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 8.dp),
                 )
@@ -142,16 +142,16 @@ private fun ClipboardPasteViewContent(
                     TextButton(onClick = onDismissRequest) {
                         Text(
                             text = cancelText,
-                            color = AiTutorColors.primary,
+                            color = AiTutorTheme.colors.primary,
                         )
                     }
                     Button(
                         onClick = onPaste,
-                        colors = ButtonDefaults.buttonColors(containerColor = AiTutorColors.primary),
+                        colors = ButtonDefaults.buttonColors(containerColor = AiTutorTheme.colors.primary),
                     ) {
                         Text(
                             text = pasteText,
-                            color = AiTutorColors.onPrimary,
+                            color = AiTutorTheme.colors.onPrimary,
                         )
                     }
                 }
