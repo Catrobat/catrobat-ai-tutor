@@ -2,8 +2,6 @@ name: Release AAR
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ release-aar-ci ]
 
 permissions:
   contents: read
@@ -16,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: release-aar-ci
+          ref: main
 
       - name: Record checked-out SHA
         id: sha
@@ -95,5 +93,4 @@ jobs:
           name: v${{ steps.version.outputs.value }}
           target_commitish: ${{ needs.verify.outputs.sha }}
           files: artifacts/aitutor-${{ steps.version.outputs.value }}.aar
-          draft: true
           fail_on_unmatched_files: true
