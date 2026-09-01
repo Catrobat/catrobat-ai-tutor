@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "org.catrobat"
-version = "0.0.1"
+version = if (project.hasProperty("snapshot")) "-LOCAL" else "1.0.0"
 
 kotlin {
     androidTarget {
