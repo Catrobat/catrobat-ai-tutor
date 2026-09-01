@@ -114,7 +114,7 @@ default. You can override any of them:
 Released builds are distributed as an `.aar` file attached to a GitHub release.
 
 1. Bump `version` in `shared/build.gradle.kts` and merge it into `main`.
-2. Open the **Actions** tab, select **Release AAR**, and run the workflow.
+2. Open the Actions tab, select Release AAR, and run the workflow.
 3. The workflow verifies the build, then attaches `aitutor-<version>.aar` to a new release tagged `v<version>`.
 
 ### Using the release in your app
