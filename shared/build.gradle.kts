@@ -12,8 +12,13 @@ plugins {
     alias(libs.plugins.dev.mokkery)
 }
 
+val versionMajor by extra { 1 }
+val versionMinor by extra { 0 }
+val versionPatch by extra { 0 }
+val sdkVersionName by extra { "${versionMajor}.${versionMinor}.${versionPatch}" }
+
 group = "org.catrobat"
-version = if (project.hasProperty("snapshot")) "-LOCAL" else "1.0.0"
+version = if (project.hasProperty("snapshot")) "-LOCAL" else sdkVersionName
 
 kotlin {
     androidTarget {
