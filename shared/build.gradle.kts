@@ -15,7 +15,7 @@ plugins {
 val versionMajor by extra { 1 }
 val versionMinor by extra { 0 }
 val versionPatch by extra { 0 }
-val sdkVersionName by extra { "${versionMajor}.${versionMinor}.${versionPatch}" }
+val sdkVersionName by extra { "$versionMajor.$versionMinor.$versionPatch" }
 
 group = "org.catrobat"
 version = if (project.hasProperty("snapshot")) "-LOCAL" else sdkVersionName
