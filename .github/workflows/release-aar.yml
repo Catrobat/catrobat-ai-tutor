@@ -70,20 +70,21 @@ jobs:
           VERSION=$(./gradlew -q :shared:properties | awk '/^version:/ { print $2 }')
           echo "value=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Build release AAR
-        run: ./gradlew :shared:bundleReleaseAar
+      - name: Build release AARs
+        run: ./gradlew :shared:bundleReleaseAar :shared:packageFatAar
 
-      - name: Stage AAR
+      - name: Stage AARs
         run: |
           mkdir -p artifacts
-          cp shared/build/outputs/aar/shared-release.aar \
-             "artifacts/aitutor-${{ steps.version.outputs.value }}.aar"
+          V="${{ steps.version.outputs.value }}"
+          cp shared/build/outputs/aar/shared-release.aar     "artifacts/aitutor-${V}.aar"
+          cp shared/build/outputs/aar/shared-release-fat.aar "artifacts/aitutor-${V}-fat.aar"
 
-      - name: Upload workflow artifact
+      - name: Upload workflow artifacts
         uses: actions/upload-artifact@v4
         with:
           name: aitutor-aar
-          path: artifacts/aitutor-${{ steps.version.outputs.value }}.aar
+          path: artifacts/
           retention-days: 90
 
       - name: Create GitHub Release
@@ -92,5 +93,7 @@ jobs:
           tag_name: v${{ steps.version.outputs.value }}
           name: v${{ steps.version.outputs.value }}
           target_commitish: ${{ needs.verify.outputs.sha }}
-          files: artifacts/aitutor-${{ steps.version.outputs.value }}.aar
+          files: |
+            artifacts/aitutor-${{ steps.version.outputs.value }}.aar
+            artifacts/aitutor-${{ steps.version.outputs.value }}-fat.aar
           fail_on_unmatched_files: true

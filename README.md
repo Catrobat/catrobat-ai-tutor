@@ -111,26 +111,35 @@ default. You can override any of them:
 
 ## Releasing
 
-Released builds are distributed as an `.aar` file attached to a GitHub release.
+Released builds are attached to a GitHub release as two `.aar` files:
 
-1. Bump `version` in `shared/build.gradle.kts` and merge it into `main`.
+- `aitutor-<version>.aar` → the library only
+- `aitutor-<version>-fat.aar` → the library with Koin, DataStore and
+  AboutLibraries bundled in
+
+1. Bump `versionMajor` / `versionMinor` / `versionPatch` in `shared/build.gradle.kts`
+   and merge it into `main`.
 2. Open the Actions tab, select Release AAR, and run the workflow.
-3. The workflow verifies the build, then attaches `aitutor-<version>.aar` to a new release tagged `v<version>`.
+3. The workflow verifies the build, then attaches both `.aar` files to a new
+   release tagged `v<version>`.
 
 ### Using the release in your app
 
-1. Copy `aitutor-<version>.aar` into your app module's `libs/` folder.
-2. Add the `.aar` in your app's `build.gradle.kts`:
+Copy one of the `.aar` files into your app module's `libs/` folder and add it in
+`build.gradle.kts`:
 
-   ```kotlin
-   dependencies {
-       implementation(files("libs/aitutor-<version>.aar"))
-   }
-   ```
+```kotlin
+dependencies {
+    implementation(files("libs/aitutor-<version>-fat.aar"))
+}
+```
 
-   An `.aar` has no POM, so you also need to declare the dependencies this
-   library uses. See `shared/build.gradle.kts` for the current list.
-3. Sync Gradle and rebuild your app.
+Neither `.aar` carries a POM, so the host declares the dependencies that are not
+bundled, the full list for the plain one. Get the current list with:
+
+```bash
+./gradlew :shared:dependencies --configuration releaseRuntimeClasspath
+```
 
 ## Dependencies
 
