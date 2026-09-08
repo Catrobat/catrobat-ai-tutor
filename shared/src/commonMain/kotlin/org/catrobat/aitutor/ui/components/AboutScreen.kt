@@ -46,6 +46,7 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.chipColors
 import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 import org.catrobat.aitutor.ui.theme.AiTutorTheme
+import org.catrobat.aitutor.util.sdkVersion
 import org.catrobat.shared.generated.resources.Res
 import org.catrobat.shared.generated.resources.catrobat_ai_tutor
 import org.catrobat.shared.generated.resources.close
@@ -140,7 +141,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                text = stringResource(Res.string.version, "1.0.0"),
+                                text = stringResource(Res.string.version, sdkVersion),
                                 fontSize = 16.sp,
                                 color = AiTutorTheme.colors.onSurfaceVariant,
                             )

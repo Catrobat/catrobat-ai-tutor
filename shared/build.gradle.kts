@@ -117,6 +117,7 @@ android {
     compileSdk = 35
     defaultConfig {
         minSdk = 24
+        buildConfigField("String", "VERSION_NAME", "\"$sdkVersionName\"")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
