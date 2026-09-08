@@ -114,8 +114,7 @@ default. You can override any of them:
 Released builds are attached to a GitHub release as two `.aar` files:
 
 - `aitutor-<version>.aar` → the library only
-- `aitutor-<version>-fat.aar` → the library with Koin, DataStore and
-  AboutLibraries bundled in
+- `aitutor-<version>-fat.aar` → the library with Koin, DataStore, AboutLibraries, and kotlinx-collections-immutable bundled in
 
 1. Bump `versionMajor` / `versionMinor` / `versionPatch` in `shared/build.gradle.kts`
    and merge it into `main`.
