@@ -140,7 +140,7 @@ internal fun AboutScreen(onDismissRequest: () -> Unit) {
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                text = stringResource(Res.string.version, "0.0.1"),
+                                text = stringResource(Res.string.version, "1.0.0"),
                                 fontSize = 16.sp,
                                 color = AiTutorTheme.colors.onSurfaceVariant,
                             )
