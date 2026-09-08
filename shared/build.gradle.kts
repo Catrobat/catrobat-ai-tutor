@@ -12,8 +12,13 @@ plugins {
     alias(libs.plugins.dev.mokkery)
 }
 
+val versionMajor by extra { 1 }
+val versionMinor by extra { 0 }
+val versionPatch by extra { 0 }
+val sdkVersionName by extra { "$versionMajor.$versionMinor.$versionPatch" }
+
 group = "org.catrobat"
-version = "0.0.1"
+version = if (project.hasProperty("snapshot")) "-LOCAL" else sdkVersionName
 
 kotlin {
     androidTarget {
@@ -112,6 +117,7 @@ android {
     compileSdk = 35
     defaultConfig {
         minSdk = 24
+        buildConfigField("String", "VERSION_NAME", "\"$sdkVersionName\"")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -183,5 +189,117 @@ aboutLibraries {
     export {
         outputFile = file("src/commonMain/composeResources/files/aboutlibraries.json")
         prettyPrint = true
+    }
+}
+
+tasks.register("packageFatAar") {
+    group = "build"
+    description = "Repackages shared-release.aar with bundled runtime dependencies"
+    dependsOn("bundleReleaseAar")
+    notCompatibleWithConfigurationCache("repackages the aar with ant")
+
+    val aarDir = layout.buildDirectory.dir("outputs/aar")
+    val workDir = layout.buildDirectory.dir("fat-aar-work")
+    outputs.file(aarDir.map { it.file("shared-release-fat.aar") })
+
+    doLast {
+        val inputAar = aarDir.get().asFile.resolve("shared-release.aar")
+        require(inputAar.exists()) { "run :shared:bundleReleaseAar first" }
+
+        // unpack the lean aar and its classes.jar
+        val work = workDir.get().asFile
+        work.deleteRecursively()
+        val aarContents = work.resolve("aar-contents")
+        val mergedClasses = work.resolve("merged-classes")
+        copy {
+            from(zipTree(inputAar))
+            into(aarContents)
+        }
+        copy {
+            from(zipTree(aarContents.resolve("classes.jar")))
+            into(mergedClasses)
+        }
+
+        val bundlePrefixes =
+            listOf(
+                "io.insert-koin:embedded-koin",
+                "androidx.datastore",
+                "com.mikepenz:aboutlibraries",
+                "org.jetbrains.kotlinx:kotlinx-collections-immutable",
+            )
+        val excludes =
+            arrayOf(
+                "META-INF/*.SF",
+                "META-INF/*.DSA",
+                "META-INF/*.RSA",
+                "META-INF/MANIFEST.MF",
+                "META-INF/LICENSE*",
+                "META-INF/NOTICE*",
+                "META-INF/versions/**",
+                "META-INF/proguard/**",
+                "META-INF/*.version",
+                "META-INF/*.kotlin_module",
+                "module-info.class",
+                // always provided by the host, bundling these would duplicate classes at dex time
+                "androidx/compose/**",
+                "androidx/lifecycle/**",
+                "kotlin/**",
+                "kotlinx/coroutines/**",
+            )
+
+        val runtimeCp =
+            configurations.findByName("releaseRuntimeClasspath")
+                ?: error("no releaseRuntimeClasspath configuration")
+        val proguard = StringBuilder()
+
+        runtimeCp.resolvedConfiguration.resolvedArtifacts
+            .filter { artifact ->
+                val id = artifact.moduleVersion.id
+                bundlePrefixes.any { "${id.group}:${id.name}".startsWith(it) }
+            }
+            .forEach { artifact ->
+                // android libraries are an .aar wrapping a nested classes.jar, jvm libraries are a plain jar
+                val jars =
+                    if (artifact.file.extension == "aar") {
+                        val dep = work.resolve("dep/${artifact.file.nameWithoutExtension}")
+                        copy {
+                            from(zipTree(artifact.file))
+                            into(dep)
+                        }
+                        dep.resolve("proguard.txt").takeIf { it.exists() }
+                            ?.let { proguard.appendLine(it.readText()) }
+                        dep.walkTopDown().filter { it.name == "classes.jar" }.toList()
+                    } else {
+                        listOf(artifact.file)
+                    }
+                jars.forEach { jar ->
+                    copy {
+                        from(zipTree(jar)) { exclude(*excludes) }
+                        into(mergedClasses)
+                    }
+                    // keep the consumer proguard rules a bundled library ships
+                    zipTree(jar).matching { include("META-INF/proguard/**") }.files
+                        .forEach { if (it.isFile) proguard.appendLine(it.readText()) }
+                }
+            }
+
+        // rebuild classes.jar, carry over any harvested proguard rules, zip the fat aar
+        val fatClassesJar = aarContents.resolve("classes.jar")
+        fatClassesJar.delete()
+        ant.invokeMethod(
+            "jar",
+            mapOf("destfile" to fatClassesJar.path, "basedir" to mergedClasses.path),
+        )
+        if (proguard.isNotBlank()) {
+            aarContents.resolve("proguard.txt").appendText("\n$proguard")
+        }
+
+        val fatAar = aarDir.get().asFile.resolve("shared-release-fat.aar")
+        fatAar.delete()
+        ant.invokeMethod(
+            "zip",
+            mapOf("destfile" to fatAar.path, "basedir" to aarContents.path),
+        )
+        logger.lifecycle("wrote ${fatAar.name} (${fatAar.length() / 1024} KB)")
     }
 }
