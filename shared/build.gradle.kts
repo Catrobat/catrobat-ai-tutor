@@ -194,17 +194,23 @@ aboutLibraries {
 
 tasks.register("packageFatAar") {
     group = "build"
-    description = "Repackages shared-release.aar with bundled runtime dependencies"
+    description =
+        "Writes aitutor-<version>.aar and aitutor-<version>-fat.aar with bundled runtime dependencies"
     dependsOn("bundleReleaseAar")
     notCompatibleWithConfigurationCache("repackages the aar with ant")
 
     val aarDir = layout.buildDirectory.dir("outputs/aar")
     val workDir = layout.buildDirectory.dir("fat-aar-work")
-    outputs.file(aarDir.map { it.file("shared-release-fat.aar") })
+    val leanAarName = "aitutor-$sdkVersionName.aar"
+    val fatAarName = "aitutor-$sdkVersionName-fat.aar"
+    outputs.file(aarDir.map { it.file(leanAarName) })
+    outputs.file(aarDir.map { it.file(fatAarName) })
 
     doLast {
         val inputAar = aarDir.get().asFile.resolve("shared-release.aar")
         require(inputAar.exists()) { "run :shared:bundleReleaseAar first" }
+        val leanAar = inputAar.copyTo(aarDir.get().asFile.resolve(leanAarName), overwrite = true)
+        logger.lifecycle("wrote ${leanAar.name} (${leanAar.length() / 1024} KB)")
 
         // unpack the lean aar and its classes.jar
         val work = workDir.get().asFile
@@ -258,6 +264,7 @@ tasks.register("packageFatAar") {
                 bundlePrefixes.any { "${id.group}:${id.name}".startsWith(it) }
             }
             .forEach { artifact ->
+                logger.lifecycle("bundling ${artifact.moduleVersion.id}")
                 // android libraries are an .aar wrapping a nested classes.jar, jvm libraries are a plain jar
                 val jars =
                     if (artifact.file.extension == "aar") {
@@ -294,7 +301,7 @@ tasks.register("packageFatAar") {
             aarContents.resolve("proguard.txt").appendText("\n$proguard")
         }
 
-        val fatAar = aarDir.get().asFile.resolve("shared-release-fat.aar")
+        val fatAar = aarDir.get().asFile.resolve(fatAarName)
         fatAar.delete()
         ant.invokeMethod(
             "zip",
