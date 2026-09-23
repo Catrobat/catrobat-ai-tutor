@@ -77,8 +77,8 @@ jobs:
         run: |
           mkdir -p artifacts
           V="${{ steps.version.outputs.value }}"
-          cp shared/build/outputs/aar/shared-release.aar     "artifacts/aitutor-${V}.aar"
-          cp shared/build/outputs/aar/shared-release-fat.aar "artifacts/aitutor-${V}-fat.aar"
+          cp shared/build/outputs/aar/aitutor-${V}.aar     artifacts/
+          cp shared/build/outputs/aar/aitutor-${V}-fat.aar artifacts/
 
       - name: Upload workflow artifacts
         uses: actions/upload-artifact@v4
