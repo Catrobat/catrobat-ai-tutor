@@ -13,25 +13,39 @@ A standalone AI Tutor library for Catrobat and other Android apps.
 
 ## Getting Started
 
-Ensure the Kotzilla repository is configured in your project's `settings.gradle.kts`:
+During development the library is consumed from your local Maven repository. Released builds are distributed as an `.aar` file, see [Releasing](#releasing).
 
-```kotlin
-dependencyResolutionManagement {
-    repositories {
-        maven { url = uri("https://repository.kotzilla.io/repository/Koin-Embedded/") }
-    }
-}
-```
+1. Publish the library to Maven Local:
 
-Then add the dependency to your app's `build.gradle.kts`:
+   ```bash
+   # Fixed version (matches `version` in shared/build.gradle.kts)
+   ./gradlew publishToMavenLocal
 
-```kotlin
-dependencies {
-    implementation("org.catrobat:aitutor:<latest-version>")
-}
-```
+   # Or the -LOCAL version, for iterative development
+   ./gradlew publishToMavenLocal -Psnapshot
+   ```
 
-> The library will be published to Maven Central. For now, use local publishing via `./gradlew publishToMavenLocal`.
+2. Configure `mavenLocal()` and the Kotzilla repository in your consuming
+   project's `settings.gradle.kts`:
+
+   ```kotlin
+   dependencyResolutionManagement {
+       repositories {
+           mavenLocal()
+           maven { url = uri("https://repository.kotzilla.io/repository/Koin-Embedded/") }
+       }
+   }
+   ```
+
+3. Add the dependency in your app's `build.gradle.kts`, matching the version you
+   published:
+
+   ```kotlin
+   dependencies {
+       implementation("org.catrobat:aitutor:<version>")  // fixed version
+       // implementation("org.catrobat:aitutor:-LOCAL")  // published with -Psnapshot
+   }
+   ```
 
 ## Usage
 
@@ -94,6 +108,39 @@ default. You can override any of them:
 - `onSurfaceVariant` → secondary text and icon color used for supporting text.
 - `secondaryContainer` → background of pills, chips, and menus.
 - `onSecondaryContainer` → content color drawn on top of `secondaryContainer`.
+
+## Releasing
+
+Released builds are attached to a GitHub release as two `.aar` files:
+
+- `aitutor-<version>.aar` → the library only
+- `aitutor-<version>-fat.aar` → the library with Koin, DataStore, AboutLibraries, and kotlinx-collections-immutable bundled in
+
+The release is built and published by CI:
+
+1. Bump `versionMajor` / `versionMinor` / `versionPatch` in `shared/build.gradle.kts`
+   and merge it into `main`.
+2. Open the Actions tab, select Release AAR, and run the workflow.
+3. The workflow verifies the build, then attaches both `.aar` files to a new
+   release tagged `v<version>`.
+
+### Using the release in your app
+
+Copy one of the `.aar` files into your app module's `libs/` folder and add it in
+`build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation(files("libs/aitutor-<version>-fat.aar"))
+}
+```
+
+Neither `.aar` carries a POM, so the host declares the dependencies that are not
+bundled, the full list for the plain one. Get the current list with:
+
+```bash
+./gradlew :shared:dependencies --configuration releaseRuntimeClasspath
+```
 
 ## Dependencies
 
